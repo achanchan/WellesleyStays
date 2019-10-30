@@ -1,3 +1,5 @@
+use wstays_db;
+
 drop table if exists user;
 drop table if exists place;
 drop table if exists placeowner;
@@ -12,7 +14,7 @@ CREATE TABLE user (
     primary key (bnumber)
 );
 
-CREATE TABLE place {
+CREATE TABLE place (
     pid int auto_increment,
     city varchar(20),
     country varchar(20),
@@ -22,34 +24,34 @@ CREATE TABLE place {
     maxguest int,
     postalcode varchar(10),
     primary key (pid)
-};
+);
 
-CREATE TABLE placeowner {
+CREATE TABLE placeowner (
     bnumber char(9),
     pid int,
     primary key (bnumber, pid)
-};
+);
 
-CREATE TABLE availability {
+CREATE TABLE availability (
     pid int,
     start date,
     end date,
     primary key (pid, start)
-}
+);
 
-CREATE TABLE request {
+CREATE TABLE request (
     rid int auto_increment,
-    boolean isfilled,
-    int guestnum,
+    isfilled boolean,
+    guestnum int,
     city varchar(20),
     country varchar(20),
     start date,
     end date,
     primary key (rid)
-}
+);
 
-CREATE TABLE userrequest {
+CREATE TABLE userrequest (
     bnumber char(9),
     rid int,
     primary key (bnumber, rid)
-}
+);
