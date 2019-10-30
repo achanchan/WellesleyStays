@@ -1,9 +1,10 @@
 use wstays_db;
 
-drop table if exists user;
-drop table if exists place;
-drop table if exists placeowner;
 drop table if exists availability;
+drop table if exists place;
+drop table if exists request;
+drop table if exists user;
+
 
 CREATE TABLE user (
     bnumber char(9),
@@ -12,10 +13,11 @@ CREATE TABLE user (
     countrycode varchar(3),
     phonenum char(10),
     primary key (bnumber)
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE place (
     pid int auto_increment,
+    bnumber char(9),
     city varchar(20),
     country varchar(20),
     street1 varchar(40),
@@ -23,35 +25,34 @@ CREATE TABLE place (
     state varchar(20),
     maxguest int,
     postalcode varchar(10),
-    primary key (pid)
-);
-
-CREATE TABLE placeowner (
-    bnumber char(9),
-    pid int,
-    primary key (bnumber, pid)
-);
+    primary key (pid),
+    foreign key (bnumber) references user(bnumber) 
+        on delete cascade
+        on update cascade
+) ENGINE = InnoDB;
 
 CREATE TABLE availability (
+    aid int auto_increment,
     pid int,
     start date,
     end date,
-    primary key (pid, start)
-);
+    primary key (aid, start),
+    foreign key (pid) references place(pid)
+        on delete cascade
+        on update cascade
+) ENGINE = InnoDB;
 
 CREATE TABLE request (
     rid int auto_increment,
-    isfilled boolean,
+    bnumber char(9),
+    isfilled boolean not null default FALSE,
     guestnum int,
     city varchar(20),
     country varchar(20),
     start date,
     end date,
-    primary key (rid)
-);
-
-CREATE TABLE userrequest (
-    bnumber char(9),
-    rid int,
-    primary key (bnumber, rid)
-);
+    primary key (rid),
+    foreign key (bnumber) references user(bnumber)
+        on delete cascade
+        on update cascade
+) ENGINE = InnoDB;

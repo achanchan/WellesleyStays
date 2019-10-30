@@ -23,11 +23,14 @@ DROP TABLE IF EXISTS `availability`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `availability` (
-  `pid` int(11) NOT NULL DEFAULT '0',
+  `aid` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) DEFAULT NULL,
   `start` date NOT NULL DEFAULT '0000-00-00',
   `end` date DEFAULT NULL,
-  PRIMARY KEY (`pid`,`start`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`aid`,`start`),
+  KEY `pid` (`pid`),
+  CONSTRAINT `availability_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `place` (`pid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,6 +39,7 @@ CREATE TABLE `availability` (
 
 LOCK TABLES `availability` WRITE;
 /*!40000 ALTER TABLE `availability` DISABLE KEYS */;
+INSERT INTO `availability` VALUES (1,1,'2019-11-28','2019-12-01'),(2,1,'2019-12-18','2019-12-24'),(3,2,'2020-01-01','2020-06-01');
 /*!40000 ALTER TABLE `availability` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -48,6 +52,7 @@ DROP TABLE IF EXISTS `place`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `place` (
   `pid` int(11) NOT NULL AUTO_INCREMENT,
+  `bnumber` char(9) DEFAULT NULL,
   `city` varchar(20) DEFAULT NULL,
   `country` varchar(20) DEFAULT NULL,
   `street1` varchar(40) DEFAULT NULL,
@@ -55,7 +60,9 @@ CREATE TABLE `place` (
   `state` varchar(20) DEFAULT NULL,
   `maxguest` int(11) DEFAULT NULL,
   `postalcode` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`pid`)
+  PRIMARY KEY (`pid`),
+  KEY `bnumber` (`bnumber`),
+  CONSTRAINT `place_ibfk_1` FOREIGN KEY (`bnumber`) REFERENCES `user` (`bnumber`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -65,32 +72,8 @@ CREATE TABLE `place` (
 
 LOCK TABLES `place` WRITE;
 /*!40000 ALTER TABLE `place` DISABLE KEYS */;
-INSERT INTO `place` VALUES (1,'Lexington','USA','49 Eldred Street','','MA',4,'02420'),(2,'Wellesley','USA','106 Central Street','Bates 407','MA',1,'02481'),(3,'Wellesley','USA','106 Central Street','Munger 234','MA',1,'02481'),(4,'Elmhurst','USA','5101 Jacobus Street','','NY',1,'11373'),(5,'Wellesley','USA','106 Central Street','McAfee 118','MA',1,'02481'),(6,'Los Altos','USA','470 Gabilan Street','Apartment 4','CA',1,'94022');
+INSERT INTO `place` VALUES (1,'B20856852','Lexington','USA','49 Eldred Street','','MA',4,'02420'),(2,'B20856852','Wellesley','USA','106 Central Street','Bates 407','MA',1,'02481'),(3,'B20860410','Wellesley','USA','106 Central Street','Munger 234','MA',1,'02481'),(4,'B20860410','Elmhurst','USA','5101 Jacobus Street','','NY',1,'11373'),(5,'B20857037','Wellesley','USA','106 Central Street','McAfee 118','MA',1,'02481'),(6,'B20857037','Los Altos','USA','470 Gabilan Street','Apartment 4','CA',1,'94022');
 /*!40000 ALTER TABLE `place` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `placeowner`
---
-
-DROP TABLE IF EXISTS `placeowner`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `placeowner` (
-  `bnumber` char(9) NOT NULL DEFAULT '',
-  `pid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`bnumber`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `placeowner`
---
-
-LOCK TABLES `placeowner` WRITE;
-/*!40000 ALTER TABLE `placeowner` DISABLE KEYS */;
-INSERT INTO `placeowner` VALUES ('B20856852',1),('B20856852',2),('B20857037',5),('B20857037',6),('B20860410',3),('B20860410',4);
-/*!40000 ALTER TABLE `placeowner` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -102,14 +85,17 @@ DROP TABLE IF EXISTS `request`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `request` (
   `rid` int(11) NOT NULL AUTO_INCREMENT,
-  `isfilled` tinyint(1) DEFAULT NULL,
+  `bnumber` char(9) DEFAULT NULL,
+  `isfilled` tinyint(1) NOT NULL DEFAULT '0',
   `guestnum` int(11) DEFAULT NULL,
   `city` varchar(20) DEFAULT NULL,
   `country` varchar(20) DEFAULT NULL,
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
-  PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`rid`),
+  KEY `bnumber` (`bnumber`),
+  CONSTRAINT `request_ibfk_1` FOREIGN KEY (`bnumber`) REFERENCES `user` (`bnumber`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,6 +104,7 @@ CREATE TABLE `request` (
 
 LOCK TABLES `request` WRITE;
 /*!40000 ALTER TABLE `request` DISABLE KEYS */;
+INSERT INTO `request` VALUES (1,'B20860410',0,2,'Montreal','CAN','2019-11-29','2019-11-30'),(2,'B20857037',1,2,'Singapore','SGP','2019-12-25','2020-01-01');
 /*!40000 ALTER TABLE `request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,29 +134,6 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES ('B20856852','dhahm@wellesley.edu','Debbie Hahm','1','7813541150'),('B20857037','nli2@wellesley.edu','Nicole Li','1','6503808687'),('B20860410','achan@wellesley.edu','Amy Chan','1','6462401065');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `userrequest`
---
-
-DROP TABLE IF EXISTS `userrequest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `userrequest` (
-  `bnumber` char(9) NOT NULL DEFAULT '',
-  `rid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`bnumber`,`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `userrequest`
---
-
-LOCK TABLES `userrequest` WRITE;
-/*!40000 ALTER TABLE `userrequest` DISABLE KEYS */;
-/*!40000 ALTER TABLE `userrequest` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -180,4 +144,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-30 15:55:07
+-- Dump completed on 2019-10-30 16:38:46
