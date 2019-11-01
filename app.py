@@ -18,19 +18,15 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 
 @app.route('/')
 def index():
-    return render_template('main.html',title='Hello')
+    return render_template('home.html', page_title='NICOLE!')
 
-@app.route('/greet/', methods=["GET", "POST"])
+@app.route('/form/', methods=["GET", "POST"])
 def greet():
     if request.method == 'GET':
-        return render_template('greet.html', title='Customized Greeting')
+        return render_template('form.html', page_title='FORM')
     else:
         try:
-            username = request.form['username'] # throws error if there's trouble
-            flash('form submission successful')
-            return render_template('greet.html',
-                                   title='Welcome '+username,
-                                   name=username)
+            return render_template('form.html', page_title='FORM')
 
         except Exception as err:
             flash('form submission error'+str(err))
@@ -41,20 +37,18 @@ def formecho():
     if request.method == 'GET':
         return render_template('form_data.html',
                                method=request.method,
-                               form_data=request.args)
+                               form_data=request.args,
+                               page_title='ECHO')
     elif request.method == 'POST':
         return render_template('form_data.html',
                                method=request.method,
-                               form_data=request.form)
+                               form_data=request.form,
+                               page_title='ECHO')
     else:
         return render_template('form_data.html',
                                method=request.method,
-                               form_data={})
-
-@app.route('/testform/')
-def testform():
-    return render_template('testform.html')
-
+                               form_data={},
+                               page_title='ECHO')
 
 if __name__ == '__main__':
 

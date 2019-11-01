@@ -1,0 +1,90 @@
+body {
+	font-family: helvetica;
+	background-color: #1dcaff;
+	color: white;
+	text-align: center;
+	max-width: 700px;
+	margin: auto;
+	text-justify: inter-word;
+	text-align: center;
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 7rem;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	word-wrap: break-word;
+}
+
+.key {
+	font-size: 2rem;
+}
+
+a {
+	font-size: 3rem;
+	color: #ffcccb;
+}
+
+form {
+	/* Just to center the form on the page */
+	margin: 0 auto;
+	width: 400px;
+	/* To see the outline of the form */
+	padding: 1em;
+	border: 3px solid #ffcccb;
+	border-radius: 1em;
+  }
+  form div + div {
+	margin-top: 1em;
+  }
+  label {
+	/* To make sure that all labels have the same size and are properly aligned */
+	display: block;
+	width: 1rem;
+	text-align: center;
+  }
+  input, textarea, select {
+	/* To make sure that all text fields have the same font settings By default, textareas have a monospace font */
+	font: 1em sans-serif;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #ffcccb;
+	/* To give the same size to all text fields */
+	width: 300px;
+	background: transparent;
+	border: none;
+	border-radius: 0px;
+	border-bottom: 3px solid #ffcccb;
+	width: 275px;
+	outline: none;
+	padding: 10px 0px 0px 0px;
+  }
+  textarea {
+	/* To properly align multiline text fields with their labels */
+	vertical-align: top;
+	/* To give enough room to type some text */
+	height: 5em;
+  }
+  button {
+	  border: none;
+	  background: transparent;
+	  color: white;
+	  font: 1rem sans-serif;
+	  font-weight: bold;
+	  -webkit-transition-duration: 0.4s; /* Safari */
+	  transition-duration: 0.4s;
+	  cursor: pointer;
+	}
+  select {
+	-webkit-appearance: none;
+    background-image: url("./arrow.svg");
+    background-position: 99% 50%;
+    background-repeat: no-repeat;
+	background-size: 16px;
+	cursor: pointer;
+  }
