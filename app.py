@@ -5,6 +5,7 @@ from werkzeug import secure_filename
 app = Flask(__name__)
 
 import sys,os,random
+import profile
 
 app.secret_key = 'your secret here'
 # replace that with a random key
@@ -26,7 +27,7 @@ def listing():
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
-    conn = lookup.getConn("nli2_db")
+    conn = profile.getConn("nli2_db")
     message=''
     if request.method == 'POST':
         bnumber = request.form['bnumber']
@@ -35,56 +36,45 @@ def insert():
             message = 'error: user exists; User with bnumber: %s is already in database' %bnumber
         else:
             email = request.form['email']
-            name = request.form['name']
+            name = request.form['user_name']
             phonenum = request.form['phonenum']
             profile.insertUser(conn,bnumber,email,name,phonenum)
             message = 'User %s inserted.' %name
         flash(message)
         return redirect( url_for('update', bnumber=bnumber) )
     else:
-        return render_template('insert.html', title='Insert A User')
+        return render_template('form.html')
 
-@app.route('/update/<tt>', methods=["GET", "POST"])
-def update(tt):
-    conn = lookup.getConn("wmdb")
+@app.route('/update/<bnumber>', methods=["GET", "POST"])
+def update(bnumber):
+    conn = profile.getConn("nli2_db")
     if request.method == 'GET':
-        movie = lookup.getMovie(conn,tt)
-        director = ''
-        if movie[3] is None:
-            director = 'None Specified'
-        else:
-            director = lookup.getDirector(conn,movie[3])
-        return render_template('update.html', movie=movie, director=director)
+        user = profile.getUser(conn,bnumber)
+        return render_template('update.html', user=user)
     else:
         if request.form['submit'] == 'update':
-            new_tt = request.form['movie-tt']
-            exist = lookup.checkMovie(conn,new_tt)
-            director_id = request.form['movie-director']
-            valid_nm = lookup.checkDirector(conn,director_id)
-            if exist and new_tt != tt:
-                flash('Movie already exists')
-                return redirect( url_for('update', tt=tt) )
+            new_bnum = request.form['bnumber']
+            exist = profile.checkUser(conn,new_bnum)
+            if exist and new_bnum != bnumber:
+                flash('User already exists')
+                return redirect( url_for('update', bnumber=bnumber) )
             else:
-                if valid_nm or director_id is None:
-                    lookup.updateMovie(conn,new_tt,request.form['movie-title'],
-                        request.form['movie-release'],request.form['movie-director'],tt)
-                    flash('Movie (%s) was successfully updated' %request.form['movie-title'])
-                    return redirect( url_for('update', tt=new_tt) )
-                else:
-                    flash('Director ID is invalid: %s' %director_id)
-                    return redirect( url_for('update', tt=tt) )
+                profile.updateUser(conn,new_bnum,request.form['email'],
+                    request.form['user_name'],request.form['phonenum'],bnumber)
+                flash('User (%s) was successfully updated' %request.form['user_name'])
+                return redirect( url_for('update', bnumber=new_bnum) )
         else:
-            lookup.deleteMovie(conn,tt)
-            flash('Movie (%s) was deleted successfully' %tt)
+            profile.deleteUser(conn,bnumber)
+            flash('User (%s) was deleted successfully' %bnumber)
             return redirect(url_for('index'))
 
 @app.route('/form/', methods=["GET", "POST"])
 def form():
     if request.method == 'GET':
-        return render_template('form.html', page_title='FORM')
+        return render_template('form.html')
     else:
         try:
-            return render_template('form.html', page_title='FORM')
+            return render_template('form.html')
 
         except Exception as err:
             flash('form submission error'+str(err))
