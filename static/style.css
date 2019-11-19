@@ -14,13 +14,6 @@ h1 {
 	font-size: 7rem;
 }
 
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	word-wrap: break-word;
-}
-
 .key {
 	font-size: 2rem;
 }
@@ -89,18 +82,19 @@ form {
 	cursor: pointer;
   }
 
-.navbar {
+#navbar {
     list-style-type: none;
     margin: 0;
-    padding: 0;
-    display: inline;
-  }
+	padding: 0;
+	display: flex;
+	justify-content: space-evenly;
+}
 
-.navitem li {
-    float: left
+.navitem {
+	float: left;
 }
 
 .navitem a {
-    display: block;
-    padding: 8px;
+	display: block;
+    padding: 1rem;
 }

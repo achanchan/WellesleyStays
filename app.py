@@ -18,7 +18,11 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 
 @app.route('/')
 def index():
-    return render_template('home.html', page_title='NICOLE!')
+    return render_template('home.html')
+
+@app.route('/listing/')
+def listing():
+    pass
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
@@ -75,7 +79,7 @@ def update(tt):
             return redirect(url_for('index'))
 
 @app.route('/form/', methods=["GET", "POST"])
-def greet():
+def form():
     if request.method == 'GET':
         return render_template('form.html', page_title='FORM')
     else:
