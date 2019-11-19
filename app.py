@@ -4,7 +4,7 @@ from flask import (Flask, render_template, make_response, url_for, request,
 from werkzeug import secure_filename
 app = Flask(__name__)
 
-import sys,os,random
+import sys, os, random, listing
 
 app.secret_key = 'your secret here'
 # replace that with a random key
@@ -19,6 +19,30 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 @app.route('/')
 def index():
     return render_template('home.html', page_title='NICOLE!')
+
+@app.route('/listing')
+def listing():
+    conn = listing.getConn('wstays_db')
+    if (request.method == 'POST'):
+        form = request.form
+        listing.insertListing(conn, form.get("user"), form.get("street1"),
+        form.get("street2"), form.get("city"), form.get("state"),
+        form.get("zip"), form.get("country"), form.get("maxguest"), 
+        form.get("start"), form.get("end"))
+
+        return render_template('listingconfirmation.html', form=form)
+    else:
+        # if 'bnumber' in session:
+        # uncomment out code once login is implemented
+        # bnumber = session['bnumber']
+        bnumber = "B20856852"   
+        user = listing.getUser(conn, bnumber)
+        return render_template('insert.html', user=user)
+
+        # else:
+        #     flash('you are not logged in. Please login or join')
+        #     return redirect(url_for('index'))
+        
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
