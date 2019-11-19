@@ -20,6 +20,10 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 def index():
     return render_template('home.html', page_title='NICOLE!')
 
+@app.route('/listing')
+def listing():
+    return render_template('listingform.html', user="debbie")
+
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
     conn = lookup.getConn("nli2_db")

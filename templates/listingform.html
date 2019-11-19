@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <form method=POST action="{{url_for('listing')}}">
+        <div>
+            <label for="name">Name</label>
+            <div>
+                <input type="text" id="name" value="{{user.name}}" readonly>
+            </div>
+        </div>
+        <div>
+            <label for="street1">Street 1</label>
+            <input type="text" id="street1" placeholder="1234 Main St" required>
+        </div>
+        <div>
+            <label for="street2">Street 2</label>    
+            <input type="text" id="street2" placeholder="Apartment, studio, or floor">
+        </div>
+        <div>
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" required>
+        </div>
+        <div>
+            <label for="state">State</label>
+            <input type="text" id="state">
+        </div>
+        <div>
+            <label for="zip">Zip Code</label>
+            <input type="text" id="zip">
+        </div>
+        <div>
+            <label for="country">Country</label>
+            <!-- change into a select at some point -->
+            <input type="text" id="country" required>
+        </div>
+        <div>
+            <label for="maxguest">Max number of guests</label>
+            <!-- change into a select at some point -->
+            <input type="number" id="maxguest" required>
+        </div>
+        <div>
+            <label for="start">Start</label>
+            <input type="date" id="start" required>
+        <div>
+            <label for="end">End</label>
+            <input type="date" id="end" required>
+        </div>
+        <button type="submit">List!</button>
+    </form>
+{% endblock %}
