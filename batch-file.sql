@@ -1,4 +1,4 @@
-use wstays_db;
+use achan_db;
 
 -- USER SAMPLE DATA
 insert into user(bnumber, email, name, countrycode, phonenum) 
