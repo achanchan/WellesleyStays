@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <h3>
+        You have successfully listed your place! 
+        Please check the summary to make sure the details are correct.
+    </h3>
+
+    <table id="summary">
+        <caption>Summary</caption>
+        <tr>
+            <th>Name</th>
+            <td>{{form.user}}</td>
+        </tr>
+        <tr>
+            <th>Street 1</th>
+            <td>{{form.street1}}</td>
+        </tr>
+        {% if "state" in form %}
+        <tr>
+            <th>Street 2</th>
+            <td>{{form.street2}}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th>City</th>
+            <td>{{form.city}}</td>
+        </tr>
+        {% if "state" in form %}
+            <tr>
+                <th>State</th>
+                <td>{{form.state}}</td>
+            </tr>
+        {% endif %}
+        {% if "postalcode" in form %}
+            <tr>
+                <th>Zip Code</th>
+                <td>{{form.postalcode}}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>Country</th>
+            <td>{{form.country}}</td>
+        </tr>
+        <tr>
+            <th>Max number of guests</th>
+            <td>{{form.maxguest}}</td>
+        </tr>  
+        <tr>
+            <th>Start</th>
+            <td>{{form.start}}</td>
+        </tr>      
+        <tr>
+            <th>End</th>
+            <td>{{form.end}}</td>
+        </tr>
+    </table>
+
+{% endblock %}
