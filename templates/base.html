@@ -1,17 +1,20 @@
 <!doctype html>
-<html lang='en'>
-<head>
-    <meta charset='utf-8'>
-    <meta name=author content="">
-    <title>{{ page_title }}</title>
-    <link rel='stylesheet' href="{{url_for('static', filename = 'style.css')}}">
-    {% block head_stuff %} {% endblock %}
-</head>
-<body>
-            
-{% block main_content %}
+    <head>
+        <meta charset='utf-8'>
+        <meta name=author content="Nicole Li, Amy Chan, Debbie Hahm">
+        <title>WStays</title>
+        <link rel='stylesheet' href="{{url_for('static', filename = 'style.css')}}">
+        {% block head_stuff %} {% endblock %}
+    </head>
+    <body>
+        <ul id="navbar">
+            <li class="navitem"><a class="navitem" href="{{url_for('index')}}">Home</a></li>
+            <li class="navitem"><a class="navitem" href="{{url_for('listing')}}">List a place</a></li>
+            <!-- add more links -->
+        </ul>
 
-{% endblock %}
-
-</body>
+        {% block main_content %}
+            <h2>Welcome to WellesleyStays</h2>
+        {% endblock %}
+    </body>
 </html>

@@ -88,3 +88,19 @@ form {
 	background-size: 16px;
 	cursor: pointer;
   }
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline;
+  }
+
+.navitem li {
+    float: left
+}
+
+.navitem a {
+    display: block;
+    padding: 8px;
+}
