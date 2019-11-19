@@ -6,7 +6,14 @@
         <form id="search" method=POST action="/lisitings/">
             <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm">
             <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
-
+            
         </form> 
     </formarea>
+
+    <h1>Listings: </h1>
+    <ul>
+    {% for data in listings %}
+    <li>{{data['city']}}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}
