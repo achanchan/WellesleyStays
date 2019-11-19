@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+  <h1>FORM</h1>
+      <form action="/formecho/" method="post">
+          <div>
+            <label for="bnumber">BNUMBER</label> <input type="text" id="bnumber" name="bnumber">
+          </div>
+          <div>
+            <label for="email">EMAIL</label> <input type="text" id="email" name="email">
+          </div>
+          <div>
+            <label for="name">NAME</label> <input type="text" id="name" name="user_name">
+          </div>
+          <div>
+            <label for="phonenum">PHONE</label> <input type="text" id="phonenum" name="phonenum">
+          </div>
+          <div class="button">
+            <button type="submit">SEND</button>
+          </div>
+      </form>
+      <br>
+{% endblock %}
