@@ -1,49 +1,49 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-    <form method=POST action="{{url_for('listing')}}">
+    <form method="POST" action="{{url_for('listingecho')}}">
         <div>
             <label for="name">Name</label>
             <div>
-                <input type="text" id="user" value="{{user.bnumber}}" readonly>{{user.name}}
+                <input type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
             </div>
         </div>
         <div>
             <label for="street1">Street 1</label>
-            <input type="text" id="street1" placeholder="1234 Main St" required>
+            <input type="text" name="street1" placeholder="1234 Main St" required>
         </div>
         <div>
             <label for="street2">Street 2</label>    
-            <input type="text" id="street2" placeholder="Apartment, studio, or floor">
+            <input type="text" name="street2" placeholder="Apartment, studio, or floor">
         </div>
         <div>
             <label for="city">City</label>
-            <input type="text" class="form-control" id="city" required>
+            <input type="text" class="form-control" name="city" required>
         </div>
         <div>
             <label for="state">State</label>
-            <input type="text" id="state">
+            <input type="text" name="state">
         </div>
         <div>
             <label for="zip">Zip Code</label>
-            <input type="text" id="zip">
+            <input type="text"  name="zip">
         </div>
         <div>
             <label for="country">Country</label>
             <!-- change into a select at some point -->
-            <input type="text" id="country" required>
+            <input type="text" name="country" required>
         </div>
         <div>
             <label for="maxguest">Max number of guests</label>
             <!-- change into a select at some point -->
-            <input type="number" id="maxguest" required>
+            <input type="number" name="maxguest" required>
         </div>
         <div>
             <label for="start">Start</label>
-            <input type="date" id="start" required>
+            <input type="date" name="start" required>
         <div>
             <label for="end">End</label>
-            <input type="date" id="end" required>
+            <input type="date" name="end" required>
         </div>
         <button type="submit">List!</button>
     </form>
