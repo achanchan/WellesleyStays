@@ -24,7 +24,7 @@ def index():
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
-    conn = profile.getConn("nli2_db")
+    conn = profile.getConn("wstays_db")
     message=''
     if request.method == 'POST':
         bnumber = request.form['bnumber']
@@ -44,7 +44,7 @@ def insert():
 
 @app.route('/update/<bnumber>', methods=["GET", "POST"])
 def update(bnumber):
-    conn = profile.getConn("nli2_db")
+    conn = profile.getConn("wstays_db")
     if request.method == 'GET':
         user = profile.getUser(conn,bnumber)
         return render_template('update.html', user=user)
