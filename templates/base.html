@@ -9,9 +9,20 @@
     <body>
         <ul id="navbar">
             <li class="navitem"><a class="navitem" href="{{url_for('index')}}">Home</a></li>
-            <li class="navitem"><a class="navitem" href="{{url_for('listing')}}">List a place</a></li>
+            <li class="navitem"><a class="navitem" href="{{url_for('listing')}}">List A Place</a></li>
+            <li class="navitem"><a class="navitem" href="{{url_for('insert')}}">Profile</a></li>
             <!-- add more links -->
         </ul>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div id="messages">
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
 
         {% block main_content %}
             <h2>Welcome to WellesleyStays</h2>
