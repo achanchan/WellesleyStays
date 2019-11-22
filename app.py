@@ -28,6 +28,10 @@ def insert():
     message=''
     if request.method == 'POST':
         bnumber = request.form['bnumber']
+        if len(bnumber) != 9:
+            message = 'BNUMBER must be valid'
+            flash(message)
+            return redirect(request.referrer)
         exists = profile.checkUser(conn,bnumber)
         if exists:
             message = 'error: user exists; User with bnumber: %s is already in database' %bnumber
