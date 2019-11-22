@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+  <h1>PROFILE</h1>
+      <form action="{{url_for('insert')}}" method="post">
+          <div>
+            <label for="bnumber">BNUMBER</label> <input type="text" id="bnumber" name="bnumber" required size="9">
+          </div>
+          <div>
+            <label for="email">EMAIL</label> <input type="text" id="email" name="email" required>
+          </div>
+          <div>
+            <label for="name">NAME</label> <input type="text" id="name" name="user_name" required>
+          </div>
+          <div>
+            <label for="phonenum">PHONE</label> <input type="text" id="phonenum" name="phonenum" required>
+          </div>
+          <div class="button">
+            <button type="submit">SEND</button>
+          </div>
+      </form>
+      <br>
+{% endblock %}

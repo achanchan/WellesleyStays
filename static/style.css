@@ -46,7 +46,6 @@ form {
 	/* To make sure that all text fields have the same font settings By default, textareas have a monospace font */
 	font: 1em sans-serif;
 	font-weight: bold;
-	text-transform: uppercase;
 	color: #ffcccb;
 	/* To give the same size to all text fields */
 	width: 300px;
