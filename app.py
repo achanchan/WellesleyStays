@@ -22,10 +22,6 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 def index():
     return render_template('home.html')
 
-@app.route('/listing/')
-def listing():
-    pass
-
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
     conn = profile.getConn("nli2_db")
@@ -98,6 +94,7 @@ def formecho():
                                method=request.method,
                                form_data={},
                                page_title='ECHO')
+
 @app.route('/listing/', methods=["GET"])
 def listing():
     conn = functions.getConn('wstays_db')
