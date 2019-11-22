@@ -4,16 +4,20 @@
   <h1>PROFILE</h1>
       <form action="{{url_for('insert')}}" method="post">
           <div>
-            <label for="bnumber">BNUMBER</label> <input type="text" id="bnumber" name="bnumber" required size="9">
+            <label for="bnumber">BNUMBER</label> 
+            <input type="text" id="bnumber" name="bnumber" required placeholder="B12345678">
           </div>
           <div>
-            <label for="email">EMAIL</label> <input type="text" id="email" name="email" required>
+            <label for="email">EMAIL</label> 
+            <input type="text" id="email" name="email" required placeholder="wwelles@wellesley.edu">
           </div>
           <div>
-            <label for="name">NAME</label> <input type="text" id="name" name="user_name" required>
+            <label for="name">NAME</label> 
+            <input type="text" id="name" name="user_name" required placeholder="Wendy Wellesley">
           </div>
           <div>
-            <label for="phonenum">PHONE</label> <input type="text" id="phonenum" name="phonenum" required>
+            <label for="phonenum">PHONE</label> 
+            <input type="text" id="phonenum" name="phonenum" required placeholder="6789998212">
           </div>
           <div class="button">
             <button type="submit">SEND</button>
