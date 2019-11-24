@@ -69,14 +69,6 @@ def update(bnumber):
             flash('User (%s) was deleted successfully' %bnumber)
             return redirect(url_for('index'))
 
-@app.route('/form/', methods=["GET", "POST"])
-def form():
-    if request.method == 'GET':
-        return render_template('form.html')
-    else:
-        try:
-            return render_template('form.html')
-
 @app.route('/listing/', methods=["GET"])
 def listing():
     conn = functions.getConn('wstays_db')
@@ -105,7 +97,7 @@ def listingecho():
     
 @app.route('/search/' ,methods=["GET","POST"])
 def searchListing():
-    conn = functions.getConn("achan_db")
+    conn = functions.getConn("wstays_db")
     listings = functions.allListings(conn)
     print(listings)
     return render_template('search.html', listings=listings)
