@@ -48,7 +48,7 @@ def insert():
 
 @app.route('/update/<bnumber>', methods=["GET", "POST"])
 def update(bnumber):
-    conn = functinos.getConn(db)
+    conn = functions.getConn(db)
     if request.method == 'GET':
         user = functions.getUser(conn,bnumber)
         return render_template('update.html', user=user)
