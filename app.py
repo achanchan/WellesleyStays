@@ -124,6 +124,13 @@ def listingecho():
     form.get("start"), form.get("end"))
 
     return render_template('listingconfirmation.html', form=form)
+    
+@app.route('/search/' ,methods=["GET","POST"])
+def searchListing():
+    conn = functions.getConn("achan_db")
+    listings = functions.allListings(conn)
+    print(listings)
+    return render_template('search.html', listings=listings)
 
 if __name__ == '__main__':
 
