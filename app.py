@@ -5,7 +5,6 @@ from werkzeug import secure_filename
 app = Flask(__name__)
 
 import sys,os,random
-import profile
 import functions
 
 app.secret_key = 'your secret here'
@@ -17,6 +16,7 @@ app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
+db = "wstays_db"
 
 @app.route('/')
 def index():
@@ -24,7 +24,7 @@ def index():
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
-    conn = profile.getConn("wstays_db")
+    conn = functions.getConn(db)
     message=''
     if request.method == 'POST':
         bnumber = request.form['bnumber']
@@ -32,14 +32,14 @@ def insert():
             message = 'BNUMBER must be valid'
             flash(message)
             return redirect(request.referrer)
-        exists = profile.checkUser(conn,bnumber)
+        exists = functions.getUser(conn,bnumber)
         if exists:
             message = 'error: user exists; User with bnumber: %s is already in database' %bnumber
         else:
             email = request.form['email']
             name = request.form['user_name']
             phonenum = request.form['phonenum']
-            profile.insertUser(conn,bnumber,email,name,phonenum)
+            functions.insertUser(conn,bnumber,email,name,phonenum)
             message = 'User %s inserted.' %name
         flash(message)
         return redirect( url_for('update', bnumber=bnumber) )
@@ -48,30 +48,30 @@ def insert():
 
 @app.route('/update/<bnumber>', methods=["GET", "POST"])
 def update(bnumber):
-    conn = profile.getConn("wstays_db")
+    conn = functinos.getConn(db)
     if request.method == 'GET':
-        user = profile.getUser(conn,bnumber)
+        user = functions.getUser(conn,bnumber)
         return render_template('update.html', user=user)
     else:
         if request.form['submit'] == 'update':
             new_bnum = request.form['bnumber']
-            exist = profile.checkUser(conn,new_bnum)
+            exist = functions.getUser(conn,new_bnum)
             if exist and new_bnum != bnumber:
                 flash('User already exists')
                 return redirect( url_for('update', bnumber=bnumber) )
             else:
-                profile.updateUser(conn,new_bnum,request.form['email'],
+                functions.updateUser(conn,new_bnum,request.form['email'],
                     request.form['user_name'],request.form['phonenum'],bnumber)
                 flash('User (%s) was successfully updated' %request.form['user_name'])
                 return redirect( url_for('update', bnumber=new_bnum) )
         else:
-            profile.deleteUser(conn,bnumber)
+            functions.deleteUser(conn,bnumber)
             flash('User (%s) was deleted successfully' %bnumber)
             return redirect(url_for('index'))
 
 @app.route('/listing/', methods=["GET"])
 def listing():
-    conn = functions.getConn('wstays_db')
+    conn = functions.getConn(db)
 
     # if 'bnumber' in session:
     # uncomment out code once login is implemented
@@ -86,7 +86,7 @@ def listing():
 
 @app.route('/listingecho/', methods=['POST'])
 def listingecho():
-    conn = functions.getConn('wstays_db')
+    conn = functions.getConn(db)
     form = request.form
     functions.insertListing(conn, form.get("user"), form.get("street1"),
     form.get("street2"), form.get("city"), form.get("state"),
@@ -97,7 +97,7 @@ def listingecho():
     
 @app.route('/search/' ,methods=["GET","POST"])
 def searchListing():
-    conn = functions.getConn("wstays_db")
+    conn = functions.getConn(db)
     listings = functions.allListings(conn)
     return render_template('search.html', listings=listings)
 
