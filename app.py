@@ -5,6 +5,7 @@ from werkzeug import secure_filename
 app = Flask(__name__)
 
 import sys,os,random
+import profile
 import functions
 
 app.secret_key = 'your secret here'
@@ -21,101 +22,83 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 def index():
     return render_template('home.html')
 
-@app.route('/listing/')
-def listing():
-    return render_template('home.html', page_title='NICOLE!')
+@app.route('/insert/', methods=["GET", "POST"])
+def insert():
+    conn = profile.getConn("wstays_db")
+    message=''
+    if request.method == 'POST':
+        bnumber = request.form['bnumber']
+        if len(bnumber) != 9:
+            message = 'BNUMBER must be valid'
+            flash(message)
+            return redirect(request.referrer)
+        exists = profile.checkUser(conn,bnumber)
+        if exists:
+            message = 'error: user exists; User with bnumber: %s is already in database' %bnumber
+        else:
+            email = request.form['email']
+            name = request.form['user_name']
+            phonenum = request.form['phonenum']
+            profile.insertUser(conn,bnumber,email,name,phonenum)
+            message = 'User %s inserted.' %name
+        flash(message)
+        return redirect( url_for('update', bnumber=bnumber) )
+    else:
+        return render_template('form.html')
 
+@app.route('/update/<bnumber>', methods=["GET", "POST"])
+def update(bnumber):
+    conn = profile.getConn("wstays_db")
+    if request.method == 'GET':
+        user = profile.getUser(conn,bnumber)
+        return render_template('update.html', user=user)
+    else:
+        if request.form['submit'] == 'update':
+            new_bnum = request.form['bnumber']
+            exist = profile.checkUser(conn,new_bnum)
+            if exist and new_bnum != bnumber:
+                flash('User already exists')
+                return redirect( url_for('update', bnumber=bnumber) )
+            else:
+                profile.updateUser(conn,new_bnum,request.form['email'],
+                    request.form['user_name'],request.form['phonenum'],bnumber)
+                flash('User (%s) was successfully updated' %request.form['user_name'])
+                return redirect( url_for('update', bnumber=new_bnum) )
+        else:
+            profile.deleteUser(conn,bnumber)
+            flash('User (%s) was deleted successfully' %bnumber)
+            return redirect(url_for('index'))
 
-# @app.route('/insert/', methods=["GET", "POST"])
-# def insert():
-#     conn = lookup.getConn("achan_db")
-#     message=''
-#     if request.method == 'POST':
-#         bnumber = request.form['bnumber']
-#         exists = profile.checkUser(conn,bnumber)
-#         if exists:
-#             message = 'error: user exists; User with bnumber: %s is already in database' %bnumber
-#         else:
-#             email = request.form['email']
-#             name = request.form['name']
-#             phonenum = request.form['phonenum']
-#             profile.insertUser(conn,bnumber,email,name,phonenum)
-#             message = 'User %s inserted.' %name
-#         flash(message)
-#         return redirect( url_for('update', bnumber=bnumber) )
-#     else:
-#         return render_template('insert.html', title='Insert A User')
-@app.route('/search/' ,methods=["GET","POST"])
-def searchListing():
-    conn = functions.getConn("achan_db")
-    listings = functions.allListings(conn)
-    print(listings)
-    return render_template('search.html', listings=listings)
+@app.route('/form/', methods=["GET", "POST"])
+def form():
+    if request.method == 'GET':
+        return render_template('form.html')
+    else:
+        try:
+            return render_template('form.html')
 
-# @app.route('/update/<tt>', methods=["GET", "POST"])
-# def update(tt):
-#     conn = lookup.getConn("achan_db")
-#     if request.method == 'GET':
-#         movie = lookup.getMovie(conn,tt)
-#         director = ''
-#         if movie[3] is None:
-#             director = 'None Specified'
-#         else:
-#             director = lookup.getDirector(conn,movie[3])
-#         return render_template('update.html', movie=movie, director=director)
-#     else:
-#         if request.form['submit'] == 'update':
-#             new_tt = request.form['movie-tt']
-#             exist = lookup.checkMovie(conn,new_tt)
-#             director_id = request.form['movie-director']
-#             valid_nm = lookup.checkDirector(conn,director_id)
-#             if exist and new_tt != tt:
-#                 flash('Movie already exists')
-#                 return redirect( url_for('update', tt=tt) )
-#             else:
-#                 if valid_nm or director_id is None:
-#                     lookup.updateMovie(conn,new_tt,request.form['movie-title'],
-#                         request.form['movie-release'],request.form['movie-director'],tt)
-#                     flash('Movie (%s) was successfully updated' %request.form['movie-title'])
-#                     return redirect( url_for('update', tt=new_tt) )
-#                 else:
-#                     flash('Director ID is invalid: %s' %director_id)
-#                     return redirect( url_for('update', tt=tt) )
-#         else:
-#             lookup.deleteMovie(conn,tt)
-#             flash('Movie (%s) was deleted successfully' %tt)
-#             return redirect(url_for('index'))
+        except Exception as err:
+            flash('form submission error'+str(err))
+            return redirect( url_for('index') )
 
-# @app.route('/form/', methods=["GET", "POST"])
-# def greet():
-#     if request.method == 'GET':
-#         return render_template('form.html', page_title='FORM')
-#     else:
-#         try:
-#             return render_template('form.html', page_title='FORM')
-
-#         except Exception as err:
-#             flash('form submission error'+str(err))
-#             return redirect( url_for('index') )
-
-# @app.route('/formecho/', methods=['GET','POST'])
-# def formecho():
-#     if request.method == 'GET':
-#         return render_template('form_data.html',
-#                                method=request.method,
-#                                form_data=request.args,
-#                                page_title='ECHO')
-#     elif request.method == 'POST':
-#         return render_template('form_data.html',
-#                                method=request.method,
-#                                form_data=request.form,
-#                                page_title='ECHO')
-#     else:
-#         return render_template('form_data.html',
-#                                method=request.method,
-#                                form_data={},
-#                                page_title='ECHO')
-
+@app.route('/formecho/', methods=['GET','POST'])
+def formecho():
+    if request.method == 'GET':
+        return render_template('form_data.html',
+                               method=request.method,
+                               form_data=request.args,
+                               page_title='ECHO')
+    elif request.method == 'POST':
+        return render_template('form_data.html',
+                               method=request.method,
+                               form_data=request.form,
+                               page_title='ECHO')
+    else:
+        return render_template('form_data.html',
+                               method=request.method,
+                               form_data={},
+                               page_title='ECHO')
+                               
 @app.route('/listing/', methods=["GET"])
 def listing():
     conn = functions.getConn('wstays_db')
@@ -141,6 +124,13 @@ def listingecho():
     form.get("start"), form.get("end"))
 
     return render_template('listingconfirmation.html', form=form)
+    
+@app.route('/search/' ,methods=["GET","POST"])
+def searchListing():
+    conn = functions.getConn("achan_db")
+    listings = functions.allListings(conn)
+    print(listings)
+    return render_template('search.html', listings=listings)
 
 if __name__ == '__main__':
 
