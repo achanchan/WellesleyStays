@@ -5,7 +5,6 @@ from werkzeug import secure_filename
 app = Flask(__name__)
 
 import sys,os,random
-import profile
 import functions
 
 db = 'achan_db' 
@@ -18,6 +17,7 @@ app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
+db = "wstays_db"
 
 @app.route('/')
 def index():
@@ -25,7 +25,11 @@ def index():
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
+<<<<<<< HEAD
     conn = profile.getConn(db)
+=======
+    conn = functions.getConn(db)
+>>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
     message=''
     if request.method == 'POST':
         bnumber = request.form['bnumber']
@@ -33,14 +37,14 @@ def insert():
             message = 'BNUMBER must be valid'
             flash(message)
             return redirect(request.referrer)
-        exists = profile.checkUser(conn,bnumber)
+        exists = functions.getUser(conn,bnumber)
         if exists:
             message = 'error: user exists; User with bnumber: %s is already in database' %bnumber
         else:
             email = request.form['email']
             name = request.form['user_name']
             phonenum = request.form['phonenum']
-            profile.insertUser(conn,bnumber,email,name,phonenum)
+            functions.insertUser(conn,bnumber,email,name,phonenum)
             message = 'User %s inserted.' %name
         flash(message)
         return redirect( url_for('update', bnumber=bnumber) )
@@ -49,27 +53,32 @@ def insert():
 
 @app.route('/update/<bnumber>', methods=["GET", "POST"])
 def update(bnumber):
+<<<<<<< HEAD
     conn = profile.getConn(db)
+=======
+    conn = functions.getConn(db)
+>>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
     if request.method == 'GET':
-        user = profile.getUser(conn,bnumber)
+        user = functions.getUser(conn,bnumber)
         return render_template('update.html', user=user)
     else:
         if request.form['submit'] == 'update':
             new_bnum = request.form['bnumber']
-            exist = profile.checkUser(conn,new_bnum)
+            exist = functions.getUser(conn,new_bnum)
             if exist and new_bnum != bnumber:
                 flash('User already exists')
                 return redirect( url_for('update', bnumber=bnumber) )
             else:
-                profile.updateUser(conn,new_bnum,request.form['email'],
+                functions.updateUser(conn,new_bnum,request.form['email'],
                     request.form['user_name'],request.form['phonenum'],bnumber)
                 flash('User (%s) was successfully updated' %request.form['user_name'])
                 return redirect( url_for('update', bnumber=new_bnum) )
         else:
-            profile.deleteUser(conn,bnumber)
+            functions.deleteUser(conn,bnumber)
             flash('User (%s) was deleted successfully' %bnumber)
             return redirect(url_for('index'))
 
+<<<<<<< HEAD
 @app.route('/form/', methods=["GET", "POST"])
 def form():
     if request.method == 'GET':
@@ -100,6 +109,8 @@ def formecho():
                                form_data={},
                                page_title='ECHO')
 
+=======
+>>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
 @app.route('/listing/', methods=["GET"])
 def listing():
     conn = functions.getConn(db)
@@ -129,6 +140,7 @@ def listingecho():
 @app.route('/search/' ,methods=["GET","POST"])
 def searchListing():
     conn = functions.getConn(db)
+<<<<<<< HEAD
     if request.method == 'GET':
         listings = functions.allListings(conn)
         return render_template('search.html',listings=listings)
@@ -138,6 +150,10 @@ def searchListing():
         # and displays the query term in the URL
         return redirect(url_for('search',
                                 query = arg))
+=======
+    listings = functions.allListings(conn)
+    return render_template('search.html', listings=listings)
+>>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
 
 @app.route('/search/<query>', methods=['GET','POST'])
 def search(query):

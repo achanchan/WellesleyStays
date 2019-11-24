@@ -20,11 +20,11 @@ def getUser(conn, bnumber):
 def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country, maxguest, start, end):
     '''Inserts a listing and the corresponding availability'''
     curs = dbi.cursor(conn)
-    curs.execute('''insert into places(bnumber, city, country, street1, street2,
-                    state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s)''',
-                [bnumber, street1, street2, city, state, zipcode, country, maxguest])
+    curs.execute('''insert into place(bnumber, city, country, street1, street2,
+                    state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
+                [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
-    curs.execute('''insert into availablity(pid, start, end) values(%s, %s, %s)''',
+    curs.execute('''insert into availability(pid, start, end) values(%s, %s, %s)''',
                 [pid, start, end])
                 
 def allListings(conn):
@@ -36,3 +36,22 @@ def searchPlace(conn, search, guests):
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from place where city like %s and maxguest=%s''', ['%'+search+'%',guests])
     return curs.fetchall()
+
+def insertUser(conn,bnumber,email,name,phonenum):
+    curs = dbi.cursor(conn)
+    curs.execute('''insert into user(bnumber,email,name,phonenum)
+                    values (%s,%s,%s,%s)''',
+                    [bnumber,email,name,phonenum])
+
+def updateUser(conn,new_bnum,email,name,phonenum,bnumber):
+    curs = dbi.cursor(conn)
+    curs.execute('''update user
+                    set bnumber=%s, email=%s, name=%s, phonenum=%s
+                    where bnumber = %s''',
+                    [new_bnum,email,name,phonenum,bnumber])
+
+def deleteUser(conn,bnumber):
+    curs = dbi.cursor(conn)
+    curs.execute('''delete from user
+                    where bnumber = %s''',
+                    [bnumber])

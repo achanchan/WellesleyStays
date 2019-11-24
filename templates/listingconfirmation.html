@@ -16,7 +16,7 @@
             <th>Street 1</th>
             <td>{{form.street1}}</td>
         </tr>
-        {% if "state" in form %}
+        {% if "" != form.street2 %}
         <tr>
             <th>Street 2</th>
             <td>{{form.street2}}</td>
@@ -26,13 +26,13 @@
             <th>City</th>
             <td>{{form.city}}</td>
         </tr>
-        {% if "state" in form %}
+        {% if "" != form.state %}
             <tr>
                 <th>State</th>
                 <td>{{form.state}}</td>
             </tr>
         {% endif %}
-        {% if "postalcode" in form %}
+        {% if "" == form.postalcode %}
             <tr>
                 <th>Zip Code</th>
                 <td>{{form.postalcode}}</td>
