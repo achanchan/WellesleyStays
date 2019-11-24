@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+  <h1>PROFILE</h1>
+      <form action="{{url_for('update', bnumber=user[0])}}" method="post">
+          <div>
+            <label for="bnumber">BNUMBER</label> <input type="text" id="bnumber" name="bnumber" value="{{user[0]}}">
+          </div>
+          <div>
+            <label for="email">EMAIL</label> <input type="text" id="email" name="email" value="{{user[1]}}">
+          </div>
+          <div>
+            <label for="name">NAME</label> <input type="text" id="name" name="user_name" value="{{user[2]}}">
+          </div>
+          <div>
+            <label for="phonenum">PHONE</label> <input type="text" id="phonenum" name="phonenum" value="{{user[4]}}">
+          </div>
+          <div class="button">
+            <button type="submit" name="submit" value="update">UPDATE</button>
+          </div>
+      </form>
+      <br>
+{% endblock %}

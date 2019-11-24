@@ -12,13 +12,7 @@ body {
 
 h1 {
 	font-size: 7rem;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	word-wrap: break-word;
+	padding: 0%;
 }
 
 .key {
@@ -52,7 +46,6 @@ form {
 	/* To make sure that all text fields have the same font settings By default, textareas have a monospace font */
 	font: 1em sans-serif;
 	font-weight: bold;
-	text-transform: uppercase;
 	color: #ffcccb;
 	/* To give the same size to all text fields */
 	width: 300px;
@@ -89,18 +82,19 @@ form {
 	cursor: pointer;
   }
 
-.navbar {
+#navbar {
     list-style-type: none;
     margin: 0;
-    padding: 0;
-    display: inline;
-  }
+	padding: 0;
+	display: flex;
+	justify-content: space-evenly;
+}
 
-.navitem li {
-    float: left
+.navitem {
+	float: left;
 }
 
 .navitem a {
-    display: block;
-    padding: 8px;
+	display: block;
+    padding: 1rem;
 }
