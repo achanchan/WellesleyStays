@@ -20,11 +20,11 @@ def getUser(conn, bnumber):
 def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country, maxguest, start, end):
     '''Inserts a listing and the corresponding availability'''
     curs = dbi.cursor(conn)
-    curs.execute('''insert into places(bnumber, city, country, street1, street2,
-                    state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s)''',
-                [bnumber, street1, street2, city, state, zipcode, country, maxguest])
+    curs.execute('''insert into place(bnumber, city, country, street1, street2,
+                    state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
+                [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
-    curs.execute('''insert into availablity(pid, start, end) values(%s, %s, %s)''',
+    curs.execute('''insert into availability(pid, start, end) values(%s, %s, %s)''',
                 [pid, start, end])
                 
 def allListings(conn):
