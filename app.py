@@ -77,28 +77,6 @@ def form():
         try:
             return render_template('form.html')
 
-        except Exception as err:
-            flash('form submission error'+str(err))
-            return redirect( url_for('index') )
-
-@app.route('/formecho/', methods=['GET','POST'])
-def formecho():
-    if request.method == 'GET':
-        return render_template('form_data.html',
-                               method=request.method,
-                               form_data=request.args,
-                               page_title='ECHO')
-    elif request.method == 'POST':
-        return render_template('form_data.html',
-                               method=request.method,
-                               form_data=request.form,
-                               page_title='ECHO')
-    else:
-        return render_template('form_data.html',
-                               method=request.method,
-                               form_data={},
-                               page_title='ECHO')
-
 @app.route('/listing/', methods=["GET"])
 def listing():
     conn = functions.getConn('wstays_db')
