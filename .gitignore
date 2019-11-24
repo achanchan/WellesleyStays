@@ -1,6 +1,6 @@
 # Files to ignore #
 ###################
-__pycache__/
+__pycache__/*
 
 ###################
 *.com
@@ -9,6 +9,7 @@ __pycache__/
 *.exe
 *.o
 *.so
+*.pyc
 
 # Packages #
 ############
