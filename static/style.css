@@ -64,8 +64,7 @@ form {
 	height: 5em;
   }
   button {
-	  border: none;
-	  background: transparent;
+	  background:  #d39897;
 	  color: white;
 	  font: 1rem sans-serif;
 	  font-weight: bold;
@@ -97,4 +96,7 @@ form {
 .navitem a {
 	display: block;
     padding: 1rem;
+}
+table{
+	width: 100%
 }

@@ -2,26 +2,40 @@
 
 {% block main_content %}
   
-        <form id="search" method=POST action="/lisitings/">
-        <fieldset>
+        <form id="search" method=POST action="{{url_for('searchListing')}}">
+
         <legend>Find a Listing</legend>
             <p><label>City: <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm"></label></p>
-            <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
-            <p><select name ="guests">
+            <p><label>Number of Guests: <select name ="guests"></label>
                 <option value=1>1</option>
                 <option value=2>2</option>
                 <option value=3>3</option>
                 <option value=4>4</option>
                 <option value=5>5+</option>
                 </select></p>
-        </fieldset>
+                <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
         </form> 
 
 
-    <h1>Listings: </h1>
-    <ul>
+    <h2>Listings: </h2>
+    <table id="listing-list">
+        <tr>
+            <th>City</th>
+            <th>State</th>
+            <th>Country</th>
+            <th>Number of Guests</th>
+            <th>Connect with Host</th>
+
+        </tr>
     {% for data in listings %}
-    <li>{{data['city']}}</li>
+    <tr data-tt="{{data['pid']}}">
+        <td class ="city">{{data['city']}}</td>
+        <td class ="state"> {{data['state']}}</td>
+        <td class="country">{{data['country']}}</td>
+        <td class="maxguest">{{data['maxguest']}}</td>
+        <td><button class="contact-button">Contact</button></td>
+    </tr>
+    
     {% endfor %}
-    </ul>
+ 
 {% endblock %}
