@@ -19,7 +19,7 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 
 @app.route('/')
 def index():
-    return render_template('home.html', page_title='NICOLE!')
+    return render_template('home.html')
 
 @app.route('/listing/')
 def listing():
@@ -115,6 +115,32 @@ def searchListing():
 #                                method=request.method,
 #                                form_data={},
 #                                page_title='ECHO')
+
+@app.route('/listing/', methods=["GET"])
+def listing():
+    conn = functions.getConn('wstays_db')
+
+    # if 'bnumber' in session:
+    # uncomment out code once login is implemented
+    # bnumber = session['bnumber']
+    bnumber = "B20856852"   
+    user = functions.getUser(conn, bnumber)
+    return render_template('listingform.html', user=user)
+
+    # else:
+    #     flash('you are not logged in. Please login or join')
+    #     return redirect(url_for('index'))
+
+@app.route('/listingecho/', methods=['POST'])
+def listingecho():
+    conn = functions.getConn('wstays_db')
+    form = request.form
+    functions.insertListing(conn, form.get("user"), form.get("street1"),
+    form.get("street2"), form.get("city"), form.get("state"),
+    form.get("zip"), form.get("country"), form.get("maxguest"), 
+    form.get("start"), form.get("end"))
+
+    return render_template('listingconfirmation.html', form=form)
 
 if __name__ == '__main__':
 
