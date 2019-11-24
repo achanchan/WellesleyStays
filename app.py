@@ -8,6 +8,7 @@ import sys,os,random
 import profile
 import functions
 
+db = 'achan_db' 
 app.secret_key = 'your secret here'
 # replace that with a random key
 app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
@@ -24,7 +25,7 @@ def index():
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
-    conn = profile.getConn("wstays_db")
+    conn = profile.getConn(db)
     message=''
     if request.method == 'POST':
         bnumber = request.form['bnumber']
@@ -48,7 +49,7 @@ def insert():
 
 @app.route('/update/<bnumber>', methods=["GET", "POST"])
 def update(bnumber):
-    conn = profile.getConn("wstays_db")
+    conn = profile.getConn(db)
     if request.method == 'GET':
         user = profile.getUser(conn,bnumber)
         return render_template('update.html', user=user)
@@ -69,7 +70,6 @@ def update(bnumber):
             flash('User (%s) was deleted successfully' %bnumber)
             return redirect(url_for('index'))
 
-<<<<<<< HEAD
 @app.route('/form/', methods=["GET", "POST"])
 def form():
     if request.method == 'GET':
@@ -100,11 +100,9 @@ def formecho():
                                form_data={},
                                page_title='ECHO')
 
-=======
->>>>>>> c062e5996d22878163715edfc49de2c5205156e4
 @app.route('/listing/', methods=["GET"])
 def listing():
-    conn = functions.getConn('wstays_db')
+    conn = functions.getConn(db)
 
     # if 'bnumber' in session:
     # uncomment out code once login is implemented
@@ -119,7 +117,7 @@ def listing():
 
 @app.route('/listingecho/', methods=['POST'])
 def listingecho():
-    conn = functions.getConn('wstays_db')
+    conn = functions.getConn(db)
     form = request.form
     functions.insertListing(conn, form.get("user"), form.get("street1"),
     form.get("street2"), form.get("city"), form.get("state"),
@@ -130,17 +128,24 @@ def listingecho():
     
 @app.route('/search/' ,methods=["GET","POST"])
 def searchListing():
-    conn = functions.getConn("wstays_db")
-    listings = functions.allListings(conn)
-    return render_template('search.html', listings=listings)
+    conn = functions.getConn(db)
+    if request.method == 'GET':
+        listings = functions.allListings(conn)
+        return render_template('search.html',listings=listings)
+    if request.method == 'POST':
+        arg = request.form.get('searchterm')
+        # redirects to /movies/<query>
+        # and displays the query term in the URL
+        return redirect(url_for('search',
+                                query = arg))
 
 @app.route('/search/<query>', methods=['GET','POST'])
 def search(query):
-    conn = read.getConn('achan_db')
-  
-    places = functions.searchPlace(conn, request.form['searchterm'],request.form['guests'])
+    conn = functions.getConn(db)
+    
+    places = functions.searchPlace(conn, request.form.get('searchterm'),request.form.get('guests'))
     return render_template('search.html',
-                               query = request.form['searchterm'], data=places)
+                               query = request.form.get('searchterm'), data=places)
 
 if __name__ == '__main__':
 
