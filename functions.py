@@ -32,6 +32,16 @@ def allListings(conn):
     curs.execute('''select * from place''')
     return curs.fetchall()
 
+def getUserListings(conn, bnumber):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from place where bnumber=%s''', [bnumber])
+    return curs.fetchall()
+
+def getUserRequests(conn, bnumber):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from request where bnumber=%s''', [bnumber])
+    return curs.fetchall()
+
 def searchPlace(conn, search, guests):
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from place where city like %s and maxguest=%s''', [search,guest])

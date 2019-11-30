@@ -26,8 +26,10 @@ def index():
 def profile(bnumber):
     conn = functions.getConn(db)
     user = functions.getUser(conn,bnumber)
+    listings = functions.getUserListings(conn,bnumber)
+    requests = functions.getUserRequests(conn,bnumber)
     if user:
-        return render_template('profile.html', user=user)
+        return render_template('profile.html', user=user, listings=listings, requests=requests)
 
 @app.route('/insertUser/', methods=["GET", "POST"])
 def insertUser():

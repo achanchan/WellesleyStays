@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<div id="profile">
+  <div id="contact">
+    <h2>Contact Info</h2>
+    <div class="contact-box">
+      <li>Name: {{user.name}}</li>
+      <li>Email: {{user.email}}</li>
+      <li>Phone: {{user.phonenum}}</li>
+    </div>
+    <a href="{{url_for('updateUser', bnumber=user.bnumber)}}">Edit</a>
+  </div>
+  {%if listings%}
+  <div id="listings">
+    <h2>Listings</h2>
+    {%for place in listings%} 
+    <div class="listing">
+      <li>PID: {{place.pid}}</li> 
+      <li>City: {{place.city}}</li>
+      <li>Country: {{place.country}}</li>
+      <li>Address: {{place.street1}}</li>
+      <li>State: {{place.state}}</li>
+      <li>Max Guests: {{place.maxguest}}</li>
+      <li>Postal Code: {{place.postalcode}}</li>
+    </div>
+    {%endfor%}  
+  </div>
+  {%endif%}
+  {%if requests%}
+  <div id="requests">
+    <h2>Requests</h2>
+    {%for r in requests%} 
+    <div class="request">
+      <li>RID: {{r.rid}}</li> 
+      <li>Fulfilled? {{r.isfilled}}</li>
+      <li>Number of Guests: {{r.guestnum}}</li>
+      <li>City: {{r.city}}</li>
+      <li>Country: {{r.country}}</li>
+      <li>Start: {{r.start}}</li>
+      <li>End: {{r.end}}</li>
+    </div>
+    {%endfor%} 
+  </div>
+  {%endif%}
+</div>
+{% endblock %}
