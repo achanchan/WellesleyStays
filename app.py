@@ -30,6 +30,21 @@ def profile(bnumber):
     requests = functions.getUserRequests(conn,bnumber)
     if user:
         return render_template('profile.html', user=user, listings=listings, requests=requests)
+    else:
+        flash('User does not exist.')
+        return redirect(request.referrer)
+
+@app.route('/place/<pid>', methods=["GET"])
+def place(pid):
+    conn = functions.getConn(db)
+    place = functions.getPlace(conn,pid)
+    print(place)
+    host = functions.getUser(conn,place['bnumber'])
+    if place:
+        return render_template('place.html', place=place, host=host)
+    else:
+        flash('Listing does not exist.')
+        return redirect(request.referrer)
 
 @app.route('/insertUser/', methods=["GET", "POST"])
 def insertUser():
