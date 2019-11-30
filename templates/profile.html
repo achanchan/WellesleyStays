@@ -23,6 +23,7 @@
       <li>State: {{place.state}}</li>
       <li>Max Guests: {{place.maxguest}}</li>
       <li>Postal Code: {{place.postalcode}}</li>
+      <a href="{{url_for('place', pid=place.pid)}}">See More</a>
     </div>
     {%endfor%}  
   </div>
