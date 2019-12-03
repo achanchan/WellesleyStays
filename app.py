@@ -23,8 +23,32 @@ db = "wstays_db"
 def index():
     return render_template('home.html')
 
-@app.route('/insert/', methods=["GET", "POST"])
-def insert():
+@app.route('/profile/<bnumber>', methods=["GET"])
+def profile(bnumber):
+    conn = functions.getConn(db)
+    user = functions.getUser(conn,bnumber)
+    listings = functions.getUserListings(conn,bnumber)
+    requests = functions.getUserRequests(conn,bnumber)
+    if user:
+        return render_template('profile.html', user=user, listings=listings, requests=requests)
+    else:
+        flash('User does not exist.')
+        return redirect(request.referrer)
+
+@app.route('/place/<pid>', methods=["GET"])
+def place(pid):
+    conn = functions.getConn(db)
+    place = functions.getPlace(conn,pid)
+    print(place)
+    host = functions.getUser(conn,place['bnumber'])
+    if place:
+        return render_template('place.html', place=place, host=host)
+    else:
+        flash('Listing does not exist.')
+        return redirect(request.referrer)
+
+@app.route('/insertUser/', methods=["GET", "POST"])
+def insertUser():
     conn = functions.getConn(db)
     message=''
     if request.method == 'POST':
@@ -43,28 +67,28 @@ def insert():
             functions.insertUser(conn,bnumber,email,name,phonenum)
             message = 'User %s inserted.' %name
         flash(message)
-        return redirect( url_for('update', bnumber=bnumber) )
+        return redirect( url_for('updateUser', bnumber=bnumber) )
     else:
-        return render_template('form.html')
+        return render_template('insertUser.html')
 
-@app.route('/update/<bnumber>', methods=["GET", "POST"])
-def update(bnumber):
+@app.route('/updateUser/<bnumber>', methods=["GET", "POST"])
+def updateUser(bnumber):
     conn = functions.getConn(db)
     if request.method == 'GET':
         user = functions.getUser(conn,bnumber)
-        return render_template('update.html', user=user)
+        return render_template('updateUser.html', user=user)
     else:
         if request.form['submit'] == 'update':
             new_bnum = request.form['bnumber']
             exist = functions.getUser(conn,new_bnum)
             if exist and new_bnum != bnumber:
                 flash('User already exists')
-                return redirect( url_for('update', bnumber=bnumber) )
+                return redirect( url_for('updateUser', bnumber=bnumber) )
             else:
                 functions.updateUser(conn,new_bnum,request.form['email'],
                     request.form['user_name'],request.form['phonenum'],bnumber)
                 flash('User (%s) was successfully updated' %request.form['user_name'])
-                return redirect( url_for('update', bnumber=new_bnum) )
+                return redirect( url_for('updateUser', bnumber=new_bnum) )
         else:
             functions.deleteUser(conn,bnumber)
             flash('User (%s) was deleted successfully' %bnumber)
