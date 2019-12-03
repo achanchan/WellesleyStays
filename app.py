@@ -25,11 +25,7 @@ def index():
 
 @app.route('/insert/', methods=["GET", "POST"])
 def insert():
-<<<<<<< HEAD
-    conn = profile.getConn(db)
-=======
     conn = functions.getConn(db)
->>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
     message=''
     if request.method == 'POST':
         bnumber = request.form['bnumber']
@@ -53,11 +49,7 @@ def insert():
 
 @app.route('/update/<bnumber>', methods=["GET", "POST"])
 def update(bnumber):
-<<<<<<< HEAD
-    conn = profile.getConn(db)
-=======
     conn = functions.getConn(db)
->>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
     if request.method == 'GET':
         user = functions.getUser(conn,bnumber)
         return render_template('update.html', user=user)
@@ -78,39 +70,6 @@ def update(bnumber):
             flash('User (%s) was deleted successfully' %bnumber)
             return redirect(url_for('index'))
 
-<<<<<<< HEAD
-@app.route('/form/', methods=["GET", "POST"])
-def form():
-    if request.method == 'GET':
-        return render_template('form.html')
-    else:
-        try:
-            return render_template('form.html')
-
-        except Exception as err:
-            flash('form submission error'+str(err))
-            return redirect( url_for('index') )
-
-@app.route('/formecho/', methods=['GET','POST'])
-def formecho():
-    if request.method == 'GET':
-        return render_template('form_data.html',
-                               method=request.method,
-                               form_data=request.args,
-                               page_title='ECHO')
-    elif request.method == 'POST':
-        return render_template('form_data.html',
-                               method=request.method,
-                               form_data=request.form,
-                               page_title='ECHO')
-    else:
-        return render_template('form_data.html',
-                               method=request.method,
-                               form_data={},
-                               page_title='ECHO')
-
-=======
->>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
 @app.route('/listing/', methods=["GET"])
 def listing():
     conn = functions.getConn(db)
@@ -140,20 +99,8 @@ def listingecho():
 @app.route('/search/' ,methods=["GET","POST"])
 def searchListing():
     conn = functions.getConn(db)
-<<<<<<< HEAD
-    if request.method == 'GET':
-        listings = functions.allListings(conn)
-        return render_template('search.html',listings=listings)
-    if request.method == 'POST':
-        arg = request.form.get('searchterm')
-        # redirects to /movies/<query>
-        # and displays the query term in the URL
-        return redirect(url_for('search',
-                                query = arg))
-=======
     listings = functions.allListings(conn)
     return render_template('search.html', listings=listings)
->>>>>>> 363213db4f4e6def02d01438b8194db7cf303dd5
 
 @app.route('/search/<query>', methods=['GET','POST'])
 def search(query):
