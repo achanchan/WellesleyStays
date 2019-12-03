@@ -134,6 +134,12 @@ def search(query):
     return render_template('search.html',
                                query = request.form.get('searchterm'), data=places)
 
+@app.route('/search/request' ,methods=["GET","POST"])
+def searchRequest():
+    conn = functions.getConn(db)
+    request = functions.allRequests(conn)
+    return render_template('search.html', requests=request)
+
 if __name__ == '__main__':
 
     if len(sys.argv) > 1:
