@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<div id="requestProfile">
+  <div id="contact">
+    <h2>Guest Contact</h2>
+    <div class="contact-box">
+      <li>Name: {{guest.name}}</li>
+      <li>Email: {{guest.email}}</li>
+      <li>Phone: {{guest.phonenum}}</li>
+      <a href="{{url_for('profile', bnumber=guest.bnumber)}}">See More</a>
+    </div>
+  </div>
+  <div id="request">
+    <h2>Request Info</h2>
+    <div class="request">
+      <li>RID: {{aRequest.rid}}</li> 
+      <li>City: {{aRequest.city}}</li>
+      <li>Country: {{aRequest.country}}</li>
+      <li>Number of Guests: {{aRequest.guestnum}}</li>
+      <li>Start: {{aRequest.start}}</li>
+      <li>End: {{aRequest.end}}</li>
+      <li>Filled?: {{aRequest.isfilled}}</li>
+    </div>
+  </div>
+</div>
+{% endblock %}
