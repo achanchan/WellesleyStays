@@ -120,7 +120,7 @@ def listingecho():
 
     return render_template('listingconfirmation.html', form=form)
     
-@app.route('/search/' ,methods=["GET","POST"])
+@app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
     conn = functions.getConn(db)
     if request.method == "GET":
@@ -130,7 +130,7 @@ def searchListing():
         arg =request.form.get('searchterm')
         return redirect(url_for('search', query=arg))
 
-@app.route('/search/<query>', methods=['GET','POST'])
+@app.route('/search/listing/<query>', methods=['GET','POST'])
 def search(query):
     conn = functions.getConn(db)
     
@@ -140,8 +140,60 @@ def search(query):
 @app.route('/search/request' ,methods=["GET","POST"])
 def searchRequest():
     conn = functions.getConn(db)
-    request = functions.allRequests(conn)
-    return render_template('search.html', requests=request)
+    if request.method == "GET":
+        aRequest = functions.allRequests(conn)
+        return render_template('searchrequest.html', requests=aRequest)
+    if request.method == "POST": 
+        arg =request.form.get('searchterm')
+        return redirect(url_for('searchR', query=arg))
+
+
+@app.route('/search/request/<query>' ,methods=["GET","POST"])
+def searchR(query):
+    conn = functions.getConn(db)
+    aRequest = functions.searchRequest(conn,query)
+    return render_template('searchrequest.html', requests=aRequest)
+
+
+@app.route('/requestform/', methods=["GET"])
+def requesting():
+    conn = functions.getConn(db)
+
+    # if 'bnumber' in session:
+    # uncomment out code once login is implemented
+    # bnumber = session['bnumber']
+    bnumber = "B20856852"   
+    user = functions.getUser(conn, bnumber)
+    return render_template('requestform.html', user=user)
+
+    # else:
+    #     flash('you are not logged in. Please login or join')
+    #     return redirect(url_for('index'))
+
+@app.route('/requestecho/', methods=['POST'])
+def requestecho():
+    conn = functions.getConn(db)
+    form = request.form
+    functions.insertRequest(conn, form.get("user"), form.get("city"),
+    form.get("country"), form.get("guestnum"), 
+    form.get("start"), form.get("end"))
+
+    return render_template('requestconfirmation.html', form=form)
+
+@app.route('/request/<rid>', methods=["GET"])
+def requestPage(rid):
+    conn = functions.getConn(db)
+    aRequest = functions.getRequest(conn,rid)
+    guest = functions.getUser(conn,aRequest['bnumber'])
+    if aRequest:
+        if aRequest['isfilled']:
+            aRequest['isfilled'] = 'Y'
+        else:
+            aRequest['isfilled']='N'
+        return render_template('request.html', aRequest=aRequest, guest=guest)
+    else:
+        flash('Request does not exist.')
+        return redirect(request.referrer)
 
 if __name__ == '__main__':
 
