@@ -17,7 +17,7 @@ app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
-db = "achan_db"
+db = "wstays_db"
 
 @app.route('/')
 def index():
