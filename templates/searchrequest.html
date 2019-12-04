@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+  
+        <form id="search" method=POST action="{{url_for('searchRequest')}}">
+
+        <legend>Find a Request</legend>
+            <label>City: <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm"></label>
+            <!-- <label>Number of Guests: <select id ="guests" name ="guests"></label>
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5+</option>
+                </select> -->
+                
+                <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
+        </form> 
+
+
+    <h2>Listings: </h2>
+    <table id="request-list">
+        <tr>
+            <th>City</th>
+            <th>Country</th>
+            <th>Number of Guests</th>
+            <th>Timeframe</th>
+            <th>Connect with Guest</th>
+
+        </tr>
+    {% for data in requests %}
+    <tr data-tt="{{data['pid']}}">
+        <td class ="city">{{data['city']}}</td>
+        <td class="country">{{data['country']}}</td>
+        <td class="guestnum">{{data['guestnum']}}</td>
+        <td class="timeframe">start: {{data['start']}} </br>
+            end: {{data['start']}}</td>
+        <td><button class="contact-button">Contact</button></td>
+    </tr>
+    
+    {% endfor %}
+ 
+{% endblock %}
