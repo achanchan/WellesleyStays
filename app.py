@@ -7,7 +7,7 @@ app = Flask(__name__)
 import sys,os,random
 import functions
 
-db = 'achan_db' 
+
 app.secret_key = 'your secret here'
 # replace that with a random key
 app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
