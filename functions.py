@@ -52,9 +52,9 @@ def getPlace(conn, pid):
     curs.execute('''select * from place where pid=%s''', [pid])
     return curs.fetchone()
 
-def searchPlace(conn, search, guests):
+def searchPlace(conn, search):
     curs = dbi.dictCursor(conn)
-    curs.execute('''select * from place where city like %s and maxguest=%s''', ['%'+search+'%',guests])
+    curs.execute('''select * from place where city like %s''', ['%'+search+'%'])
     return curs.fetchall()
 
 def insertUser(conn,bnumber,email,name,phonenum):

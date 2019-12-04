@@ -17,7 +17,7 @@ app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
-db = "wstays_db"
+db = "achan_db"
 
 @app.route('/')
 def index():
@@ -123,16 +123,19 @@ def listingecho():
 @app.route('/search/' ,methods=["GET","POST"])
 def searchListing():
     conn = functions.getConn(db)
-    listings = functions.allListings(conn)
-    return render_template('search.html', listings=listings)
+    if request.method == "GET":
+        listings = functions.allListings(conn)
+        return render_template('search.html', listings=listings)
+    if request.method == "POST": 
+        arg =request.form.get('searchterm')
+        return redirect(url_for('search', query=arg))
 
 @app.route('/search/<query>', methods=['GET','POST'])
 def search(query):
     conn = functions.getConn(db)
     
-    places = functions.searchPlace(conn, request.form.get('searchterm'),request.form.get('guests'))
-    return render_template('search.html',
-                               query = request.form.get('searchterm'), data=places)
+    places = functions.searchPlace(conn, query)
+    return render_template('search.html', listings=places)
 
 @app.route('/search/request' ,methods=["GET","POST"])
 def searchRequest():
