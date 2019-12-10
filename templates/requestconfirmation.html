@@ -2,7 +2,7 @@
 
 {% block main_content %}
     <h3>
-        You have successfully listed your place! 
+        You have successfully posted your request! 
         Please check the summary to make sure the details are correct.
     </h3>
 
@@ -12,39 +12,20 @@
             <th>Name</th>
             <td>{{form.user}}</td>
         </tr>
-        <tr>
-            <th>Street 1</th>
-            <td>{{form.street1}}</td>
-        </tr>
-        {% if "" != form.street2 %}
-        <tr>
-            <th>Street 2</th>
-            <td>{{form.street2}}</td>
-        </tr>
-        {% endif %}
+       
         <tr>
             <th>City</th>
             <td>{{form.city}}</td>
         </tr>
-        {% if "" != form.state %}
-            <tr>
-                <th>State</th>
-                <td>{{form.state}}</td>
-            </tr>
-        {% endif %}
-        {% if "" == form.postalcode %}
-            <tr>
-                <th>Zip Code</th>
-                <td>{{form.postalcode}}</td>
-            </tr>
-        {% endif %}
+    
+       
         <tr>
             <th>Country</th>
             <td>{{form.country}}</td>
         </tr>
         <tr>
             <th>Max number of guests</th>
-            <td>{{form.maxguest}}</td>
+            <td>{{form.guestnum}}</td>
         </tr>  
         <tr>
             <th>Start</th>

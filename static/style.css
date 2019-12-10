@@ -100,3 +100,25 @@ form {
 table{
 	width: 100%
 }
+
+#profile{
+	display: flex;
+	justify-content: space-between;
+}
+
+li{
+	list-style-type: none;
+}
+
+.contact-box, .listing, .request{
+	/* Just to center the form on the page */
+	margin: 1em auto;
+	/* To see the outline of the form */
+	padding: 1em;
+	border: 3px solid #ffcccb;
+	border-radius: 1em; 
+}
+
+#placeProfile{
+	display: block;
+}

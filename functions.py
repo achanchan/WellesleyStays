@@ -20,11 +20,11 @@ def getUser(conn, bnumber):
 def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country, maxguest, start, end):
     '''Inserts a listing and the corresponding availability'''
     curs = dbi.cursor(conn)
-    curs.execute('''insert into places(bnumber, city, country, street1, street2,
+    curs.execute('''insert into place(bnumber, city, country, street1, street2,
                     state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
-                [bnumber, street1, street2, city, state, zipcode, country, maxguest])
+                [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
-    curs.execute('''insert into availablity(pid, start, end) values(%s, %s, %s)''',
+    curs.execute('''insert into availability(pid, start, end) values(%s, %s, %s)''',
                 [pid, start, end])
                 
 def allListings(conn):
@@ -32,9 +32,34 @@ def allListings(conn):
     curs.execute('''select * from place''')
     return curs.fetchall()
 
-def searchPlace(conn, search, guests):
+def allRequests(conn):
     curs = dbi.dictCursor(conn)
-    curs.execute('''select * from place where city like %s and maxguest=%s''', [search,guest])
+    curs.execute('''select * from request where isfilled=0''')
+    return curs.fetchall()
+
+def getUserListings(conn, bnumber):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from place where bnumber=%s''', [bnumber])
+    return curs.fetchall()
+
+def getUserRequests(conn, bnumber):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from request where bnumber=%s''', [bnumber])
+    return curs.fetchall()
+
+def getPlace(conn, pid):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from place where pid=%s''', [pid])
+    return curs.fetchone()
+
+def searchPlace(conn, search):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from place where city like %s''', ['%'+search+'%'])
+    return curs.fetchall()
+
+def searchRequest(conn, search):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from request where city like %s and isfilled=0''', ['%'+search+'%'])
     return curs.fetchall()
 
 def insertUser(conn,bnumber,email,name,phonenum):
@@ -55,3 +80,14 @@ def deleteUser(conn,bnumber):
     curs.execute('''delete from user
                     where bnumber = %s''',
                     [bnumber])
+
+def insertRequest(conn, bnumber, city, country, guestnum, start, end):
+    '''Inserts a request'''
+    curs = dbi.cursor(conn)
+    curs.execute('''insert into request(bnumber, guestnum, city, country,
+                start,end) values(%s, %s, %s, %s, %s, %s)''',
+                [bnumber, guestnum, city, country, start, end])
+def getRequest(conn, rid):
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from request where rid=%s''', [rid])
+    return curs.fetchone()

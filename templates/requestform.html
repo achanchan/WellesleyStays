@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <form method="POST" action="{{url_for('requestecho')}}">
+        <div>
+            <label for="name">Name</label>
+            <div>
+                <input type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
+            </div>
+        </div>
+
+        <div>
+            <label for="city">City</label>
+            <input type="text" class="form-control" name="city" required>
+        </div>
+        
+        <div>
+            <label for="country">Country</label>
+            <!-- change into a select at some point -->
+            <input type="text" name="country" required>
+        </div>
+        <div>
+            <label for="guestnum">Number of guests</label>
+            <!-- change into a select at some point -->
+            <input type="number" name="guestnum" required>
+        </div>
+        <div>
+            <label for="start">Start</label>
+            <input type="date" name="start" required>
+        <div>
+            <label for="end">End</label>
+            <input type="date" name="end" required>
+        </div>
+        <button type="submit">Request!</button>
+    </form>
+{% endblock %}
