@@ -27,13 +27,16 @@ db = "wstays_db"
 
 @app.route('/')
 def index():
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
     return render_template('home.html')
 
 @app.route('/profile/<bnumber>', methods=["GET"])
 def profile(bnumber):
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     user = functions.getUser(conn,bnumber)
@@ -49,7 +52,7 @@ def profile(bnumber):
 def place(pid):
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
@@ -65,7 +68,7 @@ def place(pid):
 def insertUser():
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     message=''
@@ -93,7 +96,7 @@ def insertUser():
 def updateUser(bnumber):
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     if request.method == 'GET':
@@ -120,7 +123,7 @@ def updateUser(bnumber):
 def listing():
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
     
     attributes = session['CAS_ATTRIBUTES']
     bnumber = attributes['cas:id']
@@ -147,7 +150,7 @@ def listingecho():
 def searchListing():
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
     
     conn = functions.getConn(db)
     if request.method == "GET":
@@ -161,7 +164,7 @@ def searchListing():
 def search(query):
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     
@@ -172,7 +175,7 @@ def search(query):
 def searchRequest():
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     if request.method == "GET":
@@ -187,7 +190,7 @@ def searchRequest():
 def searchR(query):
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     aRequest = functions.searchRequest(conn,query)
@@ -198,20 +201,14 @@ def searchR(query):
 def requesting():
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
+
+    attributes = session['CAS_ATTRIBUTES']
+    bnumber = attributes['cas:id']
 
     conn = functions.getConn(db)
-
-    # if 'bnumber' in session:
-    # uncomment out code once login is implemented
-    # bnumber = session['bnumber']
-    bnumber = "B20856852"   
     user = functions.getUser(conn, bnumber)
     return render_template('requestform.html', user=user)
-
-    # else:
-    #     flash('you are not logged in. Please login or join')
-    #     return redirect(url_for('index'))
 
 @app.route('/requestecho/', methods=['POST'])
 def requestecho():
@@ -227,7 +224,7 @@ def requestecho():
 def requestPage(rid):
     if ('CAS_USERNAME' not in session):
         flash("Must login")
-        return redirect(url_for{'cas.login'})
+        return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
     aRequest = functions.getRequest(conn,rid)
