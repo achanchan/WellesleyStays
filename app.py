@@ -27,10 +27,17 @@ db = "wstays_db"
 
 @app.route('/')
 def index():
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
     return render_template('home.html')
 
 @app.route('/profile/<bnumber>', methods=["GET"])
 def profile(bnumber):
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     user = functions.getUser(conn,bnumber)
     listings = functions.getUserListings(conn,bnumber)
@@ -43,6 +50,10 @@ def profile(bnumber):
 
 @app.route('/place/<pid>', methods=["GET"])
 def place(pid):
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
     print(place)
@@ -55,6 +66,10 @@ def place(pid):
 
 @app.route('/insertUser/', methods=["GET", "POST"])
 def insertUser():
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     message=''
     if request.method == 'POST':
@@ -79,6 +94,10 @@ def insertUser():
 
 @app.route('/updateUser/<bnumber>', methods=["GET", "POST"])
 def updateUser(bnumber):
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     if request.method == 'GET':
         user = functions.getUser(conn,bnumber)
@@ -102,12 +121,13 @@ def updateUser(bnumber):
 
 @app.route('/listing/', methods=["GET"])
 def listing():
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+    
+    attributes = session['CAS_ATTRIBUTES']
+    bnumber = attributes['cas:id']
     conn = functions.getConn(db)
-
-    # if 'bnumber' in session:
-    # uncomment out code once login is implemented
-    # bnumber = session['bnumber']
-    bnumber = "B20856852"   
     user = functions.getUser(conn, bnumber)
     return render_template('listingform.html', user=user)
 
@@ -128,6 +148,10 @@ def listingecho():
     
 @app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+    
     conn = functions.getConn(db)
     if request.method == "GET":
         listings = functions.allListings(conn)
@@ -138,6 +162,10 @@ def searchListing():
 
 @app.route('/search/listing/<query>', methods=['GET','POST'])
 def search(query):
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     
     places = functions.searchPlace(conn, query)
@@ -145,6 +173,10 @@ def search(query):
 
 @app.route('/search/request' ,methods=["GET","POST"])
 def searchRequest():
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     if request.method == "GET":
         aRequest = functions.allRequests(conn)
@@ -156,6 +188,10 @@ def searchRequest():
 
 @app.route('/search/request/<query>' ,methods=["GET","POST"])
 def searchR(query):
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     aRequest = functions.searchRequest(conn,query)
     return render_template('searchrequest.html', requests=aRequest)
@@ -163,18 +199,16 @@ def searchR(query):
 
 @app.route('/requestform/', methods=["GET"])
 def requesting():
-    conn = functions.getConn(db)
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
 
-    # if 'bnumber' in session:
-    # uncomment out code once login is implemented
-    # bnumber = session['bnumber']
-    bnumber = "B20856852"   
+    attributes = session['CAS_ATTRIBUTES']
+    bnumber = attributes['cas:id']
+
+    conn = functions.getConn(db)
     user = functions.getUser(conn, bnumber)
     return render_template('requestform.html', user=user)
-
-    # else:
-    #     flash('you are not logged in. Please login or join')
-    #     return redirect(url_for('index'))
 
 @app.route('/requestecho/', methods=['POST'])
 def requestecho():
@@ -188,6 +222,10 @@ def requestecho():
 
 @app.route('/request/<rid>', methods=["GET"])
 def requestPage(rid):
+    if ('CAS_USERNAME' not in session):
+        flash("Must login")
+        return redirect(url_for('cas.login'))
+
     conn = functions.getConn(db)
     aRequest = functions.getRequest(conn,rid)
     guest = functions.getUser(conn,aRequest['bnumber'])
@@ -204,11 +242,10 @@ def requestPage(rid):
 if __name__ == '__main__':
 
     if len(sys.argv) > 1:
-        port=int(sys.argv[1])
-        if not(1943 <= port <= 1950):
-            print('For CAS, choose a port from 1943 to 1950')
-            sys.exit()
+        # arg, if any, is the desired port number
+        port = int(sys.argv[1])
+        assert(port>1024)
     else:
-        port=os.getuid()
+        port = os.getuid()
     app.debug = True
     app.run('0.0.0.0',port)
