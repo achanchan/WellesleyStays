@@ -28,47 +28,56 @@ def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country
                 [pid, start, end])
                 
 def allListings(conn):
+    '''returns all the listings in the database'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from place''')
     return curs.fetchall()
 
 def allRequests(conn):
+    '''returns all the unfilled requests in the database'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where isfilled=0''')
     return curs.fetchall()
 
 def getUserListings(conn, bnumber):
+    '''returns all the listings that belong to the specific user identified by the bnumber'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from place where bnumber=%s''', [bnumber])
     return curs.fetchall()
 
 def getUserRequests(conn, bnumber):
+    '''returns all the requests that that belong to the specific user identified by the bnumber'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where bnumber=%s''', [bnumber])
     return curs.fetchall()
 
 def getPlace(conn, pid):
+    '''returns the place that responds to the given pid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from place where pid=%s''', [pid])
     return curs.fetchone()
 
 def searchPlace(conn, search):
+    '''returns all the places whos city contains search'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from place where city like %s''', ['%'+search+'%'])
     return curs.fetchall()
 
 def searchRequest(conn, search):
+    '''returns all the unfilled requests whos city contains search'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where city like %s and isfilled=0''', ['%'+search+'%'])
     return curs.fetchall()
 
 def insertUser(conn,bnumber,email,name,phonenum):
+    '''inserts a user into the database'''
     curs = dbi.cursor(conn)
     curs.execute('''insert into user(bnumber,email,name,phonenum)
                     values (%s,%s,%s,%s)''',
                     [bnumber,email,name,phonenum])
 
 def updateUser(conn,new_bnum,email,name,phonenum,bnumber):
+    '''update the user with the given bnumbers information in the database'''
     curs = dbi.cursor(conn)
     curs.execute('''update user
                     set bnumber=%s, email=%s, name=%s, phonenum=%s
@@ -76,18 +85,20 @@ def updateUser(conn,new_bnum,email,name,phonenum,bnumber):
                     [new_bnum,email,name,phonenum,bnumber])
 
 def deleteUser(conn,bnumber):
+    '''delete the user with the given bnumber from the database'''
     curs = dbi.cursor(conn)
     curs.execute('''delete from user
                     where bnumber = %s''',
                     [bnumber])
 
 def insertRequest(conn, bnumber, city, country, guestnum, start, end):
-    '''Inserts a request'''
+    '''Inserts a request into the database'''
     curs = dbi.cursor(conn)
     curs.execute('''insert into request(bnumber, guestnum, city, country,
                 start,end) values(%s, %s, %s, %s, %s, %s)''',
                 [bnumber, guestnum, city, country, start, end])
 def getRequest(conn, rid):
+    '''return the request with the given rid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where rid=%s''', [rid])
     return curs.fetchone()
