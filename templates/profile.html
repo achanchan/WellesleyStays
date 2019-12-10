@@ -9,7 +9,6 @@
       <li>Email: {{user.email}}</li>
       <li>Phone: {{user.phonenum}}</li>
     </div>
-    <a href="{{url_for('updateUser', bnumber=user.bnumber)}}">Edit</a>
   </div>
   {%if listings%}
   <div id="listings">
@@ -40,6 +39,7 @@
       <li>Country: {{r.country}}</li>
       <li>Start: {{r.start}}</li>
       <li>End: {{r.end}}</li>
+      <a href="{{url_for('requestPage', rid=r.rid)}}">See More</a>
     </div>
     {%endfor%} 
   </div>
