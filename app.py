@@ -19,7 +19,7 @@ app.config['CAS_LOGOUT_ROUTE'] = '/module.php/casserver/cas.php/logout'
 app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
 app.config['CAS_AFTER_LOGIN'] = 'index'
 # the following doesn't work :-(
-app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
+# app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
@@ -28,14 +28,12 @@ db = "wstays_db"
 @app.route('/')
 def index():
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
     return render_template('home.html')
 
 @app.route('/profile/<bnumber>', methods=["GET"])
 def profile(bnumber):
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
@@ -51,7 +49,6 @@ def profile(bnumber):
 @app.route('/place/<pid>', methods=["GET"])
 def place(pid):
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
@@ -67,7 +64,6 @@ def place(pid):
 @app.route('/insertUser/', methods=["GET", "POST"])
 def insertUser():
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
@@ -95,7 +91,6 @@ def insertUser():
 @app.route('/updateUser/<bnumber>', methods=["GET", "POST"])
 def updateUser(bnumber):
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
@@ -122,7 +117,6 @@ def updateUser(bnumber):
 @app.route('/listing/', methods=["GET"])
 def listing():
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
     
     attributes = session['CAS_ATTRIBUTES']
@@ -149,7 +143,6 @@ def listingecho():
 @app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
     
     conn = functions.getConn(db)
@@ -163,7 +156,6 @@ def searchListing():
 @app.route('/search/listing/<query>', methods=['GET','POST'])
 def search(query):
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
@@ -174,7 +166,6 @@ def search(query):
 @app.route('/search/request' ,methods=["GET","POST"])
 def searchRequest():
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
@@ -189,7 +180,6 @@ def searchRequest():
 @app.route('/search/request/<query>' ,methods=["GET","POST"])
 def searchR(query):
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
@@ -200,7 +190,6 @@ def searchR(query):
 @app.route('/requestform/', methods=["GET"])
 def requesting():
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     attributes = session['CAS_ATTRIBUTES']
@@ -223,7 +212,6 @@ def requestecho():
 @app.route('/request/<rid>', methods=["GET"])
 def requestPage(rid):
     if ('CAS_USERNAME' not in session):
-        flash("Must login")
         return redirect(url_for('cas.login'))
 
     conn = functions.getConn(db)
