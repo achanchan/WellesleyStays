@@ -30,13 +30,13 @@
 
         </tr>
     {% for data in requests %}
-    <tr data-tt="{{data['pid']}}">
+    <tr data-tt="{{data['rid']}}">
         <td class ="city">{{data['city']}}</td>
         <td class="country">{{data['country']}}</td>
         <td class="guestnum">{{data['guestnum']}}</td>
         <td class="start">{{data['start']}} </td>
            <td class="end"> {{data['end']}}</td>
-        <td><button class="contact-button">Contact</button></td>
+        <td><a href="{{url_for('requestPage', rid=data.rid)}}"><button class="contact-button">Contact</button></a></td>
     </tr>
     
     {% endfor %}

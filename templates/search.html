@@ -34,7 +34,7 @@
         <td class ="state"> {{data['state']}}</td>
         <td class="country">{{data['country']}}</td>
         <td class="maxguest">{{data['maxguest']}}</td>
-        <td><button class="contact-button">Contact</button></td>
+        <td><a href="{{url_for('place', pid=data['pid'])}}"><button class="contact-button">Contact</button></a></td>
     </tr>
     
     {% endfor %}
