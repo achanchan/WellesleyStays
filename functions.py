@@ -21,7 +21,7 @@ def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country
     '''Inserts a listing and the corresponding availability'''
     curs = dbi.cursor(conn)
     curs.execute('''insert into places(bnumber, city, country, street1, street2,
-                    state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s)''',
+                    state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
                 [bnumber, street1, street2, city, state, zipcode, country, maxguest])
     pid = curs.lastrowid
     curs.execute('''insert into availablity(pid, start, end) values(%s, %s, %s)''',
