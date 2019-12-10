@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<div id="profile">
-  <div id="contact">
-    <h2>Contact Info</h2>
-    <div class="contact-box">
-      <li>Name: {{user.name}}</li>
-      <li>Email: {{user.email}}</li>
-      <li>Phone: {{user.phonenum}}</li>
-    </div>
+<div id="contact">
+  <h2>Contact Info</h2>
+  <div class="contact-box">
+    <li>Name: {{user.name}}</li>
+    <li>Email: {{user.email}}</li>
+    <li>Phone: {{user.phonenum}}</li>
   </div>
+</div>
+<div id="profile">
   {%if listings%}
   <div id="listings">
     <h2>Listings</h2>
