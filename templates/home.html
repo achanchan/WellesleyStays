@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-    <a href="{{url_for('login')}}"><button></button>Login</a>
+    <a href="{{url_for('cas.login')}}"><button>Login</button></a>
+    <a href="{{url_for('cas.logout')}}"><button>Logout</button></a>
     <h1>WELLESLEY STAYS</h1>
     <h2>
         WellesleyStays offers Wellesley students who are abroad an affordable (possibly free!) option when they are traveling.

@@ -9,7 +9,6 @@ import functions
 # new for CAS
 from flask_cas import CAS
 
-<<<<<<< HEAD
 app.secret_key = '123wst4ys321'
 
 CAS(app)
@@ -21,15 +20,6 @@ app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
 app.config['CAS_AFTER_LOGIN'] = 'index'
 # the following doesn't work :-(
 app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
-=======
-
-app.secret_key = 'your secret here'
-# replace that with a random key
-app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
-                                          'abcdefghijklmnopqrstuvxyz' +
-                                          '0123456789'))
-                           for i in range(20) ])
->>>>>>> 6a0c9950d403ef80c08066f5a77122173d6d5c52
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
@@ -214,10 +204,11 @@ def requestPage(rid):
 if __name__ == '__main__':
 
     if len(sys.argv) > 1:
-        # arg, if any, is the desired port number
-        port = int(sys.argv[1])
-        assert(port>1024)
+        port=int(sys.argv[1])
+        if not(1943 <= port <= 1950):
+            print('For CAS, choose a port from 1943 to 1950')
+            sys.exit()
     else:
-        port = os.getuid()
+        port=os.getuid()
     app.debug = True
     app.run('0.0.0.0',port)
