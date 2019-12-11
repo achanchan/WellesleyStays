@@ -17,7 +17,7 @@ app.config['CAS_SERVER'] = 'https://login.wellesley.edu:443'
 app.config['CAS_LOGIN_ROUTE'] = '/module.php/casserver/cas.php/login'
 app.config['CAS_LOGOUT_ROUTE'] = '/module.php/casserver/cas.php/logout'
 app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
-app.config['CAS_AFTER_LOGIN'] = 'index'
+app.config['CAS_AFTER_LOGIN'] = 'insertUser'
 # the following doesn't work :-(
 # app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
 
@@ -27,16 +27,14 @@ db = "wstays_db"
 
 @app.route('/')
 def index():
-    if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
     return render_template('home.html')
 
 @app.route('/profile/<bnumber>', methods=["GET"])
 def profile(bnumber):
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
-    conn = functions.getConn(db)gi
+    conn = functions.getConn(db)
     user = functions.getUser(conn,bnumber)
     listings = functions.getUserListings(conn,bnumber)
     requests = functions.getUserRequests(conn,bnumber)
@@ -49,7 +47,7 @@ def profile(bnumber):
 @app.route('/place/<pid>', methods=["GET"])
 def place(pid):
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
@@ -64,7 +62,7 @@ def place(pid):
 @app.route('/insertUser/', methods=["GET", "POST"])
 def insertUser():
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     message=''
@@ -91,7 +89,7 @@ def insertUser():
 @app.route('/updateUser/<bnumber>', methods=["GET", "POST"])
 def updateUser(bnumber):
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     if request.method == 'GET':
@@ -117,7 +115,7 @@ def updateUser(bnumber):
 @app.route('/listing/', methods=["GET"])
 def listing():
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
     
     attributes = session['CAS_ATTRIBUTES']
     bnumber = attributes['cas:id']
@@ -143,7 +141,7 @@ def listingecho():
 @app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
     
     conn = functions.getConn(db)
     if request.method == "GET":
@@ -156,7 +154,7 @@ def searchListing():
 @app.route('/search/listing/<query>', methods=['GET','POST'])
 def search(query):
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     
@@ -166,7 +164,7 @@ def search(query):
 @app.route('/search/request' ,methods=["GET","POST"])
 def searchRequest():
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     if request.method == "GET":
@@ -180,7 +178,7 @@ def searchRequest():
 @app.route('/search/request/<query>' ,methods=["GET","POST"])
 def searchR(query):
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     aRequest = functions.searchRequest(conn,query)
@@ -190,7 +188,7 @@ def searchR(query):
 @app.route('/requestform/', methods=["GET"])
 def requesting():
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
+        return redirect(url_for("index"))
 
     attributes = session['CAS_ATTRIBUTES']
     bnumber = attributes['cas:id']
@@ -212,8 +210,8 @@ def requestecho():
 @app.route('/request/<rid>', methods=["GET"])
 def requestPage(rid):
     if ('CAS_USERNAME' not in session):
-        return redirect(url_for('cas.login'))
-
+        return redirect(url_for("index"))
+        
     conn = functions.getConn(db)
     aRequest = functions.getRequest(conn,rid)
     guest = functions.getUser(conn,aRequest['bnumber'])
