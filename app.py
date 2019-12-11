@@ -93,7 +93,7 @@ def insertUser():
         return redirect( url_for('updateUser', bnumber=bnumber) )
     else:
         attributes = session['CAS_ATTRIBUTES']
-        return render_template('insertUser.html', attributes)
+        return render_template('insertUser.html', attributes=attributes)
 
 @app.route('/updateUser/<bnumber>', methods=["GET", "POST"])
 def updateUser(bnumber):
