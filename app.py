@@ -17,7 +17,7 @@ app.config['CAS_SERVER'] = 'https://login.wellesley.edu:443'
 app.config['CAS_LOGIN_ROUTE'] = '/module.php/casserver/cas.php/login'
 app.config['CAS_LOGOUT_ROUTE'] = '/module.php/casserver/cas.php/logout'
 app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
-app.config['CAS_AFTER_LOGIN'] = 'insertUser'
+app.config['CAS_AFTER_LOGIN'] = 'index'
 # the following doesn't work :-(
 # app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
 
@@ -27,6 +27,15 @@ db = "wstays_db"
 
 @app.route('/')
 def index():
+    if ('CAS_USERNAME' in session):
+        attributes = session['CAS_ATTRIBUTES']
+        bnumber = attributes['cas:id']
+        
+        conn = functions.getConn(db)
+        user = functions.getUser(conn,bnumber)
+        if not user:
+            return redirect("insertUser")
+
     return render_template('home.html')
 
 @app.route('/profile/<bnumber>', methods=["GET"])
@@ -51,7 +60,6 @@ def place(pid):
 
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
-    print(place)
     host = functions.getUser(conn,place['bnumber'])
     if place:
         return render_template('place.html', place=place, host=host)
@@ -84,7 +92,8 @@ def insertUser():
         flash(message)
         return redirect( url_for('updateUser', bnumber=bnumber) )
     else:
-        return render_template('insertUser.html')
+        attributes = session['CAS_ATTRIBUTES']
+        return render_template('insertUser.html', attributes)
 
 @app.route('/updateUser/<bnumber>', methods=["GET", "POST"])
 def updateUser(bnumber):
@@ -211,7 +220,7 @@ def requestecho():
 def requestPage(rid):
     if ('CAS_USERNAME' not in session):
         return redirect(url_for("index"))
-        
+
     conn = functions.getConn(db)
     aRequest = functions.getRequest(conn,rid)
     guest = functions.getUser(conn,aRequest['bnumber'])
