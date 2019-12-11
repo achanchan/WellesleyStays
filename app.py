@@ -90,7 +90,7 @@ def insertUser():
             functions.insertUser(conn,bnumber,email,name,phonenum)
             message = 'User %s inserted.' %name
         flash(message)
-        return redirect( url_for('updateUser', bnumber=bnumber) )
+        return redirect( url_for('index') )
     else:
         attributes = session['CAS_ATTRIBUTES']
         return render_template('insertUser.html', attributes=attributes)
