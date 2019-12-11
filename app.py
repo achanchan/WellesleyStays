@@ -242,9 +242,10 @@ def requestPage(rid):
 if __name__ == '__main__':
 
     if len(sys.argv) > 1:
-        # arg, if any, is the desired port number
-        port = int(sys.argv[1])
-        assert(port>1024)
+        port=int(sys.argv[1])
+        if not(1943 <= port <= 1950):
+            print('For CAS, choose a port from 1943 to 1950')
+            sys.exit()
     else:
         port = os.getuid()
     app.debug = True
