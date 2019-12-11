@@ -36,7 +36,7 @@ def profile(bnumber):
     if ('CAS_USERNAME' not in session):
         return redirect(url_for('cas.login'))
 
-    conn = functions.getConn(db)
+    conn = functions.getConn(db)gi
     user = functions.getUser(conn,bnumber)
     listings = functions.getUserListings(conn,bnumber)
     requests = functions.getUserRequests(conn,bnumber)
@@ -228,7 +228,6 @@ def requestPage(rid):
         return redirect(request.referrer)
 
 if __name__ == '__main__':
-
     if len(sys.argv) > 1:
         # arg, if any, is the desired port number
         port = int(sys.argv[1])
