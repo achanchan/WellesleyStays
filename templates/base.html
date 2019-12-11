@@ -9,15 +9,15 @@
     <body>
         <ul id="navbar">
             <li class="navitem"><a class="navitem" href="{{url_for('index')}}">Home</a></li>
-            <li class="navitem"><a class="navitem" href="{{url_for('listing')}}">List A Place</a></li>
-            <li class="navitem"><a class="navitem" href="{{url_for('requesting')}}">Post A Request</a></li>
             <li class="navitem"><a class="navitem" href="{{url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id'])}}">Profile</a></li>
+            <li class="navitem"><a class="navitem" href="{{url_for('listing')}}">List</a></li>
+            <li class="navitem"><a class="navitem" href="{{url_for('requesting')}}">Post</a></li>
             <li class="navitem"><a class="navitem" href="{{url_for('searchListing')}}">Listings</a></li>
             <li class="navitem"><a class="navitem" href="{{url_for('searchRequest')}}">Requests</a></li>
             <!-- add more links -->
         </ul>
 
-        {% with messages = get_flashed_messages() %}
+        <!-- {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div id="messages">
             {% for msg in messages %}
@@ -25,7 +25,7 @@
             {% endfor %}
             </div>
         {% endif %}
-        {% endwith %}
+        {% endwith %} -->
 
         {% block main_content %}
             <h2>Welcome to WellesleyStays</h2>
