@@ -1,16 +1,15 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<div id="profile">
-  <div id="contact">
-    <h2>Contact Info</h2>
-    <div class="contact-box">
-      <li>Name: {{user.name}}</li>
-      <li>Email: {{user.email}}</li>
-      <li>Phone: {{user.phonenum}}</li>
-    </div>
-    <a href="{{url_for('updateUser', bnumber=user.bnumber)}}">Edit</a>
+<div id="contact">
+  <h2>Contact Info</h2>
+  <div class="contact-box">
+    <li>Name: {{user.name}}</li>
+    <li>Email: {{user.email}}</li>
+    <li>Phone: {{user.phonenum}}</li>
   </div>
+</div>
+<div id="profile">
   {%if listings%}
   <div id="listings">
     <h2>Listings</h2>
@@ -40,6 +39,7 @@
       <li>Country: {{r.country}}</li>
       <li>Start: {{r.start}}</li>
       <li>End: {{r.end}}</li>
+      <a href="{{url_for('requestPage', rid=r.rid)}}">See More</a>
     </div>
     {%endfor%} 
   </div>
