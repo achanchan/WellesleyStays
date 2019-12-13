@@ -5,11 +5,11 @@
       <form action="{{url_for('insertUser')}}" method="post">
           <div>
             <label for="bnumber">BNUMBER</label> 
-            <input type="text" id="bnumber" name="bnumber" required placeholder="B12345678">
+            <input type="text" id="bnumber" name="bnumber" value="{{attributes['cas:id']}}" required placeholder="B12345678">
           </div>
           <div>
             <label for="email">EMAIL</label> 
-            <input type="text" id="email" name="email" required placeholder="wwelles@wellesley.edu">
+            <input type="text" id="email" name="email" value="{{attributes['cas:mail']}}" required placeholder="wwelles@wellesley.edu">
           </div>
           <div>
             <label for="name">NAME</label> 

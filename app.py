@@ -6,14 +6,20 @@ app = Flask(__name__)
 
 import sys,os,random
 import functions
+# new for CAS
+from flask_cas import CAS
 
+app.secret_key = '123wst4ys321'
 
-app.secret_key = 'your secret here'
-# replace that with a random key
-app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
-                                          'abcdefghijklmnopqrstuvxyz' +
-                                          '0123456789'))
-                           for i in range(20) ])
+CAS(app)
+
+app.config['CAS_SERVER'] = 'https://login.wellesley.edu:443'
+app.config['CAS_LOGIN_ROUTE'] = '/module.php/casserver/cas.php/login'
+app.config['CAS_LOGOUT_ROUTE'] = '/module.php/casserver/cas.php/logout'
+app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
+app.config['CAS_AFTER_LOGIN'] = 'index'
+# the following doesn't work :-(
+# app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
@@ -21,10 +27,22 @@ db = "wstays_db"
 
 @app.route('/')
 def index():
+    if ('CAS_USERNAME' in session):
+        attributes = session['CAS_ATTRIBUTES']
+        bnumber = attributes['cas:id']
+        
+        conn = functions.getConn(db)
+        user = functions.getUser(conn,bnumber)
+        if not user:
+            return redirect("insertUser")
+
     return render_template('home.html')
 
 @app.route('/profile/<bnumber>', methods=["GET"])
 def profile(bnumber):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     user = functions.getUser(conn,bnumber)
     listings = functions.getUserListings(conn,bnumber)
@@ -37,9 +55,11 @@ def profile(bnumber):
 
 @app.route('/place/<pid>', methods=["GET"])
 def place(pid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
-    print(place)
     host = functions.getUser(conn,place['bnumber'])
     if place:
         return render_template('place.html', place=place, host=host)
@@ -49,6 +69,9 @@ def place(pid):
 
 @app.route('/insertUser/', methods=["GET", "POST"])
 def insertUser():
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     message=''
     if request.method == 'POST':
@@ -67,12 +90,16 @@ def insertUser():
             functions.insertUser(conn,bnumber,email,name,phonenum)
             message = 'User %s inserted.' %name
         flash(message)
-        return redirect( url_for('updateUser', bnumber=bnumber) )
+        return redirect( url_for('index') )
     else:
-        return render_template('insertUser.html')
+        attributes = session['CAS_ATTRIBUTES']
+        return render_template('insertUser.html', attributes=attributes)
 
 @app.route('/updateUser/<bnumber>', methods=["GET", "POST"])
 def updateUser(bnumber):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     if request.method == 'GET':
         user = functions.getUser(conn,bnumber)
@@ -96,12 +123,12 @@ def updateUser(bnumber):
 
 @app.route('/listing/', methods=["GET"])
 def listing():
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+    
+    attributes = session['CAS_ATTRIBUTES']
+    bnumber = attributes['cas:id']
     conn = functions.getConn(db)
-
-    # if 'bnumber' in session:
-    # uncomment out code once login is implemented
-    # bnumber = session['bnumber']
-    bnumber = "B20856852"   
     user = functions.getUser(conn, bnumber)
     return render_template('listingform.html', user=user)
 
@@ -122,6 +149,9 @@ def listingecho():
     
 @app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+    
     conn = functions.getConn(db)
     if request.method == "GET":
         listings = functions.allListings(conn)
@@ -132,6 +162,9 @@ def searchListing():
 
 @app.route('/search/listing/<query>', methods=['GET','POST'])
 def search(query):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     
     places = functions.searchPlace(conn, query)
@@ -139,6 +172,9 @@ def search(query):
 
 @app.route('/search/request' ,methods=["GET","POST"])
 def searchRequest():
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     if request.method == "GET":
         aRequest = functions.allRequests(conn)
@@ -150,6 +186,9 @@ def searchRequest():
 
 @app.route('/search/request/<query>' ,methods=["GET","POST"])
 def searchR(query):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     aRequest = functions.searchRequest(conn,query)
     return render_template('searchrequest.html', requests=aRequest)
@@ -157,18 +196,15 @@ def searchR(query):
 
 @app.route('/requestform/', methods=["GET"])
 def requesting():
-    conn = functions.getConn(db)
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
 
-    # if 'bnumber' in session:
-    # uncomment out code once login is implemented
-    # bnumber = session['bnumber']
-    bnumber = "B20856852"   
+    attributes = session['CAS_ATTRIBUTES']
+    bnumber = attributes['cas:id']
+
+    conn = functions.getConn(db)
     user = functions.getUser(conn, bnumber)
     return render_template('requestform.html', user=user)
-
-    # else:
-    #     flash('you are not logged in. Please login or join')
-    #     return redirect(url_for('index'))
 
 @app.route('/requestecho/', methods=['POST'])
 def requestecho():
@@ -182,6 +218,9 @@ def requestecho():
 
 @app.route('/request/<rid>', methods=["GET"])
 def requestPage(rid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     aRequest = functions.getRequest(conn,rid)
     guest = functions.getUser(conn,aRequest['bnumber'])
@@ -196,7 +235,6 @@ def requestPage(rid):
         return redirect(request.referrer)
 
 if __name__ == '__main__':
-
     if len(sys.argv) > 1:
         # arg, if any, is the desired port number
         port = int(sys.argv[1])
