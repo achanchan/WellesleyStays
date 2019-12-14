@@ -4,11 +4,9 @@
     {% if 'CAS_USERNAME' not in session %}
     <button type="button" onclick="window.location.href='{{url_for('cas.login')}}';">
        Login</button>
-        <!-- <a href="{{url_for('cas.login')}}"><button>Login</button></a> -->
     {% else %}
     <button type="button" onclick="window.location.href='{{url_for('cas.logout')}}';">
             Logout</button>
-        <!-- <a href="{{url_for('cas.logout')}}"><button>Logout</button></a> -->
     {% endif %}
     <h1>WELLESLEY STAYS</h1>
     <h2>

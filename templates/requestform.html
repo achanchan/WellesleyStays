@@ -4,34 +4,33 @@
 {% block main_content %}
 <h2>Post A Request</h2>
     <form method="POST" action="{{url_for('requestecho')}}">
-        <div>
+        <!-- <div>
             <label for="name">Name</label>
-            <div>
-                <input type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
-            </div>
-        </div>
+            <input id="name" type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
+        </div> -->
 
         <div>
             <label for="city">City</label>
-            <input type="text" class="form-control" name="city" required>
+            <input id="city" type="text" class="form-control" name="city" required>
         </div>
         
         <div>
             <label for="country">Country</label>
             <!-- change into a select at some point -->
-            <input type="text" name="country" required>
+            <input id="country" type="text" name="country" required>
         </div>
         <div>
             <label for="guestnum">Number of guests</label>
             <!-- change into a select at some point -->
-            <input type="number" name="guestnum" required>
+            <input id="guestnum" type="number" name="guestnum" required>
         </div>
         <div>
             <label for="start">Start</label>
-            <input type="date" name="start" required>
+            <input id="start" type="date" name="start" required>
+        </div>
         <div>
             <label for="end">End</label>
-            <input type="date" name="end" required>
+            <input id="end" type="date" name="end" required>
         </div>
         <button type="submit">Request!</button>
     </form>

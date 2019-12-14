@@ -2,21 +2,22 @@
 {% set active_page = "searchRequest" %}
 
 {% block main_content %}
-  
-        <form id="search" method=POST action="{{url_for('searchRequest')}}">
-
-        <legend>Find a Request</legend>
-            <label>City: <input id="searchterm" placeholder="I'm looking to satisfy a request in..." name="searchterm"></label>
-            <!-- <label>Number of Guests: <select id ="guests" name ="guests"></label>
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=3>3</option>
-                <option value=4>4</option>
-                <option value=5>5+</option>
-                </select> -->
-                
-                <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
-        </form> 
+<h2>Find A Request</h2>
+    <form id="search" method=POST action="{{url_for('searchRequest')}}">
+        <div>
+            <label for="searchterm">City: </label>
+            <input id="searchterm" placeholder="I'm looking to satisfy a request in..." name="searchterm">
+        </div>
+        <!-- <label>Number of Guests: <select id ="guests" name ="guests"></label>
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+            <option value=5>5+</option>
+            </select> -->
+            
+            <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
+    </form> 
 
 
     <h2>Requests: </h2>
@@ -36,8 +37,12 @@
         <td class="country">{{data['country']}}</td>
         <td class="guestnum">{{data['guestnum']}}</td>
         <td class="start">{{data['start']}} </td>
-           <td class="end"> {{data['end']}}</td>
-        <td><a href="{{url_for('requestPage', rid=data.rid)}}"><button class="contact-button">Contact</button></a></td>
+        <td class="end"> {{data['end']}}</td>
+        <td>
+            <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('requestPage', rid=data.rid)}}';">
+            Contact</button>
+        </td>
     </tr>
     
     {% endfor %}

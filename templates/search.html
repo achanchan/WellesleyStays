@@ -2,11 +2,11 @@
 {% set active_page = "searchListing" %}
 
 {% block main_content %}
-  
-        <form id="search" method=POST action="{{url_for('searchListing')}}">
-
-        <legend>Find a Listing</legend>
-            <label>City: <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm"></label>
+<h2>Find A Listing</h2>
+    <form id="search" method=POST action="{{url_for('searchListing')}}">
+        <div>
+            <label id="searchLabel" for="searchterm">City: </label>
+            <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm">
             <!-- <label>Number of Guests: <select id ="guests" name ="guests"></label>
                 <option value=1>1</option>
                 <option value=2>2</option>
@@ -14,12 +14,12 @@
                 <option value=4>4</option>
                 <option value=5>5+</option>
                 </select> -->
-                
-                <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
-        </form> 
+        </div>
+            <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
+    </form> 
 
 
-    <h2>Listings: </h2>
+    <h2>Listings</h2>
     <table id="listing-list">
         <tr>
             <th>City</th>
@@ -35,7 +35,11 @@
         <td class ="state"> {{data['state']}}</td>
         <td class="country">{{data['country']}}</td>
         <td class="maxguest">{{data['maxguest']}}</td>
-        <td><a href="{{url_for('place', pid=data['pid'])}}"><button class="contact-button">Contact</button></a></td>
+        <td>
+            <button type="button" class="contact-button"
+                    onclick="window.location.href='{{url_for('place', pid=data['pid'])}}';">
+                    Contact</button>
+        </td>
     </tr>
     
     {% endfor %}

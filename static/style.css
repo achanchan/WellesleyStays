@@ -136,14 +136,25 @@ li{
 }
 
 .contact-box, .listing, .request{
-	/* Just to center the form on the page */
-	margin: 1em auto;
+	/* margin: auto; */
 	/* To see the outline of the form */
 	padding: 1em;
 	border: 3px solid white;
 	border-radius: 1em; 
 }
 
-#placeProfile{
+.contact-button {
+	background:  none;
+	color: white;
+	font: 1rem sans-serif;
+	font-weight: bold;
+	-webkit-transition-duration: 0.4s; /* Safari */
+	transition-duration: 0.4s;
+	cursor: pointer;
+	margin: auto;
+	padding: 1em;
+	border: 3px solid white;
+	border-radius: 1em;
+	width: 50%;
 	display: block;
 }
