@@ -29,9 +29,11 @@
 
     </div>
   </div>
+  {% if session['CAS_ATTRIBUTES']['cas:id'] != guest.bnumber %}
   <h2>Report A Problem</h2>
   <button type="button" class="contact-button"
             onclick="window.location.href='{{url_for('report', bnumber=guest.bnumber)}}';">
       Report A Problem
   </button>
+  {% endif %}
 {% endblock %}
