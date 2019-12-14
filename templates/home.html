@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% set active_page = "index" %}
 {% block main_content %}
     {% if 'CAS_USERNAME' not in session %}
         <a href="{{url_for('cas.login')}}"><button>Login</button></a>

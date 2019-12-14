@@ -1,6 +1,6 @@
 body {
 	font-family: helvetica;
-	background-color: #1dcaff;
+	background-color: #000080;
 	color: white;
 	text-align: center;
 	max-width: 700px;
@@ -21,7 +21,7 @@ h1 {
 
 a {
 	font-size: 2rem;
-	color: #ffcccb;
+	color: white;
 }
 
 form {
@@ -30,7 +30,7 @@ form {
 	width: 400px;
 	/* To see the outline of the form */
 	padding: 1em;
-	border: 3px solid #ffcccb;
+	border: 3px solid white;
 	border-radius: 1em;
   }
   form div + div {
@@ -46,13 +46,13 @@ form {
 	/* To make sure that all text fields have the same font settings By default, textareas have a monospace font */
 	font: 1em sans-serif;
 	font-weight: bold;
-	color: #ffcccb;
+	color: white;
 	/* To give the same size to all text fields */
 	width: 300px;
 	background: transparent;
 	border: none;
 	border-radius: 0px;
-	border-bottom: 3px solid #ffcccb;
+	border-bottom: 3px solid white;
 	width: 275px;
 	outline: none;
 	padding: 10px 0px 0px 0px;
@@ -64,7 +64,7 @@ form {
 	height: 5em;
   }
   button {
-	  background:  #d39897;
+	  background:  none;
 	  color: white;
 	  font: 1rem sans-serif;
 	  font-weight: bold;
@@ -97,6 +97,17 @@ form {
 	display: block;
     padding: 1rem;
 }
+
+.navitem a.active {
+	background-color: white;
+	color: #000080;
+}
+  
+.navitem a:hover:not(.active) {
+	background-color: #555;
+	color: white;
+}
+
 table{
 	width: 100%
 }
@@ -115,7 +126,7 @@ li{
 	margin: 1em auto;
 	/* To see the outline of the form */
 	padding: 1em;
-	border: 3px solid #ffcccb;
+	border: 3px solid white;
 	border-radius: 1em; 
 }
 

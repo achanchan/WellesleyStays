@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% set active_page = "requesting" %}
 
 {% block main_content %}
     <form method="POST" action="{{url_for('requestecho')}}">
