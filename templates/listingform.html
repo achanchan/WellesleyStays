@@ -4,10 +4,10 @@
 {% block main_content %}
 <h2>List A Place</h2>
     <form method="POST" action="{{url_for('listingecho')}}">
-        <!-- <div>
+        <div>
             <label for="name">Name</label>
             <input id="name" type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
-        </div> -->
+        </div>
         <div>
             <label for="street1">Street 1</label>
             <input id="street1" type="text" name="street1" placeholder="1234 Main St" required>
