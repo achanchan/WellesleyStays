@@ -15,16 +15,16 @@
   <h2>Listings</h2>
   <div id="listings">
     {%for place in listings%} 
-    <div class="listing">
-      <li>PID: {{place.pid}}</li> 
-      <li>City: {{place.city}}</li>
-      <li>Country: {{place.country}}</li>
-      <!-- <li>Address: {{place.street1}}</li> -->
-      <li>State: {{place.state}}</li>
-      <li>Max Guests: {{place.maxguest}}</li>
-      <!-- <li>Postal Code: {{place.postalcode}}</li> -->
-      <a href="{{url_for('place', pid=place.pid)}}">See More</a>
-    </div>
+    <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('place', pid=place.pid)}}';">
+            <li>PID: {{place.pid}}</li> 
+            <li>City: {{place.city}}</li>
+            <li>Country: {{place.country}}</li>
+            <!-- <li>Address: {{place.street1}}</li> -->
+            <li>State: {{place.state}}</li>
+            <li>Max Guests: {{place.maxguest}}</li>
+            <!-- <li>Postal Code: {{place.postalcode}}</li> -->
+  </button>
     {%endfor%}  
   </div>
   {%endif%}
@@ -32,16 +32,16 @@
   <h2>Requests</h2>
   <div id="requests">
     {%for r in requests%} 
-    <div class="request">
-      <li>RID: {{r.rid}}</li> 
-      <li>Fulfilled? {{r.isfilled}}</li>
-      <li>Number of Guests: {{r.guestnum}}</li>
-      <li>City: {{r.city}}</li>
-      <li>Country: {{r.country}}</li>
-      <li>Start: {{r.start}}</li>
-      <li>End: {{r.end}}</li>
-      <a href="{{url_for('requestPage', rid=r.rid)}}">See More</a>
-    </div>
+    <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('requestPage', rid=r.rid)}}';">
+            <li>RID: {{r.rid}}</li> 
+            <li>Fulfilled? {{r.isfilled}}</li>
+            <li>Number of Guests: {{r.guestnum}}</li>
+            <li>City: {{r.city}}</li>
+            <li>Country: {{r.country}}</li>
+            <li>Start: {{r.start}}</li>
+            <li>End: {{r.end}}</li>
+  </button>
     {%endfor%} 
   </div>
   {%endif%}

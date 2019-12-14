@@ -3,12 +3,12 @@
 {% block main_content %}
   <div id="contact">
     <h2>Host Contact</h2>
-    <div class="contact-box">
+    <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('profile', bnumber=host.bnumber)}}';">
       <li>Name: {{host.name}}</li>
       <li>Email: {{host.email}}</li>
       <li>Phone: {{host.phonenum}}</li>
-      <a href="{{url_for('profile', bnumber=host.bnumber)}}">See More</a>
-    </div>
+  </button>
   </div>
   <h2>Place Info</h2>
   <div id="listings">
