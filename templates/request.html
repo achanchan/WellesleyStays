@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<div id="requestProfile">
+<h2>Guest Contact</h2>
   <div id="contact">
-    <h2>Guest Contact</h2>
     <button type="button" class="contact-button"
             onclick="window.location.href='{{url_for('profile', bnumber=guest.bnumber)}}';">
             <li>Name: {{guest.name}}</li>
@@ -11,8 +10,8 @@
             <li>Phone: {{guest.phonenum}}</li>
   </button>
   </div>
-  <div id="request">
-    <h2>Request Info</h2>
+  <h2>Request Info</h2>
+  <div id="requests">
     <div class="request">
       <li>RID: {{aRequest.rid}}</li> 
       <li>City: {{aRequest.city}}</li>
@@ -23,5 +22,4 @@
       <li>Filled?: {{aRequest.isfilled}}</li>
     </div>
   </div>
-</div>
 {% endblock %}
