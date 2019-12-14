@@ -20,6 +20,13 @@
       <li>Start: {{aRequest.start}}</li>
       <li>End: {{aRequest.end}}</li>
       <li>Filled?: {{aRequest.isfilled}}</li>
+
+      {% if session['CAS_ATTRIBUTES']['cas:id'] == guest.bnumber %}
+      <form id="deleteRequest" action="{{url_for('deleteRequest', rid=aRequest.rid)}}" method="post">
+          <button type="submit" class="button" name="deleteRequest" value="deleteRequest">Delete Request</button>
+      </form>
+      {% endif %}
+
     </div>
   </div>
 {% endblock %}
