@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<h2>Report A Problem</h2>
+<form method="post" action="">
+    <div>
+    <label for="issues">Specify An Issue</label>
+    <select id ="issues" name ="issues">
+        <option value=1>Inactive User</option>
+        <option value=5>Inappropriate Conduct</option>
+        <option value=5>Other</option>
+        </select>
+    </div>
+    <div>
+    <label for="report">Additional Information</label>
+    <input id="report" type="text" class="form-control" name="report">
+    </div>
+    <button type="submit">Report</button>
+</form>
+
+{% endblock %}
