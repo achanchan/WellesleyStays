@@ -20,6 +20,13 @@
       <li>State: {{place.state}}</li>
       <li>Max Guests: {{place.maxguest}}</li>
       <!-- <li>Postal Code: {{place.postalcode}}</li> -->
+
+      {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
+      <form id="deleteListing" action="{{url_for('deleteListing', pid=place.pid)}}" method="post">
+          <button type="submit" class="button" name="deleteListing" value="deleteListing">Delete Listing</button>
+      </form>
+      {% endif %}
+
     </div>
   </div>
 {% endblock %}

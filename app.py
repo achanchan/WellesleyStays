@@ -146,6 +146,20 @@ def listingecho():
     form.get("start"), form.get("end"))
 
     return render_template('listingconfirmation.html', form=form)
+
+@app.route('/deleteListing/<pid>', methods=['POST'])
+def deleteListing(pid):
+    conn = functions.getConn(db)
+    functions.deleteListing(conn, pid)
+
+    return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
+
+@app.route('/deleteRequest/<rid>', methods=['POST'])
+def deleteRequest(rid):
+    conn = functions.getConn(db)
+    functions.deleteRequest(conn, rid)
+
+    return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
     
 @app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
