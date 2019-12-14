@@ -2,35 +2,35 @@
 {% set active_page = "profile" %}
 
 {% block main_content %}
+<h2>Contact Info</h2>
 <div id="contact">
-  <h2>Contact Info</h2>
   <div class="contact-box">
     <li>Name: {{user.name}}</li>
     <li>Email: {{user.email}}</li>
     <li>Phone: {{user.phonenum}}</li>
   </div>
 </div>
-<div id="profile">
+<!-- <div id="profile"> -->
   {%if listings%}
+  <h2>Listings</h2>
   <div id="listings">
-    <h2>Listings</h2>
     {%for place in listings%} 
     <div class="listing">
       <li>PID: {{place.pid}}</li> 
       <li>City: {{place.city}}</li>
       <li>Country: {{place.country}}</li>
-      <li>Address: {{place.street1}}</li>
+      <!-- <li>Address: {{place.street1}}</li> -->
       <li>State: {{place.state}}</li>
       <li>Max Guests: {{place.maxguest}}</li>
-      <li>Postal Code: {{place.postalcode}}</li>
+      <!-- <li>Postal Code: {{place.postalcode}}</li> -->
       <a href="{{url_for('place', pid=place.pid)}}">See More</a>
     </div>
     {%endfor%}  
   </div>
   {%endif%}
   {%if requests%}
+  <h2>Requests</h2>
   <div id="requests">
-    <h2>Requests</h2>
     {%for r in requests%} 
     <div class="request">
       <li>RID: {{r.rid}}</li> 
@@ -45,5 +45,5 @@
     {%endfor%} 
   </div>
   {%endif%}
-</div>
+<!-- </div> -->
 {% endblock %}

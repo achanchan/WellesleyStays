@@ -2,6 +2,7 @@
 {% set active_page = "requesting" %}
 
 {% block main_content %}
+<h2>Post A Request</h2>
     <form method="POST" action="{{url_for('requestecho')}}">
         <div>
             <label for="name">Name</label>
