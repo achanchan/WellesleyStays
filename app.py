@@ -9,6 +9,17 @@ import functions
 # new for CAS
 from flask_cas import CAS
 
+from flask_mail import Mail, Message
+app.config.update(
+    DEBUG=True,
+    # EMAIL SETTINGS
+    MAIL_SERVER='localhost',    # default; works on Tempest
+    MAIL_PORT=25,               # default
+    MAIL_USE_SSL=False,         # default
+    MAIL_USERNAME='wstays@wellesley.edu'
+)
+mail = Mail(app)
+
 app.secret_key = '123wst4ys321'
 
 CAS(app)
@@ -149,6 +160,9 @@ def listingecho():
 
 @app.route('/deleteListing/<pid>', methods=['POST'])
 def deleteListing(pid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     functions.deleteListing(conn, pid)
 
@@ -156,6 +170,9 @@ def deleteListing(pid):
 
 @app.route('/deleteRequest/<rid>', methods=['POST'])
 def deleteRequest(rid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
     conn = functions.getConn(db)
     functions.deleteRequest(conn, rid)
 
@@ -247,6 +264,36 @@ def requestPage(rid):
     else:
         flash('Request does not exist.')
         return redirect(request.referrer)
+
+@app.route('/report/<bnumber>', methods=["GET", "POST"])
+def report(bnumber):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+    
+    conn = functions.getConn(db)
+    if request.method == "GET":
+        return render_template('report.html')
+    if request.method == "POST": 
+        try:
+             # throw error if there's trouble
+            sender = session['CAS_ATTRIBUTES']['cas:mail']
+            recipient = "wstays@cs.wellesley.edu"
+            subject = bnumber + ": " + request.form['issues']
+            body = request.form['report']
+            # print(['form',sender,recipient,subject,body])
+            msg = Message(subject=subject,
+                          sender=sender,
+                          recipients=[recipient],
+                          body=body)
+            # print(['msg',msg])
+            mail.send(msg)
+            flash('email sent successfully')
+            return render_template('reportconfirmation.html')
+
+        except Exception as err:
+            print(['err',err])
+            flash('form submission error'+str(err))
+            return redirect( url_for('index') )
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
