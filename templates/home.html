@@ -1,10 +1,12 @@
 {% extends "base.html" %}
-
+{% set active_page = "index" %}
 {% block main_content %}
     {% if 'CAS_USERNAME' not in session %}
-        <a href="{{url_for('cas.login')}}"><button>Login</button></a>
+    <button type="button" onclick="window.location.href='{{url_for('cas.login')}}';">
+       Login</button>
     {% else %}
-        <a href="{{url_for('cas.logout')}}"><button>Logout</button></a>
+    <button type="button" onclick="window.location.href='{{url_for('cas.logout')}}';">
+            Logout</button>
     {% endif %}
     <h1>WELLESLEY STAYS</h1>
     <h2>

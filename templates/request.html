@@ -4,12 +4,12 @@
 <div id="requestProfile">
   <div id="contact">
     <h2>Guest Contact</h2>
-    <div class="contact-box">
-      <li>Name: {{guest.name}}</li>
-      <li>Email: {{guest.email}}</li>
-      <li>Phone: {{guest.phonenum}}</li>
-      <a href="{{url_for('profile', bnumber=guest.bnumber)}}">See More</a>
-    </div>
+    <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('profile', bnumber=guest.bnumber)}}';">
+            <li>Name: {{guest.name}}</li>
+            <li>Email: {{guest.email}}</li>
+            <li>Phone: {{guest.phonenum}}</li>
+  </button>
   </div>
   <div id="request">
     <h2>Request Info</h2>
