@@ -30,8 +30,15 @@ def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country
                     state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
                 [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
-    insertAvailability(conn, pid, start, end)
-    
+
+def editListing(conn, pid, newListing):
+    '''Updates a listing with the new information provided in dictionary form'''
+    curs = dbi.cursor(conn)
+    curs.execute('''update place set city=%s, country=%s, street1=%s, street2=%s,
+                    state=%s, maxguest=%s, postalcode=%s where pid=%s''', 
+                    [newListing['city'], newListing['country'], newListing['street1'],
+                    newListing['street2'], newListing['state'], newListing['maxguest'],
+                    newListing['zip'], pid])  
                 
 def allListings(conn):
     '''returns all the listings in the database'''
@@ -115,7 +122,11 @@ def insertRequest(conn, bnumber, city, country, guestnum, start, end):
     curs.execute('''insert into request(bnumber, guestnum, city, country,
                 start,end) values(%s, %s, %s, %s, %s, %s)''',
                 [bnumber, guestnum, city, country, start, end])
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 17949daa80a33820bc253fe26a16a948fbc019ff
 def getRequest(conn, rid):
     '''return the request with the given rid'''
     curs = dbi.dictCursor(conn)

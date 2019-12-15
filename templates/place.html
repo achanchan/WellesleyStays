@@ -22,6 +22,9 @@
       <!-- <li>Postal Code: {{place.postalcode}}</li> -->
 
       {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
+      <form id="editListing" action="{{url_for('editListing'}}" method="GET">
+        <button type="submit" class="button" name="pid" value="{{place.pid}}">Edit</button>
+      </form>
       <form id="deleteListing" action="{{url_for('deleteListing', pid=place.pid)}}" method="post">
           <button type="submit" class="button" name="deleteListing" value="deleteListing">Delete</button>
       </form>

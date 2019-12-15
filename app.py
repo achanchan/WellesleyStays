@@ -34,7 +34,7 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
-db = "achan_db"
+db = "wstays_db"
 
 @app.route('/')
 def index():
@@ -186,6 +186,22 @@ def deleteAvailability(aid):
     functions.deleteAvailability(conn, aid)
 
     return redirect(url_for('place', pid=availability['pid']))
+
+@app.route('/editListing/<pid>', methods=['POST', 'GET'])
+def editListing(rid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    if (request.method ==  'GET'):
+        pid = request.query.pid
+        request = functions.getRequest(conn, pid)
+        render_template('editRequest.html', request=request)
+    else:
+        form = request.form
+        conn.editListing(conn, pid, form)
+        flash("Updated successfully!")
+        return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
 
 @app.route('/deleteRequest/<rid>', methods=['POST'])
 def deleteRequest(rid):
