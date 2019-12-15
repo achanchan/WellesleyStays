@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<h2>Edit dates</h2>
+    <form method="POST" action="{{url_for('editAvailability', aid=availability.aid)}}">
+        <div>
+            <label for="start">Start <span style="color: red;">*</span></label>
+            <input id="start" type="date" name="start" value="{{availability['start']}}" required>
+        </div>
+        <div>
+            <label for="end">End <span style="color: red;">*</span></label>
+            <input id="end" type="date" name="end" value="{{availability['end']}}" required>
+        </div>
+        <button type="submit">Edit!</button>
+    </form>
+{% endblock %}

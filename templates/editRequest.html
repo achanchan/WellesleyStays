@@ -1,58 +1,28 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<h2>Edit listing with RID "{{request.rid}}"</h2>
-    <form method="POST" action="{{url_for('listingecho')}}">
+<h2>Edit request with RID {{request.rid}}</h2>
+    <form method="POST" action="{{url_for('editRequest', rid=request.rid)}}">
         <div>
-            <label for="street1">Street 1</label>
-            <input id="street1" type="text" name="street1" value="{{request.street1}}">
+            <label for="city">City <span style="color: red;">*</span></label>
+            <input id="city" type="text" class="form-control" name="city" value="{{request.city}}" required>
         </div>
         <div>
-            <label for="street2">Street 2</label>    
-            {% if "street2" in request %}
-                <input id="street2" type="text" name="street2" value="{{request.street1}}">
-            {% else %}
-                <input id="street2" type="text" name="street2" placeholder="Apartment, studio, or floor">
-            {% endif %}
+            <label for="country">Country <span style="color: red;">*</span></label>
+            <input id="country" type="text" name="country" value="{{request.country}}" required>
         </div>
         <div>
-            <label for="city">City</label>
-            <input id="city" type="text" class="form-control" name="city">
+            <label for="maxguest">Number of guests <span style="color: red;">*</span></label>
+            <input id="guestnum" type="number" name="guestnum" value="{{request.guestnum}}" required>
         </div>
         <div>
-            <label for="state">State</label>
-            {% if "state" in request %}
-                <input id="state" type="text" name="state" value="{{request.state}}">
-            {% else %}
-                <input id="state" type="text" name="state">
-            {% endif %}
-            
+            <label for="start">Start <span style="color: red;">*</span></label>
+            <input id="start" type="date" name="start" value="{{request['start']}}" required>
         </div>
         <div>
-            <label for="zip">Zip Code</label>
-            {% if "postalcode" in request %}
-                <input id="zip" type="text"  name="zip" value="{{request.postalcode}}">
-            {% else %}
-                <input id="zip" type="text"  name="zip">
-            {% endif %}
-            
+            <label for="end">End <span style="color: red;">*</span></label>
+            <input id="end" type="date" name="end" value="{{request['end']}}" required>
         </div>
-        <div>
-            <label for="country">Country</label>
-            <input id="country" type="text" name="country">
-        </div>
-        <div>
-            <label for="maxguest">Max number of guests</label>
-            <input id="maxguest" type="number" name="maxguest">
-        </div>
-        <div>
-            <label for="start">Start</label>
-            <input id="start" type="date" name="start">
-        </div>
-        <div>
-            <label for="end">End</label>
-            <input id="end" type="date" name="end">
-        </div>
-        <button type="submit">List!</button>
+        <button type="submit">Edit!</button>
     </form>
 {% endblock %}

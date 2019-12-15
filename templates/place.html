@@ -22,9 +22,7 @@
       <!-- <li>Postal Code: {{place.postalcode}}</li> -->
 
       {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
-      <form id="editListing" action="{{url_for('editListing'}}" method="GET">
-        <button type="submit" class="button" name="pid" value="{{place.pid}}">Edit</button>
-      </form>
+      <a href="{{url_for('editListing', pid=place.pid)}}"><button type="submit" class="button">Edit</button></a>
       <form id="deleteListing" action="{{url_for('deleteListing', pid=place.pid)}}" method="post">
           <button type="submit" class="button" name="deleteListing" value="deleteListing">Delete</button>
       </form>
@@ -43,6 +41,7 @@
     <li>End: {{data.end}}</li>
 
     {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
+    <a href="{{url_for('editAvailability', aid=data.aid)}}"><button type="submit" class="button">Edit</button></a>
     <form id="deleteAvailability" action="{{url_for('deleteAvailability', aid=data.aid)}}" method="post">
         <button type="submit" class="button" name="deleteAvailability" value="deleteAvailability">Delete</button>
     </form>

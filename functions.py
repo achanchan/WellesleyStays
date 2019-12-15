@@ -30,6 +30,7 @@ def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country
                     state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
                 [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
+    insertAvailability(conn, pid, start, end)
 
 def editListing(conn, pid, newListing):
     '''Updates a listing with the new information provided in dictionary form'''
@@ -129,6 +130,15 @@ def getRequest(conn, rid):
     curs.execute('''select * from request where rid=%s''', [rid])
     return curs.fetchone()
 
+def editRequest(conn, rid, newRequest):
+    '''updates the request with the new information stored in dict'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''update request set guestnum=%s, city=%s , country=%s,
+                    start=%s, end=%s where rid=%s''', 
+                    [newRequest['guestnum'], newRequest['city'], 
+                    newRequest['country'], newRequest['start'], 
+                    newRequest['end'], rid])
+
 def getAvailabilityForPlace(conn, pid):
     '''return all the availabilities for a place with the given pid'''
     curs = dbi.dictCursor(conn)
@@ -146,4 +156,12 @@ def getAvailability(conn,aid):
     '''return the avialability with the given aid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from availability where aid=%s''', [aid])
+    return curs.fetchone()
+
+def editAvailability(conn, aid, newAvailability):
+    '''updates the availability with the new information stored in dict'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''update availability set start=%s, end=%s where aid=%s''', 
+                    [newAvailability['start'], newAvailability['end'], aid])
+    curs.execute('''select pid from availability where aid=%s''', [aid])
     return curs.fetchone()

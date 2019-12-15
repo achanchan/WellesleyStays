@@ -4,19 +4,19 @@
   <h1>NEW USER</h1>
       <form action="{{url_for('insertUser')}}" method="post">
           <div>
-            <label for="bnumber">BNUMBER</label> 
+            <label for="bnumber">BNUMBER <span style="color: red;">*</span></label> 
             <input type="text" id="bnumber" name="bnumber" value="{{attributes['cas:id']}}" required placeholder="B12345678">
           </div>
           <div>
-            <label for="email">EMAIL</label> 
+            <label for="email">EMAIL <span style="color: red;">*</span></label> 
             <input type="text" id="email" name="email" value="{{attributes['cas:mail']}}" required placeholder="wwelles@wellesley.edu">
           </div>
           <div>
-            <label for="name">NAME</label> 
-            <input type="text" id="name" name="user_name" required placeholder="Wendy Wellesley">
+            <label for="name">NAME <span style="color: red;">*</span></label> 
+            <input type="text" id="name" name="user_name"  required placeholder="Wendy Wellesley">
           </div>
           <div>
-            <label for="phonenum">PHONE</label> 
+            <label for="phonenum">PHONE <span style="color: red;">*</span></label> 
             <input type="text" id="phonenum" name="phonenum" required placeholder="6789998212">
           </div>
           <div class="button">
