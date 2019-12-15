@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<div id="requestProfile">
+<h2>Guest Contact</h2>
   <div id="contact">
-    <h2>Guest Contact</h2>
-    <div class="contact-box">
-      <li>Name: {{guest.name}}</li>
-      <li>Email: {{guest.email}}</li>
-      <li>Phone: {{guest.phonenum}}</li>
-      <a href="{{url_for('profile', bnumber=guest.bnumber)}}">See More</a>
-    </div>
+    <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('profile', bnumber=guest.bnumber)}}';">
+            <li>Name: {{guest.name}}</li>
+            <li>Email: {{guest.email}}</li>
+            <li>Phone: {{guest.phonenum}}</li>
+  </button>
   </div>
-  <div id="request">
-    <h2>Request Info</h2>
+  <h2>Request Info</h2>
+  <div id="requests">
     <div class="request">
       <li>RID: {{aRequest.rid}}</li> 
       <li>City: {{aRequest.city}}</li>
@@ -20,8 +19,21 @@
       <li>Number of Guests: {{aRequest.guestnum}}</li>
       <li>Start: {{aRequest.start}}</li>
       <li>End: {{aRequest.end}}</li>
-      <li>Filled?: {{aRequest.isfilled}}</li>
+      <li>Fulfilled?: {{aRequest.isfilled}}</li>
+
+      {% if session['CAS_ATTRIBUTES']['cas:id'] == guest.bnumber %}
+      <form id="deleteRequest" action="{{url_for('deleteRequest', rid=aRequest.rid)}}" method="post">
+          <button type="submit" class="button" name="deleteRequest" value="deleteRequest">Delete</button>
+      </form>
+      {% endif %}
+
     </div>
   </div>
-</div>
+  {% if session['CAS_ATTRIBUTES']['cas:id'] != guest.bnumber %}
+  <h2>Report A Problem</h2>
+  <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('report', bnumber=guest.bnumber)}}';">
+      Report A Problem
+  </button>
+  {% endif %}
 {% endblock %}

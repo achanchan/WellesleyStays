@@ -9,6 +9,17 @@ import functions
 # new for CAS
 from flask_cas import CAS
 
+from flask_mail import Mail, Message
+app.config.update(
+    DEBUG=True,
+    # EMAIL SETTINGS
+    MAIL_SERVER='localhost',    # default; works on Tempest
+    MAIL_PORT=25,               # default
+    MAIL_USE_SSL=False,         # default
+    MAIL_USERNAME='wstays@wellesley.edu'
+)
+mail = Mail(app)
+
 app.secret_key = '123wst4ys321'
 
 CAS(app)
@@ -23,7 +34,7 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
-db = "wstays_db"
+db = "achan_db"
 
 @app.route('/')
 def index():
@@ -46,9 +57,15 @@ def profile(bnumber):
     conn = functions.getConn(db)
     user = functions.getUser(conn,bnumber)
     listings = functions.getUserListings(conn,bnumber)
-    requests = functions.getUserRequests(conn,bnumber)
+    userRequests = functions.getUserRequests(conn,bnumber)
+    if userRequests:
+        for r in userRequests: 
+            if r['isfilled']:
+                r['isfilled'] = 'Y'
+            else:
+                r['isfilled']='N'
     if user:
-        return render_template('profile.html', user=user, listings=listings, requests=requests)
+        return render_template('profile.html', user=user, listings=listings, requests=userRequests)
     else:
         flash('User does not exist.')
         return redirect(request.referrer)
@@ -61,8 +78,10 @@ def place(pid):
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
     host = functions.getUser(conn,place['bnumber'])
+    availability = functions.getAvailabilityForPlace(conn, pid)
+
     if place:
-        return render_template('place.html', place=place, host=host)
+        return render_template('place.html', place=place, host=host, availability=availability)
     else:
         flash('Listing does not exist.')
         return redirect(request.referrer)
@@ -146,6 +165,37 @@ def listingecho():
     form.get("start"), form.get("end"))
 
     return render_template('listingconfirmation.html', form=form)
+
+@app.route('/deleteListing/<pid>', methods=['POST'])
+def deleteListing(pid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    functions.deleteListing(conn, pid)
+
+    return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
+
+@app.route('/deleteAvailability/<aid>', methods=['POST'])
+def deleteAvailability(aid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    availability = functions.getAvailability(conn,aid)
+    functions.deleteAvailability(conn, aid)
+
+    return redirect(url_for('place', pid=availability['pid']))
+
+@app.route('/deleteRequest/<rid>', methods=['POST'])
+def deleteRequest(rid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    functions.deleteRequest(conn, rid)
+
+    return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
     
 @app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
@@ -158,7 +208,8 @@ def searchListing():
         return render_template('search.html', listings=listings)
     if request.method == "POST": 
         arg =request.form.get('searchterm')
-        return redirect(url_for('search', query=arg))
+        guests =request.form.get('guests')
+        return redirect(url_for('search', query=arg, guests=guests))
 
 @app.route('/search/listing/<query>', methods=['GET','POST'])
 def search(query):
@@ -233,6 +284,50 @@ def requestPage(rid):
     else:
         flash('Request does not exist.')
         return redirect(request.referrer)
+
+@app.route('/report/<bnumber>', methods=["GET", "POST"])
+def report(bnumber):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+    
+    conn = functions.getConn(db)
+    if request.method == "GET":
+        return render_template('report.html')
+    if request.method == "POST": 
+        try:
+             # throw error if there's trouble
+            sender = session['CAS_ATTRIBUTES']['cas:mail']
+            recipient = "wstays@cs.wellesley.edu"
+            subject = bnumber + ": " + request.form['issues']
+            body = request.form['report']
+            # print(['form',sender,recipient,subject,body])
+            msg = Message(subject=subject,
+                          sender=sender,
+                          recipients=[recipient],
+                          body=body)
+            # print(['msg',msg])
+            mail.send(msg)
+            flash('email sent successfully')
+            return render_template('reportconfirmation.html')
+
+        except Exception as err:
+            print(['err',err])
+            flash('form submission error'+str(err))
+            return redirect( url_for('index') )
+
+@app.route('/addAvailability/<pid>', methods=['POST'])
+def addAvailability(pid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    form = request.form
+    start = form.get('start')
+    end = form.get('end')
+    functions.insertAvailability(conn, pid, start,end)
+
+    return redirect(url_for('place', pid=pid))
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

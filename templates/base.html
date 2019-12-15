@@ -1,20 +1,27 @@
 <!doctype html>
+<html lang="en">
     <head>
         <meta charset='utf-8'>
         <meta name=author content="Nicole Li, Amy Chan, Debbie Hahm">
-        <title>WStays</title>
+        <title>WellesleyStays</title>
         <link rel='stylesheet' href="{{url_for('static', filename = 'style.css')}}">
         {% block head_stuff %} {% endblock %}
     </head>
     <body>
         <ul id="navbar">
-            <li class="navitem"><a class="navitem" href="{{url_for('index')}}">Home</a></li>
+            <li class="navitem"><a class="{{ 'active' if active_page == 'index' else '' }}"
+                 href="{{url_for('index')}}">Home</a></li>
             {% if 'CAS_USERNAME' in session %}
-                <li class="navitem"><a class="navitem" href="{{url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id'])}}">Profile</a></li>
-                <li class="navitem"><a class="navitem" href="{{url_for('listing')}}">List</a></li>
-                <li class="navitem"><a class="navitem" href="{{url_for('requesting')}}">Post</a></li>
-                <li class="navitem"><a class="navitem" href="{{url_for('searchListing')}}">Listings</a></li>
-                <li class="navitem"><a class="navitem" href="{{url_for('searchRequest')}}">Requests</a></li>
+                <li class="navitem"><a class="{{ 'active' if active_page == 'profile' else '' }}"
+                     href="{{url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id'])}}">Profile</a></li>
+                <li class="navitem"><a class="{{ 'active' if active_page == 'listing' else '' }}"
+                     href="{{url_for('listing')}}">List</a></li>
+                <li class="navitem"><a class="{{ 'active' if active_page == 'requesting' else '' }}"
+                     href="{{url_for('requesting')}}">Post</a></li>
+                <li class="navitem"><a class="{{ 'active' if active_page == 'searchListing' else '' }}"
+                     href="{{url_for('searchListing')}}">Listings</a></li>
+                <li class="navitem"><a class="{{ 'active' if active_page == 'searchRequest' else '' }}"
+                     href="{{url_for('searchRequest')}}">Requests</a></li>
             {% endif %}
         </ul>
 
@@ -32,4 +39,5 @@
             <h2>Welcome to WellesleyStays</h2>
         {% endblock %}
     </body>
+</html>
 </html>
