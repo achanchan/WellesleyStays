@@ -57,9 +57,15 @@ def profile(bnumber):
     conn = functions.getConn(db)
     user = functions.getUser(conn,bnumber)
     listings = functions.getUserListings(conn,bnumber)
-    requests = functions.getUserRequests(conn,bnumber)
+    userRequests = functions.getUserRequests(conn,bnumber)
+    if userRequests:
+        for r in userRequests: 
+            if r['isfilled']:
+                r['isfilled'] = 'Y'
+            else:
+                r['isfilled']='N'
     if user:
-        return render_template('profile.html', user=user, listings=listings, requests=requests)
+        return render_template('profile.html', user=user, listings=listings, requests=userRequests)
     else:
         flash('User does not exist.')
         return redirect(request.referrer)
@@ -72,7 +78,7 @@ def place(pid):
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
     host = functions.getUser(conn,place['bnumber'])
-    availability = functions.getAvailability(conn, pid)
+    availability = functions.getAvailabilityForPlace(conn, pid)
 
     if place:
         return render_template('place.html', place=place, host=host, availability=availability)
@@ -170,6 +176,17 @@ def deleteListing(pid):
 
     return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
 
+@app.route('/deleteAvailability/<aid>', methods=['POST'])
+def deleteAvailability(aid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    availability = functions.getAvailability(conn,aid)
+    functions.deleteAvailability(conn, aid)
+
+    return redirect(url_for('place', pid=availability['pid']))
+
 @app.route('/deleteRequest/<rid>', methods=['POST'])
 def deleteRequest(rid):
     if ('CAS_USERNAME' not in session):
@@ -191,7 +208,8 @@ def searchListing():
         return render_template('search.html', listings=listings)
     if request.method == "POST": 
         arg =request.form.get('searchterm')
-        return redirect(url_for('search', query=arg))
+        guests =request.form.get('guests')
+        return redirect(url_for('search', query=arg, guests=guests))
 
 @app.route('/search/listing/<query>', methods=['GET','POST'])
 def search(query):
@@ -296,6 +314,20 @@ def report(bnumber):
             print(['err',err])
             flash('form submission error'+str(err))
             return redirect( url_for('index') )
+
+@app.route('/addAvailability/<pid>', methods=['POST'])
+def addAvailability(pid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    form = request.form
+    start = form.get('start')
+    end = form.get('end')
+    functions.insertAvailability(conn, pid, start,end)
+
+    return redirect(url_for('place', pid=pid))
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

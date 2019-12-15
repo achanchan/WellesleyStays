@@ -2,10 +2,8 @@
 {% set active_page = "searchListing" %}
 
 {% block main_content %}
-  
+<h2>Find A Listing</h2>
         <form id="search" method=POST action="{{url_for('searchListing')}}">
-
-        <legend>Find a Listing</legend>
             <label>City: <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm"></label>
             <label>Number of Guests: <select id ="guests" name ="guests">
                 <option value=1>1+</option>

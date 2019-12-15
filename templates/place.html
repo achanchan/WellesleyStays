@@ -23,23 +23,46 @@
 
       {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
       <form id="deleteListing" action="{{url_for('deleteListing', pid=place.pid)}}" method="post">
-          <button type="submit" class="button" name="deleteListing" value="deleteListing">Delete Listing</button>
+          <button type="submit" class="button" name="deleteListing" value="deleteListing">Delete</button>
       </form>
       {% endif %}
 
     </div>
   </div>
-
+<h2>Availabilities</h2>
 <div id="availabilities">
-  <h2>Availabilities</h2>
+
+
   {% for data in availability %}
   <div class="availability" >
     <li>AID: {{data.aid}}</li> 
     <li>Start: {{data.start}}</li>
     <li>End: {{data.end}}</li>
+
+    {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
+    <form id="deleteAvailability" action="{{url_for('deleteAvailability', aid=data.aid)}}" method="post">
+        <button type="submit" class="button" name="deleteAvailability" value="deleteAvailability">Delete</button>
+    </form>
+    {% endif %}
   </div>
   {% endfor %}
+
 </div>
+<div>
+  <h4>Add An Availability</h4>
+{% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
+<form id="addAvailability" action="{{url_for('addAvailability', pid=place.pid)}}" method="post"> 
+  <div>
+        <label for="start">Start</label>
+        <input id="start" type="date" name="start" required>
+    </div>
+    <div>
+        <label for="end">End</label>
+        <input id="end" type="date" name="end" required>
+    </div>
+    <button type="submit" class="button" name="addAvailability" value="addAvailability">Add</button>
+</form>
+{% endif %}
 </div>
   {% if session['CAS_ATTRIBUTES']['cas:id'] != host.bnumber %}
   <h2>Report A Problem</h2>

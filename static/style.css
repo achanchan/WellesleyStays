@@ -24,7 +24,7 @@ a {
 	color: white;
 }
 
-#deleteListing, #deleteRequest {
+#deleteListing, #deleteRequest, #deleteAvailability {
 	border: none;
 }
 
@@ -130,7 +130,7 @@ table{
 	width: 100%
 }
 
-#profile, #listings, #requests, #contact{
+#profile, #listings, #requests, #contact, #availabilities {
 	display: flex;
 	justify-content: space-evenly;
 }
@@ -139,7 +139,7 @@ li{
 	list-style-type: none;
 }
 
-.contact-box, .listing, .request{
+.contact-box, .listing, .request, .availability{
 	/* margin: auto; */
 	/* To see the outline of the form */
 	padding: 1em;

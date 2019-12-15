@@ -17,6 +17,12 @@ def getUser(conn, bnumber):
     curs.execute('''select * from user where bnumber=%s''', [bnumber])
     return curs.fetchone()
 
+def insertAvailability(conn, pid, start, end):
+    '''Inserts an availability for the place with the given pid'''
+    curs=dbi.cursor(conn)
+    curs.execute('''insert into availability(pid, start, end) values(%s, %s, %s)''',
+                [pid, start, end])
+
 def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country, maxguest, start, end):
     '''Inserts a listing and the corresponding availability'''
     curs = dbi.cursor(conn)
@@ -24,8 +30,8 @@ def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country
                     state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
                 [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
-    curs.execute('''insert into availability(pid, start, end) values(%s, %s, %s)''',
-                [pid, start, end])
+    insertAvailability(conn, pid, start, end)
+    
                 
 def allListings(conn):
     '''returns all the listings in the database'''
@@ -114,8 +120,19 @@ def getRequest(conn, rid):
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where rid=%s''', [rid])
     return curs.fetchone()
-def getAvailability(conn, pid):
-    '''return the availability with the given pid'''
+def getAvailabilityForPlace(conn, pid):
+    '''return all the availabilities for a place with the given pid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from availability where pid=%s''', [pid])
     return curs.fetchall()
+def deleteAvailability(conn,aid):
+    '''delete the availability with the given aid'''
+    curs = dbi.cursor(conn)
+    curs.execute('''delete from availability
+                    where aid = %s''',
+                    [aid])
+def getAvailability(conn,aid):
+    '''return the avialability with the given aid'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from availability where aid=%s''', [aid])
+    return curs.fetchone()
