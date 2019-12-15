@@ -102,3 +102,8 @@ def getRequest(conn, rid):
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where rid=%s''', [rid])
     return curs.fetchone()
+def getAvailability(conn, pid):
+    '''return the availability with the given pid'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from availability where pid=%s''', [pid])
+    return curs.fetchall()

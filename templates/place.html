@@ -17,11 +17,21 @@
       <li>PID: {{place.pid}}</li> 
       <li>City: {{place.city}}</li>
       <li>Country: {{place.country}}</li>
-      <li>Address: {{place.street1}}</li>
       <li>State: {{place.state}}</li>
       <li>Max Guests: {{place.maxguest}}</li>
       <li>Postal Code: {{place.postalcode}}</li>
     </div>
   </div>
+
+<div id="availabilities">
+  <h2>Availabilities</h2>
+  {% for data in availability %}
+  <div class="availability" >
+    <li>AID: {{data.aid}}</li> 
+    <li>Start: {{data.start}}</li>
+    <li>End: {{data.end}}</li>
+  </div>
+  {% endfor %}
+</div>
 </div>
 {% endblock %}

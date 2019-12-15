@@ -61,8 +61,10 @@ def place(pid):
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
     host = functions.getUser(conn,place['bnumber'])
+    availability = functions.getAvailability(conn, pid)
+
     if place:
-        return render_template('place.html', place=place, host=host)
+        return render_template('place.html', place=place, host=host, availability=availability)
     else:
         flash('Listing does not exist.')
         return redirect(request.referrer)
