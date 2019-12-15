@@ -187,6 +187,21 @@ def deleteAvailability(aid):
 
     return redirect(url_for('place', pid=availability['pid']))
 
+@app.route('/editListing/<pid>', methods=['POST', 'GET'])
+def editListing(rid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    if (request.method ==  'GET'):
+        request = functions.getRequest(conn, pid)
+        render_template('editRequest.html', request=request)
+    else:
+        form = request.form
+        conn.editListing(conn, pid, form)
+        flash("Updated successfully!")
+        return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
+
 @app.route('/deleteRequest/<rid>', methods=['POST'])
 def deleteRequest(rid):
     if ('CAS_USERNAME' not in session):

@@ -30,8 +30,15 @@ def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country
                     state, maxguest, postalcode) values(%s, %s, %s, %s, %s, %s, %s, %s)''',
                 [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
-    insertAvailability(conn, pid, start, end)
-    
+
+def editListing(conn, pid, newListing):
+    '''Updates a listing with the new information provided in dictionary form'''
+    curs = dbi.cursor(conn)
+    curs.execute('''update place set city=%s, country=%s, street1=%s, street2=%s,
+                    state=%s, maxguest=%s, postalcode=%s where pid=%s''', 
+                    [newListing['city'], newListing['country'], newListing['street1'],
+                    newListing['street2'], newListing['state'], newListing['maxguest'],
+                    newListing['zip'], pid])  
                 
 def allListings(conn):
     '''returns all the listings in the database'''
@@ -115,22 +122,26 @@ def insertRequest(conn, bnumber, city, country, guestnum, start, end):
     curs.execute('''insert into request(bnumber, guestnum, city, country,
                 start,end) values(%s, %s, %s, %s, %s, %s)''',
                 [bnumber, guestnum, city, country, start, end])
+                
 def getRequest(conn, rid):
     '''return the request with the given rid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where rid=%s''', [rid])
     return curs.fetchone()
+
 def getAvailabilityForPlace(conn, pid):
     '''return all the availabilities for a place with the given pid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from availability where pid=%s''', [pid])
     return curs.fetchall()
+
 def deleteAvailability(conn,aid):
     '''delete the availability with the given aid'''
     curs = dbi.cursor(conn)
     curs.execute('''delete from availability
                     where aid = %s''',
                     [aid])
+
 def getAvailability(conn,aid):
     '''return the avialability with the given aid'''
     curs = dbi.dictCursor(conn)
