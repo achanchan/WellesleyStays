@@ -194,6 +194,7 @@ def editListing(rid):
 
     conn = functions.getConn(db)
     if (request.method ==  'GET'):
+        pid = request.query.pid
         request = functions.getRequest(conn, pid)
         render_template('editRequest.html', request=request)
     else:
