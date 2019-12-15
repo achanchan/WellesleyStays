@@ -130,6 +130,15 @@ def getRequest(conn, rid):
     curs.execute('''select * from request where rid=%s''', [rid])
     return curs.fetchone()
 
+def editRequest(conn, rid, newRequest):
+    '''updates the request with the new information stored in dict'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''update request set guestnum=%s, city=%s , country=%s,
+                    start=%s, end=%s where rid=%s''', 
+                    [newRequest['guestnum'], newRequest['city'], 
+                    newRequest['country'], newRequest['start'], 
+                    newRequest['end'], rid])
+
 def getAvailabilityForPlace(conn, pid):
     '''return all the availabilities for a place with the given pid'''
     curs = dbi.dictCursor(conn)

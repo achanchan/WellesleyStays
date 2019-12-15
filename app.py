@@ -217,6 +217,21 @@ def editAvailability(aid):
         flash("Updated successfully!")
         return redirect(url_for('place', pid=pid))
 
+@app.route('/editRequest/<rid>', methods=['POST', 'GET'])
+def editRequest(rid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    if (request.method ==  'GET'):
+        userRequest = functions.getRequest(conn, rid)
+        return render_template('editRequest.html', request=userRequest)
+    else:
+        form = request.form
+        functions.editRequest(conn, rid, form)
+        flash("Updated successfully!")
+        return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
+
 @app.route('/deleteRequest/<rid>', methods=['POST'])
 def deleteRequest(rid):
     if ('CAS_USERNAME' not in session):
