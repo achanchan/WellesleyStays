@@ -63,10 +63,10 @@ def getPlace(conn, pid):
     curs.execute('''select * from place where pid=%s''', [pid])
     return curs.fetchone()
 
-def searchPlace(conn, search):
-    '''returns all the places whos city contains search'''
+def searchPlace(conn, search, guest):
+    '''returns all the places whos city contains search and maxguest is greater than or equal to guest'''
     curs = dbi.dictCursor(conn)
-    curs.execute('''select * from place where city like %s''', ['%'+search+'%'])
+    curs.execute('''select * from place where city like %s and maxguest>=%s''', ['%'+search+'%', guest])
     return curs.fetchall()
 
 def searchRequest(conn, search):
@@ -115,22 +115,26 @@ def insertRequest(conn, bnumber, city, country, guestnum, start, end):
     curs.execute('''insert into request(bnumber, guestnum, city, country,
                 start,end) values(%s, %s, %s, %s, %s, %s)''',
                 [bnumber, guestnum, city, country, start, end])
+
 def getRequest(conn, rid):
     '''return the request with the given rid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where rid=%s''', [rid])
     return curs.fetchone()
+
 def getAvailabilityForPlace(conn, pid):
     '''return all the availabilities for a place with the given pid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from availability where pid=%s''', [pid])
     return curs.fetchall()
+
 def deleteAvailability(conn,aid):
     '''delete the availability with the given aid'''
     curs = dbi.cursor(conn)
     curs.execute('''delete from availability
                     where aid = %s''',
                     [aid])
+
 def getAvailability(conn,aid):
     '''return the avialability with the given aid'''
     curs = dbi.dictCursor(conn)

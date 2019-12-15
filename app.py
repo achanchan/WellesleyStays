@@ -196,7 +196,7 @@ def deleteRequest(rid):
     functions.deleteRequest(conn, rid)
 
     return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
-    
+
 @app.route('/search/listing' ,methods=["GET","POST"])
 def searchListing():
     if ('CAS_USERNAME' not in session):
@@ -207,18 +207,21 @@ def searchListing():
         listings = functions.allListings(conn)
         return render_template('search.html', listings=listings)
     if request.method == "POST": 
-        arg =request.form.get('searchterm')
-        guests =request.form.get('guests')
-        return redirect(url_for('search', query=arg, guests=guests))
+        arg = request.form.get('searchterm')
+        guest=request.form.get('guests')
+        if arg == "":
+            listings = functions.allListings(conn)
+            return render_template('search.html', listings=listings)
+        return redirect(url_for('search', query=arg, guest=guest))
 
-@app.route('/search/listing/<query>', methods=['GET','POST'])
-def search(query):
+@app.route('/search/listing/<query>/<guest>', methods=['GET','POST'])
+def search(query,guest):
     if ('CAS_USERNAME' not in session):
         return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     
-    places = functions.searchPlace(conn, query)
+    places = functions.searchPlace(conn, query, guest)
     return render_template('search.html', listings=places)
 
 @app.route('/search/request' ,methods=["GET","POST"])
@@ -232,6 +235,9 @@ def searchRequest():
         return render_template('searchrequest.html', requests=aRequest)
     if request.method == "POST": 
         arg =request.form.get('searchterm')
+        if arg == "":
+            aRequest = functions.allRequests(conn)
+            return render_template('searchrequest.html', requests=aRequest)
         return redirect(url_for('searchR', query=arg))
 
 
@@ -327,6 +333,7 @@ def addAvailability(pid):
     functions.insertAvailability(conn, pid, start,end)
 
     return redirect(url_for('place', pid=pid))
+
 
 
 if __name__ == '__main__':

@@ -4,19 +4,28 @@
 {% block main_content %}
 <h2>Find A Listing</h2>
         <form id="search" method=POST action="{{url_for('searchListing')}}">
-            <label>City: <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm"></label>
-            <label>Number of Guests: <select id ="guests" name ="guests">
+            <div>
+            <label>City: 
+            <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm">
+            </label>
+            </div>
+            <div>
+            <label>Number of Guests:
+                <select id ="guests" name ="guests">
                 <option value=1>1+</option>
                 <option value=2>2+</option>
                 <option value=3>3+</option>
                 <option value=4>4+</option>
                 <option value=5>5+</option>
-                </select></label>
+                </select>
+            </label>
+            </div>
                 <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
         </form> 
 
 
     <h2>Listings</h2>
+    
     <table id="listing-list">
         <tr>
             <th>City</th>
