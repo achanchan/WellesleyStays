@@ -1,25 +1,32 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<div id="placeProfile">
+<h2>Host Contact</h2>
   <div id="contact">
-    <h2>Host Contact</h2>
-    <div class="contact-box">
+    <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('profile', bnumber=host.bnumber)}}';">
       <li>Name: {{host.name}}</li>
       <li>Email: {{host.email}}</li>
       <li>Phone: {{host.phonenum}}</li>
-      <a href="{{url_for('profile', bnumber=host.bnumber)}}">See More</a>
-    </div>
+  </button>
   </div>
+  <h2>Place Info</h2>
   <div id="listings">
-    <h2>Place Info</h2>
     <div class="listing">
       <li>PID: {{place.pid}}</li> 
       <li>City: {{place.city}}</li>
       <li>Country: {{place.country}}</li>
+      <!-- <li>Address: {{place.street1}}</li> -->
       <li>State: {{place.state}}</li>
       <li>Max Guests: {{place.maxguest}}</li>
-      <li>Postal Code: {{place.postalcode}}</li>
+      <!-- <li>Postal Code: {{place.postalcode}}</li> -->
+
+      {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
+      <form id="deleteListing" action="{{url_for('deleteListing', pid=place.pid)}}" method="post">
+          <button type="submit" class="button" name="deleteListing" value="deleteListing">Delete Listing</button>
+      </form>
+      {% endif %}
+
     </div>
   </div>
 
@@ -34,4 +41,11 @@
   {% endfor %}
 </div>
 </div>
+  {% if session['CAS_ATTRIBUTES']['cas:id'] != host.bnumber %}
+  <h2>Report A Problem</h2>
+  <button type="button" class="contact-button"
+            onclick="window.location.href='{{url_for('report', bnumber=host.bnumber)}}';">
+      Report A Problem
+  </button>
+  {% endif %}
 {% endblock %}

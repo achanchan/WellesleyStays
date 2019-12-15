@@ -91,6 +91,18 @@ def deleteUser(conn,bnumber):
                     where bnumber = %s''',
                     [bnumber])
 
+def deleteListing(conn,pid):
+    curs = dbi.cursor(conn)
+    curs.execute('''delete from place
+                    where pid = %s''',
+                    [pid])
+
+def deleteRequest(conn,rid):
+    curs = dbi.cursor(conn)
+    curs.execute('''delete from request
+                    where rid = %s''',
+                    [rid])
+
 def insertRequest(conn, bnumber, city, country, guestnum, start, end):
     '''Inserts a request into the database'''
     curs = dbi.cursor(conn)

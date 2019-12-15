@@ -1,6 +1,6 @@
 body {
 	font-family: helvetica;
-	background-color: #1dcaff;
+	background-color: #000080;
 	color: white;
 	text-align: center;
 	max-width: 700px;
@@ -21,38 +21,44 @@ h1 {
 
 a {
 	font-size: 2rem;
-	color: #ffcccb;
+	color: white;
+}
+
+#deleteListing, #deleteRequest {
+	border: none;
 }
 
 form {
 	/* Just to center the form on the page */
 	margin: 0 auto;
-	width: 400px;
+	/* width: 400px; */
 	/* To see the outline of the form */
 	padding: 1em;
-	border: 3px solid #ffcccb;
+	border: 3px solid white;
 	border-radius: 1em;
   }
-  form div + div {
+  form div{
 	margin-top: 1em;
+	display: flex;
   }
   label {
 	/* To make sure that all labels have the same size and are properly aligned */
 	display: block;
-	width: 1rem;
+	width: 20rem;
 	text-align: center;
+	padding: 10px 0px 0px 0px;
   }
   input, textarea, select {
 	/* To make sure that all text fields have the same font settings By default, textareas have a monospace font */
 	font: 1em sans-serif;
 	font-weight: bold;
-	color: #ffcccb;
+	color: white;
 	/* To give the same size to all text fields */
-	width: 300px;
+	/* width: 300px; */
 	background: transparent;
 	border: none;
 	border-radius: 0px;
-	border-bottom: 3px solid #ffcccb;
+	border-bottom: 3px solid white;
 	width: 275px;
 	outline: none;
 	padding: 10px 0px 0px 0px;
@@ -64,14 +70,26 @@ form {
 	height: 5em;
   }
   button {
-	  background:  #d39897;
+	  background:  none;
 	  color: white;
 	  font: 1rem sans-serif;
 	  font-weight: bold;
 	  -webkit-transition-duration: 0.4s; /* Safari */
 	  transition-duration: 0.4s;
 	  cursor: pointer;
-	}
+	  margin: 50px auto auto auto;
+	  padding: 1em;
+	  border: 3px solid white;
+	  border-radius: 1em;
+	  width: 50%;
+	  display: block;
+  }
+
+  button:hover {
+	background-color: white;
+	color: #000080;
+  }
+
   select {
 	-webkit-appearance: none;
     background-image: url("./arrow.svg");
@@ -97,13 +115,24 @@ form {
 	display: block;
     padding: 1rem;
 }
+
+.navitem a.active {
+	background-color: white;
+	color: #000080;
+}
+  
+.navitem a:hover:not(.active) {
+	background-color: #555;
+	color: white;
+}
+
 table{
 	width: 100%
 }
 
-#profile{
+#profile, #listings, #requests, #contact{
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-evenly;
 }
 
 li{
@@ -111,14 +140,26 @@ li{
 }
 
 .contact-box, .listing, .request{
-	/* Just to center the form on the page */
-	margin: 1em auto;
+	/* margin: auto; */
 	/* To see the outline of the form */
 	padding: 1em;
-	border: 3px solid #ffcccb;
+	border: 3px solid white;
 	border-radius: 1em; 
+	width: 100%;
 }
 
-#placeProfile{
+.contact-button {
+	background:  none;
+	color: white;
+	font: 1rem sans-serif;
+	font-weight: bold;
+	-webkit-transition-duration: 0.4s; /* Safari */
+	transition-duration: 0.4s;
+	cursor: pointer;
+	margin: auto;
+	padding: 1em;
+	border: 3px solid white;
+	border-radius: 1em;
+	width: 100%;
 	display: block;
 }
