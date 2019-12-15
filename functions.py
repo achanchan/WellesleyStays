@@ -122,11 +122,7 @@ def insertRequest(conn, bnumber, city, country, guestnum, start, end):
     curs.execute('''insert into request(bnumber, guestnum, city, country,
                 start,end) values(%s, %s, %s, %s, %s, %s)''',
                 [bnumber, guestnum, city, country, start, end])
-<<<<<<< HEAD
-
-=======
                 
->>>>>>> 17949daa80a33820bc253fe26a16a948fbc019ff
 def getRequest(conn, rid):
     '''return the request with the given rid'''
     curs = dbi.dictCursor(conn)
