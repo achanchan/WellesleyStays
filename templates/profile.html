@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% if session['CAS_ATTRIBUTES']['cas:id'] == user.bnumber %}
 {% set active_page = "profile" %}
+{% endif %}
 
 {% block main_content %}
 <h2>Contact Info</h2>
