@@ -30,9 +30,10 @@
 
     </div>
   </div>
+
+{% if availability %}
 <h2>Availabilities</h2>
 <div id="availabilities">
-
 
   {% for data in availability %}
   <div class="availability" >
@@ -50,9 +51,12 @@
   {% endfor %}
 
 </div>
+{% endif %}
+
 <div>
-  <h4>Add An Availability</h4>
+
 {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
+<h4>Add An Availability</h4>
 <form id="addAvailability" action="{{url_for('addAvailability', pid=place.pid)}}" method="post"> 
   <div>
         <label for="start">Start</label>
@@ -65,7 +69,8 @@
     <button type="submit" class="button" name="addAvailability" value="addAvailability">Add</button>
 </form>
 {% endif %}
-</div>
+
+<//div>
   {% if session['CAS_ATTRIBUTES']['cas:id'] != host.bnumber %}
   <h2>Report A Problem</h2>
   <button type="button" class="contact-button"
