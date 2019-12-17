@@ -54,6 +54,12 @@
             <th>End</th>
             <td>{{form.end}}</td>
         </tr>
+        {% if src != "" %}
+            <tr>
+                <th>Photo</th>
+                <td><img src="{{src}}"></td>
+            </tr>
+        {% endif %}
     </table>
 
 {% endblock %}
