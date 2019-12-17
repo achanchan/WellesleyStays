@@ -20,6 +20,9 @@
       <li>State: {{place.state}}</li>
       <li>Max Guests: {{place.maxguest}}</li>
       <!-- <li>Postal Code: {{place.postalcode}}</li> -->
+      {% if src is not none %}
+        <li><img src="{{src}}" alt="listing image" style="width: 30em; height: auto;"></li>
+      {% endif %}
 
       {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
       <a href="{{url_for('editListing', pid=place.pid)}}"><button type="submit" class="button">Edit</button></a>
