@@ -59,11 +59,11 @@
 <h4>Add An Availability</h4>
 <form id="addAvailability" action="{{url_for('addAvailability', pid=place.pid)}}" method="post"> 
   <div>
-        <label for="start">Start</label>
+        <label for="start">Start <span style="color: red;">*</span></label>
         <input id="start" type="date" name="start" required>
     </div>
     <div>
-        <label for="end">End</label>
+        <label for="end">End <span style="color: red;">*</span></label>
         <input id="end" type="date" name="end" required>
     </div>
     <button type="submit" class="button" name="addAvailability" value="addAvailability">Add</button>
