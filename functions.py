@@ -147,3 +147,69 @@ def getAvailability(conn,aid):
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from availability where aid=%s''', [aid])
     return curs.fetchone()
+
+# def searchPlaceDesc(conn, search, guest):
+#     '''returns all the places whos city contains search and maxguest is greater than or equal to guest
+#     in descending order of maxguest'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from place where city like %s and maxguest>=%s 
+#                     order by maxguest desc''', ['%'+search+'%', guest])
+#     return curs.fetchall()
+
+# def searchPlaceAsc(conn, search, guest):
+#     '''returns all the places whos city contains search and maxguest is greater 
+#     than or equal to guest in ascending order of maxguest'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from place where city like %s and maxguest>=%s 
+#                     order by maxguest asc''', ['%'+search+'%', guest])
+#     return curs.fetchall()
+
+# def searchPlaceRecent(conn, search, guest):
+#     '''returns all the places whos city contains search and maxguest is greater 
+#     than or equal to guest in order of descending order of recency'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from place where city like %s and maxguest>=%s 
+#                     order by pid desc''', ['%'+search+'%', guest])
+#     return curs.fetchall()
+
+# def searchRequestDesc(conn, search):
+#     '''returns all the unfilled requests whos city contains 
+#     search in descending order of guestnum'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from request where city like %s and isfilled=0 
+#                     and guestnum>=%s order by guestnum desc''', ['%'+search+'%', guest])
+#     return curs.fetchall()
+
+# def searchRequestAsc(conn, search, guest):
+#     '''returns all the unfilled requests whos city 
+#     contains search in ascending order of guestnum'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from request where city like %s and isfilled=0 and 
+#                     guestnum>=%s order by guestnum asc''', ['%'+search+'%', guest])
+#     return curs.fetchall()
+
+# def searchRequestRecent(conn, search, guest):
+#     '''returns all the unfilled requests whos city contains 
+#     search in descending order of recency'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from request where city like %s and isfilled=0 
+#                     and guestnum>=%s order by rid desc''', ['%'+search+'%', guest])
+#     return curs.fetchall()
+
+# def allListingsDesc(conn):
+#     '''returns all the listings in the database order by maxguest desc'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from place order by maxguest desc''')
+#     return curs.fetchall()
+
+# def allListingsAsc(conn):
+#     '''returns all the listings in the database order by maxguest asc'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from place order by maxguest asc''')
+#     return curs.fetchall()
+
+# def allListingsRecent(conn):
+#     '''returns all the listings in the database order by pid desc'''
+#     curs = dbi.dictCursor(conn)
+#     curs.execute('''select * from place order by pid desc''')
+#     return curs.fetchall()

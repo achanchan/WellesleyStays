@@ -5,16 +5,21 @@
 <h2>Find A Request</h2>
     <form id="search" method=POST action="{{url_for('searchRequest')}}">
         <div>
-            <label for="searchterm">City: </label>
+            <label for="searchterm">City: 
             <input id="searchterm" placeholder="I'm looking to satisfy a request in..." name="searchterm">
+        </label>
         </div>
-        <!-- <label>Number of Guests: <select id ="guests" name ="guests"></label>
-            <option value=1>1</option>
-            <option value=2>2</option>
-            <option value=3>3</option>
-            <option value=4>4</option>
-            <option value=5>5+</option>
-            </select> -->
+        <div>
+            <label>Number of Guests:
+                <select id ="guests" name ="guests">
+                <option value=1>1+</option>
+                <option value=2>2+</option>
+                <option value=3>3+</option>
+                <option value=4>4+</option>
+                <option value=5>5+</option>
+                </select>
+            </label>
+            </div>
             
             <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
     </form> 

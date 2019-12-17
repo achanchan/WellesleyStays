@@ -34,7 +34,7 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
-db = "wstays_db"
+db = "achan_db"
 
 @app.route('/')
 def index():
@@ -238,7 +238,7 @@ def search(query,guest):
     conn = functions.getConn(db)
     
     places = functions.searchPlace(conn, query, guest)
-    return render_template('search.html', listings=places)
+    return render_template('search.html', listings=places, guest=guest, query=query)
 
 @app.route('/search/request' ,methods=["GET","POST"])
 def searchRequest():
@@ -251,14 +251,15 @@ def searchRequest():
         return render_template('searchrequest.html', requests=aRequest)
     if request.method == "POST": 
         arg =request.form.get('searchterm')
+        guest=request.form.get('guests')
         if arg == "":
             aRequest = functions.allRequests(conn)
             return render_template('searchrequest.html', requests=aRequest)
-        return redirect(url_for('searchR', query=arg))
+        return redirect(url_for('searchR', query=arg, guest=guest))
 
 
-@app.route('/search/request/<query>' ,methods=["GET","POST"])
-def searchR(query):
+@app.route('/search/request/<query>/<guest>' ,methods=["GET","POST"])
+def searchR(query,guest):
     if ('CAS_USERNAME' not in session):
         return redirect(url_for("index"))
 

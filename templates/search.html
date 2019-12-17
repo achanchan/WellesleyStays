@@ -5,7 +5,7 @@
 <h2>Find A Listing</h2>
         <form id="search" method=POST action="{{url_for('searchListing')}}">
             <div>
-            <label>City: 
+            <label>City:  
             <input id="searchterm" placeholder="I'm looking for a place in..." name="searchterm">
             </label>
             </div>
@@ -23,9 +23,20 @@
                 <button id="searchbutton" type="submit" name="submit" value="search">Find!</button>
         </form> 
 
+        <!-- <form id="filtersearch" method=POST action = "">
+            <label>Sort by
+                <select id ="filterby" name ="filterby">
+                    <option value="recent">Most Recent</option>
+                    <option value="hightolow">Guest Number High to Low</option>
+                    <option value="lowtohigh">Guest Number Low to High</option>
+                </select> </label>
+                <button id="filterbutton" type="submit" name="submit" value="filter">Filter</button>
+        </form> -->
 
     <h2>Listings</h2>
-    
+
+
+
     <table id="listing-list">
         <tr>
             <th>City</th>
