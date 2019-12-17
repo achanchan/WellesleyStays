@@ -188,18 +188,47 @@ def deleteAvailability(aid):
     return redirect(url_for('place', pid=availability['pid']))
 
 @app.route('/editListing/<pid>', methods=['POST', 'GET'])
-def editListing(rid):
+def editListing(pid):
     if ('CAS_USERNAME' not in session):
         return redirect(url_for("index"))
 
     conn = functions.getConn(db)
     if (request.method ==  'GET'):
-        pid = request.query.pid
-        request = functions.getRequest(conn, pid)
-        render_template('editRequest.html', request=request)
+        guestRequest = functions.getPlace(conn, pid)
+        return render_template('editListing.html', request=guestRequest)
     else:
         form = request.form
-        conn.editListing(conn, pid, form)
+        functions.editListing(conn, pid, form)
+        flash("Updated successfully!")
+        return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
+
+@app.route('/editAvailability/<aid>', methods=['POST', 'GET'])
+def editAvailability(aid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    if (request.method ==  'GET'):
+        availability = functions.getAvailability(conn, aid)
+        return render_template('editAvailability.html', availability=availability)
+    else:
+        form = request.form
+        pid = functions.editAvailability(conn, aid, form)['pid']
+        flash("Updated successfully!")
+        return redirect(url_for('place', pid=pid))
+
+@app.route('/editRequest/<rid>', methods=['POST', 'GET'])
+def editRequest(rid):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+
+    conn = functions.getConn(db)
+    if (request.method ==  'GET'):
+        userRequest = functions.getRequest(conn, rid)
+        return render_template('editRequest.html', request=userRequest)
+    else:
+        form = request.form
+        functions.editRequest(conn, rid, form)
         flash("Updated successfully!")
         return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
 

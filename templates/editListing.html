@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<h2>Edit listing with PID {{request.pid}}</h2>
+    <form method="POST" action="{{url_for('editListing', pid=request.pid)}}">
+        <div>
+            <label for="street1">Street 1 <span style="color: red;">*</span></label>
+            <input id="street1" type="text" name="street1" value="{{request.street1}}" required>
+        </div>
+        <div>
+            <label for="street2">Street 2</label>    
+            {% if "street2" in request %}
+                <input id="street2" type="text" name="street2" value="{{request.street2}}">
+            {% else %}
+                <input id="street2" type="text" name="street2" placeholder="Apartment, studio, or floor">
+            {% endif %}
+        </div>
+        <div>
+            <label for="city">City <span style="color: red;">*</span></label>
+            <input id="city" type="text" class="form-control" name="city" value="{{request.city}}" required>
+        </div>
+        <div>
+            <label for="state">State</label>
+            {% if "state" in request %}
+                <input id="state" type="text" name="state" value="{{request.state}}">
+            {% else %}
+                <input id="state" type="text" name="state">
+            {% endif %}
+            
+        </div>
+        <div>
+            <label for="zip">Zip Code</label>
+            {% if "postalcode" in request %}
+                <input id="zip" type="text"  name="zip" value="{{request.postalcode}}">
+            {% else %}
+                <input id="zip" type="text"  name="zip">
+            {% endif %}
+            
+        </div>
+        <div>
+            <label for="country">Country <span style="color: red;">*</span></label>
+            <input id="country" type="text" name="country" value="{{request.country}}" required>
+        </div>
+        <div>
+            <label for="maxguest">Max number of guests <span style="color: red;">*</span></label>
+            <input id="maxguest" type="number" name="maxguest" value="{{request.maxguest}}" required>
+        </div>
+        <button type="submit">Edit!</button>
+    </form>
+{% endblock %}
