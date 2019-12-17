@@ -3,9 +3,9 @@
 
 {% block main_content %}
 <h2>List A Place</h2>
-    <form method="POST" action="{{url_for('listingecho')}}">
+    <form method="POST" action="{{url_for('listingecho')}}" enctype="multipart/form-data">
         <div>
-            <label for="name">B Number <span style="color: red;">*</span></label>
+            <label for="name">Name <span style="color: red;">*</span></label>
             <input id="name" type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
         </div>
         <div>
@@ -44,6 +44,10 @@
             <label for="end">End <span style="color: red;">*</span></label>
             <input id="end" type="date" name="end" required>
         </div>
-        <button type="submit">List!</button>
+        <div>
+            <label for="pic">Picture</label>
+            <input type="file" name="pic" size="50"></label>
+        </div>
+        <button type="submit" value="upload">List!</button>
     </form>
 {% endblock %}
