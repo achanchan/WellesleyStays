@@ -250,13 +250,13 @@ def searchListing():
     conn = functions.getConn(db)
     if request.method == "GET":
         listings = functions.allListings(conn)
-        return render_template('search.html', listings=listings)
+        return render_template('search.html', listings=listings, query = "all listings", guest = "all listings")
     if request.method == "POST": 
         arg = request.form.get('searchterm')
         guest=request.form.get('guests')
         if arg == "":
             listings = functions.allListings(conn)
-            return render_template('search.html', listings=listings)
+            return render_template('search.html', listings=listings, query = "all listings", guest = "all listings")
         return redirect(url_for('search', query=arg, guest=guest))
 
 @app.route('/search/listing/<query>/<guest>', methods=['GET','POST'])
@@ -277,13 +277,13 @@ def searchRequest():
     conn = functions.getConn(db)
     if request.method == "GET":
         aRequest = functions.allRequests(conn)
-        return render_template('searchrequest.html', requests=aRequest)
+        return render_template('searchrequest.html', requests=aRequest, query = "all listings", guest = "all listings")
     if request.method == "POST": 
         arg =request.form.get('searchterm')
         guest=request.form.get('guests')
         if arg == "":
             aRequest = functions.allRequests(conn)
-            return render_template('searchrequest.html', requests=aRequest)
+            return render_template('searchrequest.html', requests=aRequest, query = "all listings", guest = "all listings")
         return redirect(url_for('searchR', query=arg, guest=guest))
 
 
@@ -294,7 +294,7 @@ def searchR(query,guest):
 
     conn = functions.getConn(db)
     aRequest = functions.searchRequest(conn,query)
-    return render_template('searchrequest.html', requests=aRequest)
+    return render_template('searchrequest.html', requests=aRequest, query = query, guest = guest)
 
 
 @app.route('/requestform/', methods=["GET"])
