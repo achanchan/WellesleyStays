@@ -167,7 +167,6 @@ def editAvailability(conn, aid, newAvailability):
     curs.execute('''select pid from availability where aid=%s''', [aid])
     return curs.fetchone()
 
-<<<<<<< HEAD
 def allListingsForXGuests(conn,guest):
     '''returns all the listings in the database that can house at least the given number of guests'''
     curs = dbi.dictCursor(conn)
@@ -179,7 +178,6 @@ def allRequestsForXGuests(conn, guest):
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where isfilled=0 and guestnum>=%s''',[guest])
     return curs.fetchall()
-=======
 def insertPic(conn, pid, filename):
     '''inserts a photo into the database paired with the id of the place the image is of'''
     curs = dbi.dictCursor(conn)
@@ -193,4 +191,3 @@ def findPic(conn, pid):
     curs.execute('''select filename from pic where pid=%s''',
                     [pid])
     return curs.fetchone()
->>>>>>> c33f378eac11bb883041d67989adaf1532a370df

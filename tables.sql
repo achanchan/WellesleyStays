@@ -1,10 +1,11 @@
-use wstays_db;
+use achan_db;
 
 drop table if exists availability;
+drop table if exists pic;
 drop table if exists place;
 drop table if exists request;
 drop table if exists user;
-drop table if exists pic;
+
 
 CREATE TABLE user (
     bnumber char(9),
