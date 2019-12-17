@@ -1,10 +1,10 @@
-use achan_db;
+use wstays_db;
 
 drop table if exists availability;
 drop table if exists place;
 drop table if exists request;
 drop table if exists user;
-
+drop table if exists pic;
 
 CREATE TABLE user (
     bnumber char(9),
@@ -53,6 +53,15 @@ CREATE TABLE request (
     end date,
     primary key (rid),
     foreign key (bnumber) references user(bnumber)
+        on delete cascade
+        on update cascade
+) ENGINE = InnoDB;
+
+CREATE TABLE pic (
+    pid int,
+    filename varchar(50),
+    primary key (pid),
+    foreign key (pid) references place(pid)
         on delete cascade
         on update cascade
 ) ENGINE = InnoDB;

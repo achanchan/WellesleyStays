@@ -5,6 +5,7 @@ from werkzeug import secure_filename
 app = Flask(__name__)
 
 import sys,os,random
+import imghdr
 import functions
 # new for CAS
 from flask_cas import CAS
@@ -19,7 +20,6 @@ app.config.update(
     MAIL_USERNAME='wstays@wellesley.edu'
 )
 mail = Mail(app)
-
 app.secret_key = '123wst4ys321'
 
 CAS(app)
@@ -34,7 +34,12 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
+<<<<<<< HEAD
 db = "achan_db"
+=======
+app.config['UPLOADS'] = 'uploads'
+db = "wstays_db"
+>>>>>>> c33f378eac11bb883041d67989adaf1532a370df
 
 @app.route('/')
 def index():
@@ -155,16 +160,40 @@ def listing():
     #     flash('you are not logged in. Please login or join')
     #     return redirect(url_for('index'))
 
+@app.route('/pic/<pid>')
+def pic(pid):
+    conn = functions.getConn(db)
+    userPhoto = functions.findPic(conn, pid)
+    return send_from_directory(app.config['UPLOADS'], userPhoto['filename'])
+
+
 @app.route('/listingecho/', methods=['POST'])
 def listingecho():
     conn = functions.getConn(db)
     form = request.form
-    functions.insertListing(conn, form.get("user"), form.get("street1"),
+    pid = functions.insertListing(conn, form.get("user"), form.get("street1"),
     form.get("street2"), form.get("city"), form.get("state"),
     form.get("zip"), form.get("country"), form.get("maxguest"), 
     form.get("start"), form.get("end"))
 
-    return render_template('listingconfirmation.html', form=form)
+    if ('pic' in request.files):
+        f = request.files['pic']
+        
+        user_filename = f.filename
+        ext = user_filename.split('.')[-1]
+        filename = secure_filename('{}.{}'.format(pid, ext))
+        pathname = os.path.join(app.config['UPLOADS'],filename)
+        if (imghdr.what(f) is not None):
+            f.save(pathname)
+            functions.insertPic(conn, pid, filename)
+            return render_template('listingconfirmation.html',
+                                form=form, 
+                                src=url_for('pic', pid=pid))
+        flashMessage = "Must be a valid image type"
+    flash(flashMessage)
+    return render_template('listingconfirmation.html',
+                            form=form, 
+                            src="")
 
 @app.route('/deleteListing/<pid>', methods=['POST'])
 def deleteListing(pid):

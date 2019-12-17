@@ -31,6 +31,7 @@ def insertListing(conn, bnumber, street1, street2, city, state, zipcode, country
                 [bnumber, city, country, street1, street2, state, maxguest, zipcode])
     pid = curs.lastrowid
     insertAvailability(conn, pid, start, end)
+    return pid
 
 def editListing(conn, pid, newListing):
     '''Updates a listing with the new information provided in dictionary form'''
@@ -158,71 +159,6 @@ def getAvailability(conn,aid):
     curs.execute('''select * from availability where aid=%s''', [aid])
     return curs.fetchone()
 
-# def searchPlaceDesc(conn, search, guest):
-#     '''returns all the places whos city contains search and maxguest is greater than or equal to guest
-#     in descending order of maxguest'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from place where city like %s and maxguest>=%s 
-#                     order by maxguest desc''', ['%'+search+'%', guest])
-#     return curs.fetchall()
-
-# def searchPlaceAsc(conn, search, guest):
-#     '''returns all the places whos city contains search and maxguest is greater 
-#     than or equal to guest in ascending order of maxguest'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from place where city like %s and maxguest>=%s 
-#                     order by maxguest asc''', ['%'+search+'%', guest])
-#     return curs.fetchall()
-
-# def searchPlaceRecent(conn, search, guest):
-#     '''returns all the places whos city contains search and maxguest is greater 
-#     than or equal to guest in order of descending order of recency'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from place where city like %s and maxguest>=%s 
-#                     order by pid desc''', ['%'+search+'%', guest])
-#     return curs.fetchall()
-
-# def searchRequestDesc(conn, search):
-#     '''returns all the unfilled requests whos city contains 
-#     search in descending order of guestnum'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from request where city like %s and isfilled=0 
-#                     and guestnum>=%s order by guestnum desc''', ['%'+search+'%', guest])
-#     return curs.fetchall()
-
-# def searchRequestAsc(conn, search, guest):
-#     '''returns all the unfilled requests whos city 
-#     contains search in ascending order of guestnum'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from request where city like %s and isfilled=0 and 
-#                     guestnum>=%s order by guestnum asc''', ['%'+search+'%', guest])
-#     return curs.fetchall()
-
-# def searchRequestRecent(conn, search, guest):
-#     '''returns all the unfilled requests whos city contains 
-#     search in descending order of recency'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from request where city like %s and isfilled=0 
-#                     and guestnum>=%s order by rid desc''', ['%'+search+'%', guest])
-#     return curs.fetchall()
-
-# def allListingsDesc(conn):
-#     '''returns all the listings in the database order by maxguest desc'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from place order by maxguest desc''')
-#     return curs.fetchall()
-
-# def allListingsAsc(conn):
-#     '''returns all the listings in the database order by maxguest asc'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from place order by maxguest asc''')
-#     return curs.fetchall()
-
-# def allListingsRecent(conn):
-#     '''returns all the listings in the database order by pid desc'''
-#     curs = dbi.dictCursor(conn)
-#     curs.execute('''select * from place order by pid desc''')
-#     return curs.fetchall()
 def editAvailability(conn, aid, newAvailability):
     '''updates the availability with the new information stored in dict'''
     curs = dbi.dictCursor(conn)
@@ -231,6 +167,7 @@ def editAvailability(conn, aid, newAvailability):
     curs.execute('''select pid from availability where aid=%s''', [aid])
     return curs.fetchone()
 
+<<<<<<< HEAD
 def allListingsForXGuests(conn,guest):
     '''returns all the listings in the database that can house at least the given number of guests'''
     curs = dbi.dictCursor(conn)
@@ -242,3 +179,18 @@ def allRequestsForXGuests(conn, guest):
     curs = dbi.dictCursor(conn)
     curs.execute('''select * from request where isfilled=0 and guestnum>=%s''',[guest])
     return curs.fetchall()
+=======
+def insertPic(conn, pid, filename):
+    '''inserts a photo into the database paired with the id of the place the image is of'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''insert into pic(pid, filename) values (%s, %s)
+                    on duplicate key update filename = %s''',
+                    [pid, filename, filename])
+
+def findPic(conn, pid):
+    '''finds the filename of the picture of a place given the pid'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select filename from pic where pid=%s''',
+                    [pid])
+    return curs.fetchone()
+>>>>>>> c33f378eac11bb883041d67989adaf1532a370df
