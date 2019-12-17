@@ -158,7 +158,6 @@ def getAvailability(conn,aid):
     curs.execute('''select * from availability where aid=%s''', [aid])
     return curs.fetchone()
 
-<<<<<<< HEAD
 # def searchPlaceDesc(conn, search, guest):
 #     '''returns all the places whos city contains search and maxguest is greater than or equal to guest
 #     in descending order of maxguest'''
@@ -224,7 +223,6 @@ def getAvailability(conn,aid):
 #     curs = dbi.dictCursor(conn)
 #     curs.execute('''select * from place order by pid desc''')
 #     return curs.fetchall()
-=======
 def editAvailability(conn, aid, newAvailability):
     '''updates the availability with the new information stored in dict'''
     curs = dbi.dictCursor(conn)
@@ -232,4 +230,3 @@ def editAvailability(conn, aid, newAvailability):
                     [newAvailability['start'], newAvailability['end'], aid])
     curs.execute('''select pid from availability where aid=%s''', [aid])
     return curs.fetchone()
->>>>>>> b9e1f3908c4a360f97fe84cba7db077e4f9e088b
