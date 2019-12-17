@@ -80,9 +80,11 @@ def place(pid):
     place = functions.getPlace(conn,pid)
     host = functions.getUser(conn,place['bnumber'])
     availability = functions.getAvailabilityForPlace(conn, pid)
-
+    src = functions.getPic(conn, pid)
+    if src is not None:
+        src=url_for('pic', pid=pid)
     if place:
-        return render_template('place.html', place=place, host=host, availability=availability)
+        return render_template('place.html', place=place, host=host, availability=availability, src=src)
     else:
         flash('Listing does not exist.')
         return redirect(request.referrer)
@@ -159,7 +161,7 @@ def listing():
 @app.route('/pic/<pid>')
 def pic(pid):
     conn = functions.getConn(db)
-    userPhoto = functions.findPic(conn, pid)
+    userPhoto = functions.getPic(conn, pid)
     return send_from_directory(app.config['UPLOADS'], userPhoto['filename'])
 
 
@@ -186,6 +188,7 @@ def listingecho():
                                 form=form, 
                                 src=url_for('pic', pid=pid))
         flashMessage = "Must be a valid image type"
+
     flash(flashMessage)
     return render_template('listingconfirmation.html',
                             form=form, 
@@ -224,6 +227,17 @@ def editListing(pid):
     else:
         form = request.form
         functions.editListing(conn, pid, form)
+        if ('pic' in request.files):
+            print("hello")
+            f = request.files['pic']
+            user_filename = f.filename
+            ext = user_filename.split('.')[-1]
+            filename = secure_filename('{}.{}'.format(pid, ext))
+            pathname = os.path.join(app.config['UPLOADS'],filename)
+            if (imghdr.what(f) is not None):
+                f.save(pathname)
+                functions.insertPic(conn, pid, filename)
+
         flash("Updated successfully!")
         return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
 

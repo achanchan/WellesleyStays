@@ -4,23 +4,23 @@
 <h2>Edit request with RID {{request.rid}}</h2>
     <form method="POST" action="{{url_for('editRequest', rid=request.rid)}}">
         <div>
-            <label for="city">City <span style="color: red;">*</span></label>
+            <label for="city">City <span style="color: white;">*</span></label>
             <input id="city" type="text" class="form-control" name="city" value="{{request.city}}" required>
         </div>
         <div>
-            <label for="country">Country <span style="color: red;">*</span></label>
+            <label for="country">Country <span style="color: white;">*</span></label>
             <input id="country" type="text" name="country" value="{{request.country}}" required>
         </div>
         <div>
-            <label for="maxguest">Number of guests <span style="color: red;">*</span></label>
+            <label for="maxguest">Number of guests <span style="color: white;">*</span></label>
             <input id="guestnum" type="number" name="guestnum" value="{{request.guestnum}}" required>
         </div>
         <div>
-            <label for="start">Start <span style="color: red;">*</span></label>
+            <label for="start">Start <span style="color: white;">*</span></label>
             <input id="start" type="date" name="start" value="{{request['start']}}" required>
         </div>
         <div>
-            <label for="end">End <span style="color: red;">*</span></label>
+            <label for="end">End <span style="color: white;">*</span></label>
             <input id="end" type="date" name="end" value="{{request['end']}}" required>
         </div>
         <button type="submit">Edit!</button>

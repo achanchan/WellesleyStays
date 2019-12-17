@@ -5,31 +5,31 @@
 <h2>Post A Request</h2>
     <form method="POST" action="{{url_for('requestecho')}}">
         <div>
-            <label for="name">B Number <span style="color: red;">*</span></label>
+            <label for="name">B Number <span style="color: white;">*</span></label>
             <input id="name" type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
         </div>
 
         <div>
-            <label for="city">City <span style="color: red;">*</span></label>
+            <label for="city">City <span style="color: white;">*</span></label>
             <input id="city" type="text" class="form-control" name="city" required>
         </div>
         
         <div>
-            <label for="country">Country <span style="color: red;">*</span></label>
+            <label for="country">Country <span style="color: white;">*</span></label>
             <!-- change into a select at some point -->
             <input id="country" type="text" name="country" required>
         </div>
         <div>
-            <label for="guestnum">Number of guests <span style="color: red;">*</span></label>
+            <label for="guestnum">Number of guests <span style="color: white;">*</span></label>
             <!-- change into a select at some point -->
             <input id="guestnum" type="number" name="guestnum" required>
         </div>
         <div>
-            <label for="start">Start <span style="color: red;">*</span></label>
+            <label for="start">Start <span style="color: white;">*</span></label>
             <input id="start" type="date" name="start" required>
         </div>
         <div>
-            <label for="end">End <span style="color: red;">*</span></label>
+            <label for="end">End <span style="color: white;">*</span></label>
             <input id="end" type="date" name="end" required>
         </div>
         <button type="submit">Request!</button>

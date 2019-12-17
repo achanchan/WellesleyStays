@@ -174,7 +174,7 @@ def insertPic(conn, pid, filename):
                     on duplicate key update filename = %s''',
                     [pid, filename, filename])
 
-def findPic(conn, pid):
+def getPic(conn, pid):
     '''finds the filename of the picture of a place given the pid'''
     curs = dbi.dictCursor(conn)
     curs.execute('''select filename from pic where pid=%s''',
