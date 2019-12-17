@@ -5,11 +5,11 @@
 <h2>List A Place</h2>
     <form method="POST" action="{{url_for('listingecho')}}">
         <div>
-            <label for="name">B Number <span style="color: red;">*</span></label>
+            <label for="name">B Number <span style="color: white;">*</span></label>
             <input id="name" type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
         </div>
         <div>
-            <label for="street1">Street 1 <span style="color: red;">*</span></label>
+            <label for="street1">Street 1 <span style="color: white;">*</span></label>
             <input id="street1" type="text" name="street1" placeholder="1234 Main St" required>
         </div>
         <div>
@@ -17,7 +17,7 @@
             <input id="street2" type="text" name="street2" placeholder="Apartment, studio, or floor">
         </div>
         <div>
-            <label for="city">City <span style="color: red;">*</span></label>
+            <label for="city">City <span style="color: white;">*</span></label>
             <input id="city" type="text" class="form-control" name="city" required>
         </div>
         <div>
@@ -29,19 +29,19 @@
             <input id="zip" type="text"  name="zip">
         </div>
         <div>
-            <label for="country">Country <span style="color: red;">*</span></label>
+            <label for="country">Country <span style="color: white;">*</span></label>
             <input id="country" type="text" name="country" required>
         </div>
         <div>
-            <label for="maxguest">Max number of guests <span style="color: red;">*</span></label>
+            <label for="maxguest">Max number of guests <span style="color: white;">*</span></label>
             <input id="maxguest" type="number" name="maxguest" required>
         </div>
         <div>
-            <label for="start">Start <span style="color: red;">*</span></label>
+            <label for="start">Start <span style="color: white;">*</span></label>
             <input id="start" type="date" name="start" required>
         </div>
         <div>
-            <label for="end">End <span style="color: red;">*</span></label>
+            <label for="end">End <span style="color: white;">*</span></label>
             <input id="end" type="date" name="end" required>
         </div>
         <button type="submit">List!</button>
