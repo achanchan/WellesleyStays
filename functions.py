@@ -230,3 +230,15 @@ def editAvailability(conn, aid, newAvailability):
                     [newAvailability['start'], newAvailability['end'], aid])
     curs.execute('''select pid from availability where aid=%s''', [aid])
     return curs.fetchone()
+
+def allListingsForXGuests(conn,guest):
+    '''returns all the listings in the database that can house at least the given number of guests'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from place where maxguest>=%s''', [guest])
+    return curs.fetchall()
+
+def allRequestsForXGuests(conn, guest):
+    '''returns all the unfilled requests in the database that have atleast the given number of guests'''
+    curs = dbi.dictCursor(conn)
+    curs.execute('''select * from request where isfilled=0 and guestnum>=%s''',[guest])
+    return curs.fetchall()

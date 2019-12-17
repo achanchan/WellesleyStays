@@ -255,8 +255,8 @@ def searchListing():
         arg = request.form.get('searchterm')
         guest=request.form.get('guests')
         if arg == "":
-            listings = functions.allListings(conn)
-            return render_template('search.html', listings=listings, query = "all listings", guest = "all listings")
+            listings = functions.allListingsForXGuests(conn, guest)
+            return render_template('search.html', listings=listings, query = "all listings", guest = guest)
         return redirect(url_for('search', query=arg, guest=guest))
 
 @app.route('/search/listing/<query>/<guest>', methods=['GET','POST'])
@@ -282,8 +282,8 @@ def searchRequest():
         arg =request.form.get('searchterm')
         guest=request.form.get('guests')
         if arg == "":
-            aRequest = functions.allRequests(conn)
-            return render_template('searchrequest.html', requests=aRequest, query = "all listings", guest = "all listings")
+            aRequest = functions.allRequestsForXGuests(conn, guest)
+            return render_template('searchrequest.html', requests=aRequest, query = "all listings", guest = guest)
         return redirect(url_for('searchR', query=arg, guest=guest))
 
 
