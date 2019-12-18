@@ -10,6 +10,9 @@
     <li>Name: {{user.name}}</li>
     <li>Email: {{user.email}}</li>
     <li>Phone: {{user.phonenum}}</li>
+    {% if session['CAS_ATTRIBUTES']['cas:id'] == user.bnumber %}
+    <a href="{{url_for('updateUser', bnumber=user.bnumber)}}"><button type="submit" class="button">Edit</button></a>
+    {% endif %}
   </div>
 </div>
 <!-- <div id="profile"> -->
@@ -47,5 +50,11 @@
     {%endfor%} 
   </div>
   {%endif%}
+
+  {% if session['CAS_ATTRIBUTES']['cas:id'] == user.bnumber %}
+  <form id="deleteUser" action="{{url_for('deleteUser', bnumber=user.bnumber)}}" method="post">
+      <button type="submit" onclick="return confirm('Are you sure you want to delete?')" class="button" name="deleteUser" value="deletUser">Delete My Account</button>
+  </form>
+  {% endif %}
 <!-- </div> -->
 {% endblock %}

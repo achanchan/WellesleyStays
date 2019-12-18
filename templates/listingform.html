@@ -5,8 +5,8 @@
 <h2>List A Place</h2>
     <form method="POST" action="{{url_for('listingecho')}}" enctype="multipart/form-data">
         <div>
-            <label for="name">Name <span style="color: white;">*</span></label>
-            <input id="name" type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" >
+            <label for="name">B Number <span style="color: white;">*</span></label>
+            <input id="name" type="text" name="user" value="{{user.bnumber}}" placeholder="{{user.name}}" readonly>
         </div>
         <div>
             <label for="street1">Street 1 <span style="color: white;">*</span></label>

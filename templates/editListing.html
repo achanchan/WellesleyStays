@@ -2,9 +2,9 @@
 
 {% block main_content %}
 <h2>Edit listing with PID {{request.pid}}</h2>
-    <form method="POST" action="{{url_for('editListing', pid=request.pid)}}">
+    <form method="POST" action="{{url_for('editListing', pid=request.pid)}}" enctype="multipart/form-data">
         <div>
-            <label for="street1">Street 1 <span style="color: red;">*</span></label>
+            <label for="street1">Street 1 <span style="color: white;">*</span></label>
             <input id="street1" type="text" name="street1" value="{{request.street1}}" required>
         </div>
         <div>
@@ -16,7 +16,7 @@
             {% endif %}
         </div>
         <div>
-            <label for="city">City <span style="color: red;">*</span></label>
+            <label for="city">City <span style="color: white;">*</span></label>
             <input id="city" type="text" class="form-control" name="city" value="{{request.city}}" required>
         </div>
         <div>
@@ -38,12 +38,16 @@
             
         </div>
         <div>
-            <label for="country">Country <span style="color: red;">*</span></label>
+            <label for="country">Country <span style="color: white;">*</span></label>
             <input id="country" type="text" name="country" value="{{request.country}}" required>
         </div>
         <div>
-            <label for="maxguest">Max number of guests <span style="color: red;">*</span></label>
+            <label for="maxguest">Max number of guests <span style="color: white;">*</span></label>
             <input id="maxguest" type="number" name="maxguest" value="{{request.maxguest}}" required>
+        </div>
+        <div>
+            <label for="pic">Picture</label>
+            <input type="file" name="pic" size="50"></label>
         </div>
         <button type="submit">Edit!</button>
     </form>

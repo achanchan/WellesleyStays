@@ -4,16 +4,16 @@
   <h1>PROFILE</h1>
       <form action="{{url_for('updateUser', bnumber=user.bnumber)}}" method="post">
           <div>
-            <label for="bnumber">BNUMBER</label> <input type="text" id="bnumber" name="bnumber" value="{{user.bnumber}}">
+            <label for="bnumber">BNUMBER <span style="color: white;">*</span></label> <input type="text" id="bnumber" name="bnumber" value="{{user.bnumber}}" readonly>
           </div>
           <div>
-            <label for="email">EMAIL</label> <input type="text" id="email" name="email" value="{{user.email}}">
+            <label for="email">EMAIL <span style="color: white;">*</span></label> <input type="text" id="email" name="email" value="{{user.email}}">
           </div>
           <div>
-            <label for="name">NAME</label> <input type="text" id="name" name="user_name" value="{{user.name}}">
+            <label for="name">NAME <span style="color: white;">*</span></label> <input type="text" id="name" name="user_name" value="{{user.name}}">
           </div>
           <div>
-            <label for="phonenum">PHONE</label> <input type="text" id="phonenum" name="phonenum" value="{{user.phonenum}}">
+            <label for="phonenum">PHONE <span style="color: white;">*</span></label> <input type="text" id="phonenum" name="phonenum" value="{{user.phonenum}}">
           </div>
           <div class="button">
             <button type="submit" name="submit" value="update">UPDATE</button>

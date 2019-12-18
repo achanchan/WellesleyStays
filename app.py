@@ -80,9 +80,11 @@ def place(pid):
     place = functions.getPlace(conn,pid)
     host = functions.getUser(conn,place['bnumber'])
     availability = functions.getAvailabilityForPlace(conn, pid)
-
+    src = functions.getPic(conn, pid)
+    if src is not None:
+        src=url_for('pic', pid=pid)
     if place:
-        return render_template('place.html', place=place, host=host, availability=availability)
+        return render_template('place.html', place=place, host=host, availability=availability, src=src)
     else:
         flash('Listing does not exist.')
         return redirect(request.referrer)
@@ -126,20 +128,11 @@ def updateUser(bnumber):
         return render_template('updateUser.html', user=user)
     else:
         if request.form['submit'] == 'update':
-            new_bnum = request.form['bnumber']
-            exist = functions.getUser(conn,new_bnum)
-            if exist and new_bnum != bnumber:
-                flash('User already exists')
-                return redirect( url_for('updateUser', bnumber=bnumber) )
-            else:
-                functions.updateUser(conn,new_bnum,request.form['email'],
-                    request.form['user_name'],request.form['phonenum'],bnumber)
-                flash('User (%s) was successfully updated' %request.form['user_name'])
-                return redirect( url_for('updateUser', bnumber=new_bnum) )
-        else:
-            functions.deleteUser(conn,bnumber)
-            flash('User (%s) was deleted successfully' %bnumber)
-            return redirect(url_for('index'))
+            functions.updateUser(conn,bnumber,request.form['email'],
+                request.form['user_name'],request.form['phonenum'],bnumber)
+            flash('User (%s) was successfully updated' %request.form['user_name'])
+            return redirect( url_for('updateUser', bnumber=bnumber) )
+
 
 @app.route('/listing/', methods=["GET"])
 def listing():
@@ -159,7 +152,7 @@ def listing():
 @app.route('/pic/<pid>')
 def pic(pid):
     conn = functions.getConn(db)
-    userPhoto = functions.findPic(conn, pid)
+    userPhoto = functions.getPic(conn, pid)
     return send_from_directory(app.config['UPLOADS'], userPhoto['filename'])
 
 
@@ -186,6 +179,7 @@ def listingecho():
                                 form=form, 
                                 src=url_for('pic', pid=pid))
         flashMessage = "Must be a valid image type"
+
     flash(flashMessage)
     return render_template('listingconfirmation.html',
                             form=form, 
@@ -224,6 +218,17 @@ def editListing(pid):
     else:
         form = request.form
         functions.editListing(conn, pid, form)
+        if ('pic' in request.files):
+            print("hello")
+            f = request.files['pic']
+            user_filename = f.filename
+            ext = user_filename.split('.')[-1]
+            filename = secure_filename('{}.{}'.format(pid, ext))
+            pathname = os.path.join(app.config['UPLOADS'],filename)
+            if (imghdr.what(f) is not None):
+                f.save(pathname)
+                functions.insertPic(conn, pid, filename)
+
         flash("Updated successfully!")
         return redirect(url_for('profile', bnumber=session['CAS_ATTRIBUTES']['cas:id']))
 
@@ -405,7 +410,14 @@ def addAvailability(pid):
 
     return redirect(url_for('place', pid=pid))
 
-
+@app.route('/deleteUser/<bnumber>', methods=['POST'])
+def deleteUser(bnumber):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+    conn = functions.getConn(db)
+    functions.deleteUser(conn,bnumber)
+    flash('User (%s) was deleted successfully' %bnumber)
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
