@@ -10,5 +10,5 @@ $("#availabilities").on('click', '.deleteAvailability', function(event){
     if (event.target != this) return;
     var aid = $(this).closest("[data-aid").attr("data-aid");
 
-    $.post(url, {'aid': aid}, processDelete);
+    $.post(deleteURL, {'aid': aid}, processDelete);
 });
