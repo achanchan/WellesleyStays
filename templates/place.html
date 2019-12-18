@@ -78,14 +78,16 @@
 {% endif %}
 
 </div>
-  {% if session['CAS_ATTRIBUTES']['cas:id'] != host.bnumber %}
-  <h2>Report A Problem</h2>
-  <button type="button" class="contact-button"
-            onclick="window.location.href='{{url_for('report', bnumber=host.bnumber)}}';">
-      Report A Problem
-  </button>
-  {% endif %}
-  
+
+{% if session['CAS_ATTRIBUTES']['cas:id'] != host.bnumber %}
+<h2>Report A Problem</h2>
+<button type="button" class="contact-button"
+          onclick="window.location.href='{{url_for('report', bnumber=host.bnumber)}}';">
+    Report A Problem
+</button>
+{% endif %}
+
+<script>var url = "{{url_for('deleteAvailabilityAjax')}}"</script>
 <script src="{{url_for('static',filename='plain.js')}}"></script>
  
 {% endblock %}

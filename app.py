@@ -213,9 +213,8 @@ def deleteAvailabilityAjax():
         
     aid = request.form['aid']
     conn = functions.getConn(db)
-    # availability = functions.getAvailability(conn,aid)
     functions.deleteAvailability(conn, aid)
-    return jsonify({'error': False, 'aid': aid})
+    return jsonify(aid=aid, error=False)
 
 @app.route('/editListing/<pid>', methods=['POST', 'GET'])
 def editListing(pid):
