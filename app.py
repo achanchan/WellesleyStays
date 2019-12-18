@@ -128,20 +128,11 @@ def updateUser(bnumber):
         return render_template('updateUser.html', user=user)
     else:
         if request.form['submit'] == 'update':
-            new_bnum = request.form['bnumber']
-            exist = functions.getUser(conn,new_bnum)
-            if exist and new_bnum != bnumber:
-                flash('User already exists')
-                return redirect( url_for('updateUser', bnumber=bnumber) )
-            else:
-                functions.updateUser(conn,new_bnum,request.form['email'],
-                    request.form['user_name'],request.form['phonenum'],bnumber)
-                flash('User (%s) was successfully updated' %request.form['user_name'])
-                return redirect( url_for('updateUser', bnumber=new_bnum) )
-        else:
-            functions.deleteUser(conn,bnumber)
-            flash('User (%s) was deleted successfully' %bnumber)
-            return redirect(url_for('index'))
+            functions.updateUser(conn,bnumber,request.form['email'],
+                request.form['user_name'],request.form['phonenum'],bnumber)
+            flash('User (%s) was successfully updated' %request.form['user_name'])
+            return redirect( url_for('updateUser', bnumber=bnumber) )
+
 
 @app.route('/listing/', methods=["GET"])
 def listing():
@@ -294,8 +285,8 @@ def searchListing():
         arg = request.form.get('searchterm')
         guest=request.form.get('guests')
         if arg == "":
-            listings = functions.allListings(conn)
-            return render_template('search.html', listings=listings, query = "all listings", guest = "all listings")
+            listings = functions.allListingsForXGuests(conn, guest)
+            return render_template('search.html', listings=listings, query = "all listings", guest = guest)
         return redirect(url_for('search', query=arg, guest=guest))
 
 @app.route('/search/listing/<query>/<guest>', methods=['GET','POST'])
@@ -321,8 +312,8 @@ def searchRequest():
         arg =request.form.get('searchterm')
         guest=request.form.get('guests')
         if arg == "":
-            aRequest = functions.allRequests(conn)
-            return render_template('searchrequest.html', requests=aRequest, query = "all listings", guest = "all listings")
+            aRequest = functions.allRequestsForXGuests(conn, guest)
+            return render_template('searchrequest.html', requests=aRequest, query = "all listings", guest = guest)
         return redirect(url_for('searchR', query=arg, guest=guest))
 
 
@@ -419,7 +410,14 @@ def addAvailability(pid):
 
     return redirect(url_for('place', pid=pid))
 
-
+@app.route('/deleteUser/<bnumber>', methods=['POST'])
+def deleteUser(bnumber):
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+    conn = functions.getConn(db)
+    functions.deleteUser(conn,bnumber)
+    flash('User (%s) was deleted successfully' %bnumber)
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

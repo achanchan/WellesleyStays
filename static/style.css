@@ -24,7 +24,7 @@ a {
 	color: white;
 }
 
-#deleteListing, #deleteRequest, #deleteAvailability {
+#deleteListing, #deleteRequest, #deleteAvailability, #deleteUser {
 	border: none;
 }
 
