@@ -78,12 +78,12 @@ def place(pid):
 
     conn = functions.getConn(db)
     place = functions.getPlace(conn,pid)
-    host = functions.getUser(conn,place['bnumber'])
-    availability = functions.getAvailabilityForPlace(conn, pid)
-    src = functions.getPic(conn, pid)
-    if src is not None:
-        src=url_for('pic', pid=pid)
     if place:
+        host = functions.getUser(conn,place['bnumber'])
+        availability = functions.getAvailabilityForPlace(conn, pid)
+        src = functions.getPic(conn, pid)
+        if src is not None:
+            src=url_for('pic', pid=pid)
         return render_template('place.html', place=place, host=host, availability=availability, src=src)
     else:
         flash('Listing does not exist.')
@@ -205,6 +205,16 @@ def deleteAvailability(aid):
     functions.deleteAvailability(conn, aid)
 
     return redirect(url_for('place', pid=availability['pid']))
+
+@app.route('/deleteAvailabilityAjax/', methods=['POST'])
+def deleteAvailabilityAjax():
+    if ('CAS_USERNAME' not in session):
+        return redirect(url_for("index"))
+        
+    aid = request.form['aid']
+    conn = functions.getConn(db)
+    functions.deleteAvailability(conn, aid)
+    return jsonify(aid=aid, error=False)
 
 @app.route('/editListing/<pid>', methods=['POST', 'GET'])
 def editListing(pid):
