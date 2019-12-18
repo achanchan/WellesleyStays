@@ -35,7 +35,7 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 app.config['UPLOADS'] = 'uploads'
-db = "achan_db"
+db = "wstays_db"
 
 @app.route('/')
 def index():

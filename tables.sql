@@ -1,4 +1,4 @@
-use achan_db;
+use wstays_db;
 
 drop table if exists availability;
 drop table if exists pic;
