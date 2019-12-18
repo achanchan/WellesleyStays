@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block main_content %}
+<button id="progressive_enhancement">Turn On Progressive Enhancement</button>
 <h2>Host Contact</h2>
   <div id="contact">
     <button type="button" class="contact-button"
@@ -47,12 +48,18 @@
 
     {% if session['CAS_ATTRIBUTES']['cas:id'] == host.bnumber %}
     <a href="{{url_for('editAvailability', aid=data.aid)}}"><button type="submit" class="button">Edit</button></a>
-    <!-- <form id="deleteAvailability" action="{{url_for('deleteAvailability', aid=data.aid)}}" method="post"> -->
+    
+    <form id="deleteAvailability" action="{{url_for('deleteAvailability', aid=data.aid)}}" method="post">
         <button onclick="return confirm('Are you sure you want to delete?')" 
                 class="deleteAvailability button" name="deleteAvailability" value="deleteAvailability">
                 Delete
         </button>
-    <!-- </form> -->
+    </form>
+
+    <button onclick="return confirm('Are you sure you want to delete?')" 
+            class="deleteAvailabilityAjax button">
+            Delete
+    </button>
     {% endif %}
   </div>
   {% endfor %}
@@ -87,7 +94,27 @@
 </button>
 {% endif %}
 
-<script>var deleteURL = "{{url_for('deleteAvailabilityAjax')}}" </script>
+<script>
+var deleteURL = "{{url_for('deleteAvailabilityAjax')}}"
+var progressive_on = false;
+$(".deleteAvailabilityAjax").hide();
+
+$("#progressive_enhancement").on('click', function () {
+    if(progressive_on) {
+        // turn it off
+        $("form[id=deleteAvailability]").show();
+        $(".deleteAvailabilityAjax").hide();
+        $("#progressive_enhancement").text('Turn on Progressive Enhancement');
+        progressive_on = false;
+    } else {
+        // turn it on
+        $("form[id=deleteAvailability]").hide();
+        $(".deleteAvailabilityAjax").show();
+        $("#progressive_enhancement").text('Turn off Progressive Enhancement');
+        progressive_on = true;
+    }
+});
+</script>
 <script src="{{url_for('static',filename='plain.js')}}"></script>
  
 {% endblock %}
